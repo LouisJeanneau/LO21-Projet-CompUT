@@ -3,8 +3,8 @@ You can also upload existing files from your computer using the instructions bel
 
 
 Git global setup :
-git config --global user.name "Louis Jeanneau"
-git config --global user.email "louis.jeanneau@etu.utc.fr"
+git config --global user.name "Prénom Nom"
+git config --global user.email "prenom.nom@etu.utc.fr"
 
 Create a new repository :
 git clone git@gitlab.utc.fr:ljeannea/lo21-projet-comput.git
