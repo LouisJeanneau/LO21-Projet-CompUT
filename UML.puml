@@ -1,7 +1,6 @@
 @startuml
 
 package "GroupeLitterale" {
-
     Class Litterale{
 
     }
@@ -42,23 +41,34 @@ package "GroupeLitterale" {
 
 
 Class Item{
+    -lit : Litterale
+    +obtenirLitterale() : Litterale&
+}
+
+Class Operateur{
 
 }
 
-package "GroupeOperateur" {
-
-    Class Operateur{
-
-    }
-
-}
 
 Class Pile{
+    -listeItems : Item*[]
+    -CapaciteMax : size_t
+    -NombreElements : size_t
+    -AgrandissementCapacite() : void
+    +pop() : Item&
+    +push(item : Item) : void
+    +estVide() : bool
+    +taille() : size_t
+
+
 
 }
 
 Class Interpreter{
-
+    -ChaineCommande : QString
+    -OperandeActuel : QString
+    -PointeurPile : Pile*
+    +interprete(CommandeEntree : const QString&)
 }
 
 Class Controleur{
@@ -91,14 +101,15 @@ Numerique <|-- Entier
 
 
 ConstructeurLitterale *-- Litterale
-Item *-- Operateur
+Interpreter *-- Operateur
+Interpreter *-- ConstructeurLitterale
 Item *-- Litterale
 Pile o-- Item
-Pile --> Interpreter
-Interpreter --> Controleur
-Pile --> Controleur
-Persistance --> Controleur
-Controleur --> Affichage
+Pile <--> Interpreter
+Controleur *--> Interpreter
+Controleur *--> Pile
+Controleur <-- Persistance
+Controleur *--> Affichage
 Affichage --> Qt
 
 @enduml
