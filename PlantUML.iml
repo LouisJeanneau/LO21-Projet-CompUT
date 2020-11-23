@@ -1,0 +1,104 @@
+@startuml
+
+package "GroupeLitterale" {
+
+    Class Litterale{
+
+    }
+
+    Class ConstructeurLitterale{
+
+    }
+
+    Class Atome{
+
+    }
+
+    Class Expression{
+
+    }
+
+    Class Numerique{
+
+    }
+
+    Class Reel{
+
+    }
+
+    Class Rationel{
+
+    }
+
+    Class Entier{
+
+    }
+
+    Class Programme{
+
+    }
+
+}
+
+
+Class Item{
+
+}
+
+package "GroupeOperateur" {
+
+    Class Operateur{
+
+    }
+
+}
+
+Class Pile{
+
+}
+
+Class Interpreter{
+
+}
+
+Class Controleur{
+
+}
+
+Class Persistance{
+
+}
+
+package "groupeAffichage" {
+
+    Class Affichage{
+
+    }
+
+    Class Qt {
+
+    }
+
+}
+
+Litterale <|-- Programme
+Litterale <|-- Numerique
+Litterale <|-- Expression
+Litterale <|-- Atome
+Numerique <|-- Reel
+Numerique <|-- Rationel
+Numerique <|-- Entier
+
+
+ConstructeurLitterale *-- Litterale
+Item *-- Operateur
+Item *-- Litterale
+Pile o-- Item
+Pile --> Interpreter
+Interpreter --> Controleur
+Pile --> Controleur
+Persistance --> Controleur
+Controleur --> Affichage
+Affichage --> Qt
+
+@enduml
