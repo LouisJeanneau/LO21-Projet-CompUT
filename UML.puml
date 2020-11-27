@@ -72,6 +72,8 @@ Class Interpreter{
 }
 
 Class Controleur{
+    +setMessage(m : const string)
+    +getMessage() : string const
 
 }
 
