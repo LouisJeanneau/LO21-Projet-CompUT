@@ -72,9 +72,12 @@ Class Interpreter{
 }
 
 Class Controleur{
-    +setMessage(m : const string)
-    +getMessage() : string const
-
+    -RefIntp : Interpreter&
+    -RefPile : Pile&
+    +Controleur(intp : Interpreter&, p : Pile&)
+    +commande(c : const QString&)
+    +setMessage(m : const QString&)
+    +getMessage() : QString const
 }
 
 Class Persistance{
