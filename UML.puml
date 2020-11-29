@@ -45,7 +45,49 @@ Class Item{
     +obtenirLitterale() : Litterale&
 }
 
+package "GroupeOperateur" {
+
 Class Operateur{
+    -listeOperateur : QMap<Qstring>
+    +opEVAL(Litterale & l): void
+}
+
+Class OperateurNumerique {
+    +opPLUS(Litterale & l1, Litterale & l2) : Litterale&
+    +opMOINS(Litterale & l1, Litterale & l2) : Litterale&
+    +opMUL(Litterale & l1, Litterale & l2) : Litterale&
+    +opDIVISION(Litterale & l1, Litterale & l2) : Litterale&
+    +opDIV(Litterale & l1, Litterale & l2) : Litterale&
+    +opMOD(Litterale & l1, Litterale & l2) : Litterale&
+    +opNEG(Litterale & l) : Litterale&
+}
+
+Class OperateurLogique {
+    +opEGAL(Litterale & l1, Litterale & l2) : Litterale&
+    +opDIFFERENT(Litterale & l1, Litterale & l2) : Litterale&
+    +opINFEGAL(Litterale & l1, Litterale & l2) : Litterale&
+    +opSUPEGAL(Litterale & l1, Litterale & l2) : Litterale&
+    +opSUP(Litterale & l1, Litterale & l2) : Litterale&
+    +opINF(Litterale & l1, Litterale & l2) : Litterale&
+    +opAND(Litterale & l1, Litterale & l2) : Litterale&
+    +opOR(Litterale & l1, Litterale & l2) : Litterale&
+    +opNOT(Litterale & l) : Litterale&
+
+
+}
+
+Class OperateurPile {
+    +opDUP() : void
+    +opDROP() : void
+    +opSWAP() : void 
+    +opCLEAR() : void
+}
+
+Class OperateurConditionnel {
+    +opIFT() : void
+}
+
+
 
 }
 
@@ -104,6 +146,10 @@ Numerique <|-- Reel
 Numerique <|-- Rationel
 Numerique <|-- Entier
 
+Operateur <|-- OperateurNumerique
+Operateur <|-- OperateurLogique
+Operateur <|-- OperateurPile
+Operateur <|-- OperateurConditionnel 
 
 ConstructeurLitterale *-- Litterale
 Interpreter *-- Operateur
