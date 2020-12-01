@@ -133,7 +133,16 @@ package "groupeAffichage" {
     }
 
     Class Qt {
-
+	-barreMessage : QLineEdit *
+	-barreEntree : QLineEdit *
+	-vuePile : QTableWidget *
+	-coucheDisposition : QVBoxLayout*
+	-pile : Pile *
+	-controleur : Controleur *
+	+Qcomputer(QWidget * parent = 0)
+	+~QComputer()
+	+refresh()
+	+getNextCommande()
     }
 
 }
