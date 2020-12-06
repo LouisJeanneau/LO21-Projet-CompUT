@@ -114,8 +114,9 @@ Class Interpreter{
 }
 
 Class Controleur{
-    -RefIntp : Interpreter&
-    -RefPile : Pile&
+    -refIntp : Interpreter&
+    -refPile : Pile&
+    -message : QString
     +Controleur(intp : Interpreter&, p : Pile&)
     +commande(c : const QString&)
     +setMessage(m : const QString&)
