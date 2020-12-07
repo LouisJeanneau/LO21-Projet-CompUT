@@ -1,43 +1,76 @@
 @startuml
 
 package "GroupeLitterale" {
+
     Class Litterale{
+    
+         -char[30]   str;
+         -double reel;
+         -Atome*  nom=nullptr;
+         +virtual bouton();
+         +distinct();
+         +virtual empiler();
+         +virtual memoriser();
+         +virtual ~Litterale();
 
     }
 
-    Class ConstructeurLitterale{
+    Class ConstructeurLitterale：public Litterale{
+    
+        -char[30] string;
+        +ConstructeurLitterale();
+        +Constructeur_entier;
+        +Constructeur_reel;
+        +Constructeur_atome;
+        +Constructeur_expression(Atome & a);
+    }
+
+    Class Atome：public Litterale{
+    
+        -int fonction; //indiquer le role joue
+        +int if_identifi();
+    }
+
+    Class Expression：public Litterale{
+    
+        -char guillmet1,guillmet2;
+        -Reel* r;
+        -Entier* e;
+        -Rationnel* ra;
+        -Program* p;
+        -Atome* a;
+        +int if_predefini();
+        +int if_deja_utilise();
+    }
+
+    Class Numerique：public Litterale{
+    
+    }
+
+    Class Reel：public Numerique{
+        -double val;
+        -char point;
+        +simplifier();
+    }
+
+    Class Rationel：public Numerique{
+        -int if_simple;
+        -char slash;
+        +simplifier();
+        }
+    
+    Class Entier：public Numerique{
+        -char signe;
 
     }
 
-    Class Atome{
-
-    }
-
-    Class Expression{
-
-    }
-
-    Class Numerique{
-
-    }
-
-    Class Reel{
-
-    }
-
-    Class Rationel{
-
-    }
-
-    Class Entier{
-
-    }
-
-    Class Programme{
+    Class Programme：public Litterale{
+        -char crochet1,crochet2;
 
     }
 
 }
+
 
 
 Class Item{
