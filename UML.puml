@@ -93,10 +93,7 @@ Class OperateurConditionnel {
 
 
 Class Pile{
-    -listeItems : Item*[]
-    -CapaciteMax : size_t
-    -NombreElements : size_t
-    -AgrandissementCapacite() : void
+    -listeItems : vector<Item>
     +pop() : Item&
     +push(item : Item) : void
     +estVide() : bool
@@ -106,18 +103,18 @@ Class Pile{
 
 }
 
-Class Interpreter{
-    -ChaineCommande : QString
-    -OperandeActuel : QString
-    -PointeurPile : Pile*
+Class Interpreteur{
+    -chaineCommande : QString
+    -operandeActuel : QString
+    -pointeurPile : Pile*
     +interprete(CommandeEntree : const QString&)
 }
 
 Class Controleur{
-    -refIntp : Interpreter&
+    -refIntp : Interpreteur&
     -refPile : Pile&
     -message : QString
-    +Controleur(intp : Interpreter&, p : Pile&)
+    +Controleur(intp : Interpreteur&, p : Pile&)
     +commande(c : const QString&)
     +setMessage(m : const QString&)
     +getMessage() : QString const
@@ -162,12 +159,12 @@ Operateur <|-- OperateurPile
 Operateur <|-- OperateurConditionnel 
 
 ConstructeurLitterale *-- Litterale
-Interpreter *-- Operateur
-Interpreter *-- ConstructeurLitterale
+Interpreteur *-- Operateur
+Interpreteur *-- ConstructeurLitterale
 Item *-- Litterale
 Pile o-- Item
-Pile <--> Interpreter
-Controleur *--> Interpreter
+Pile <--> Interpreteur
+Controleur *--> Interpreteur
 Controleur *--> Pile
 Controleur <-- Persistance
 Controleur *--> Affichage
