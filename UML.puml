@@ -2,71 +2,74 @@
 
 package "GroupeLitterale" {
 
-    Class Litterale{
+
+    Class ConstructeurLitterale{
     
-         -char[30]   str;
-         -double reel;
-         -Atome*  nom=nullptr;
-         +virtual bouton();
-         +distinct();
-         +virtual empiler();
-         +virtual memoriser();
-         +virtual ~Litterale();
-
+        -string : char[30] 
+        +ConstructeurLitterale() 
+        +Constructeur_entier() 
+        +Constructeur_reel() 
+        +Constructeur_atome() 
+        +Constructeur_expression(Atome & a) 
     }
 
-    Class ConstructeurLitterale：public Litterale{
+    Class Litterale {
     
-        -char[30] string;
-        +ConstructeurLitterale();
-        +Constructeur_entier;
-        +Constructeur_reel;
-        +Constructeur_atome;
-        +Constructeur_expression(Atome & a);
+         -str: char[30] 
+         -reel: double 
+         -nom: Atome* 
+         +virtual bouton() 
+         +distinct() 
+         +virtual empiler() 
+         +virtual memoriser() 
+         +virtual ~Litterale() 
+
     }
 
-    Class Atome：public Litterale{
+
+    Class Atome{
     
-        -int fonction; //indiquer le role joue
-        +int if_identifi();
+        -fonction: int  //indiquer le role joue
+        +if_identifi(): int 
     }
 
-    Class Expression：public Litterale{
+    Class Expression{
     
-        -char guillmet1,guillmet2;
-        -Reel* r;
-        -Entier* e;
-        -Rationnel* ra;
-        -Program* p;
-        -Atome* a;
-        +int if_predefini();
-        +int if_deja_utilise();
+        -guillemet1: char 
+        -guillemet2: char 
+        -r: Reel*  
+        -e: Entier* 
+        -ra: Rationnel*  
+        -p: Program*  
+        -a: Atome*  
+        +if_predefini(): int 
+        +if_deja_utilise(): int 
     }
 
-    Class Numerique：public Litterale{
+    Class Numerique{
     
     }
 
-    Class Reel：public Numerique{
-        -double val;
-        -char point;
-        +simplifier();
+    Class Reel{
+        -val: double 
+        -point: char 
+        +simplifier() 
     }
 
-    Class Rationel：public Numerique{
-        -int if_simple;
-        -char slash;
-        +simplifier();
+    Class Rationel{
+        -if_simple: int 
+        -slash: char 
+        +simplifier() 
         }
     
-    Class Entier：public Numerique{
-        -char signe;
+    Class Entier{
+        -signe: char 
 
     }
 
-    Class Programme：public Litterale{
-        -char crochet1,crochet2;
-
+    Class Programme{
+        -crochet1: char 
+        -crochet2: char 
     }
 
 }
