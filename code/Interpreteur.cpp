@@ -4,7 +4,10 @@
 
 
 #include "Interpreteur.h"
+#include <iostream>
+#include <QMap>
 
+using namespace std;
 
 void Interpreteur::interprete(QString commandeEntree) {
     QString unElement;
@@ -18,19 +21,28 @@ void Interpreteur::interprete(QString commandeEntree) {
             commandeEntree.remove(0,1);
         }
         else if(commandeEntree.at(0) == "'"){
-            unsigned int index = commandeEntree.indexOf('\'', 1);
+            cout << "axiome" << endl;
+            int index = commandeEntree.indexOf('\'', 1);
             if(index == -1)
                 throw ComputerException("Axiome non finie");
-            unElement = commandeEntree.left(index);
-            commandeEntree.chop(index);
+            unElement = commandeEntree.left(index+1);
+            commandeEntree.remove(0, index+1);
             execute(unElement);
         }
         else if(commandeEntree.at(0) == "["){
-            unsigned int index = commandeEntree.lastIndexOf(']');
+            int index = commandeEntree.lastIndexOf(']');
             if(index == -1)
                 throw ComputerException("Programme non finie");
+            unElement = commandeEntree.left(index+1);
+            commandeEntree.remove(0, index+1);
+            execute(unElement);
+        }
+        else{
+            int index = commandeEntree.indexOf(' ');
             unElement = commandeEntree.left(index);
-            commandeEntree.chop(index);
+            if(index == -1)
+                index = 1;
+            commandeEntree.remove(0, index);
             execute(unElement);
         }
     }
@@ -38,5 +50,17 @@ void Interpreteur::interprete(QString commandeEntree) {
 }
 
 void Interpreteur::execute(QString operande) {
+    QMap<QString, int> listeOp = Operateur.listeOperateur;
+
+    if(operande.startsWith('\'')){
+
+    }
+    if(operande.startsWith('[')){
+
+    }
+
+    if (listeOp.contains(operande)){
+        //UTILISATION DU BON OPERATEUR
+    }
 
 }

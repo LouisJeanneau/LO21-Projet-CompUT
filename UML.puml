@@ -140,10 +140,9 @@ Class Pile{
 }
 
 Class Interpreteur{
-    -chaineCommande : QString
-    -operandeActuel : QString
     -pointeurPile : Pile*
-    +interprete(CommandeEntree : const QString&)
+    +interprete(commandeEntree : QString)
+    +execute(operande : QString)
 }
 
 Class Controleur{
