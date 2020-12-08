@@ -1,5 +1,5 @@
-#ifndef _COMPUTER_H
-#define _COMPUTER_H
+#ifndef PROJET_LO21_COMPUTER_H
+#define PROJET_LO21_COMPUTER_H
 
 #include <QString>
 #include "Interpreter.h"
@@ -20,4 +20,4 @@ public:
 
 };
 
-#endif
+#endif //PROJET_LO21_COMPUTER_H
