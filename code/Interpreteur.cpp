@@ -53,14 +53,15 @@ void Interpreteur::execute(QString operande) {
     QMap<QString, int> listeOp = Operateur.listeOperateur;
 
     if(operande.startsWith('\'')){
-
+        //Creation et empilement d'une expression
     }
-    if(operande.startsWith('[')){
-
+    else if(operande.startsWith('[')){
+        //Creation et empilement d'un programme
     }
-
-    if (listeOp.contains(operande)){
+    else if (listeOp.contains(operande)){
         //UTILISATION DU BON OPERATEUR
     }
-
+    else if(/* est numérique*/){
+        //Creation et empilement d'une literale numérique
+    }
 }
