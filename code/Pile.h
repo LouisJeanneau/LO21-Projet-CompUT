@@ -10,10 +10,10 @@
 #include "Litterale.h"
 
 class Item{
-    Litterale lit;
+    Litterale* litPointeur;
 public:
-    explicit Item(Litterale l): lit(l){}
-    Litterale& obtenirLitterale(){return lit;}
+    explicit Item(Litterale* l): litPointeur(l){}
+    Litterale& obtenirLitterale(){return *litPointeur;}
 };
 
 class Pile : public QObject{
