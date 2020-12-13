@@ -7,6 +7,7 @@
 #include <QPushButton>
 
 #include "Interpreteur.h"
+#include "Computer.h"
 
 using namespace std;
 
@@ -16,10 +17,7 @@ int main(int argc, char *argv[]) {
     button.resize(200, 100);
     button.show();
 
-    //TEST PARTIE LOUIS
-    QString test("2 3 + 4 * Salut 'WESH' [Ceci est un programme + + SWAG] 1 9 157 /");
-    Interpreteur testinter;
-    testinter.interprete(test);
-    //
+    Controleur test= Controleur(Interpreteur::obtenirInterpreteur(), Pile::obtenirPile());
+
     return QApplication::exec();
 }
