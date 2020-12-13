@@ -14,7 +14,6 @@ void Interpreteur::interprete(QString commandeEntree) {
 
     while(commandeEntree.length() != 0){
         //Tant qu'on a pas traite toute la phrase
-
         unElement.clear();
 
         if(commandeEntree.at(0) == " "){
@@ -39,9 +38,9 @@ void Interpreteur::interprete(QString commandeEntree) {
         }
         else{
             int index = commandeEntree.indexOf(' ');
-            unElement = commandeEntree.left(index);
             if(index == -1)
-                index = 1;
+                index = commandeEntree.length();
+            unElement = commandeEntree.left(index);
             commandeEntree.remove(0, index);
             execute(unElement);
         }
