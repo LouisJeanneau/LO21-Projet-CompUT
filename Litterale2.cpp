@@ -1,4 +1,3 @@
-
 #include"litteral.h"
 #include <QString>
 
