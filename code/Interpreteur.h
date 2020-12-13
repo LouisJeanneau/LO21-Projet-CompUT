@@ -10,10 +10,13 @@
 #include "Exception.h"
 
 class Interpreteur{
-    Pile* pointeurPile;
+    Pile& pile=Pile::obtenirPile();
+    static Interpreteur instance;
+    Interpreteur() = default;
 public:
     void interprete(QString commandeEntree);
     void execute(QString operande);
+    static Interpreteur& obtenirInterpreteur();
 };
 
 #endif //LO21_PROJET_INTERPRETER_H

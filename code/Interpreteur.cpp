@@ -68,3 +68,8 @@ void Interpreteur::execute(QString operande) {
     }
      */
 }
+
+Interpreteur &Interpreteur::obtenirInterpreteur() {
+    static Interpreteur instance;
+    return instance;
+}

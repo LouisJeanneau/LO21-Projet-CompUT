@@ -13,13 +13,17 @@ class Item{
     Litterale* litPointeur;
 public:
     explicit Item(Litterale* l): litPointeur(l){}
+    ~Item(){ delete litPointeur; }
+    void supprimer(){ delete litPointeur; }
     Litterale& obtenirLitterale(){return *litPointeur;}
 };
 
 class Pile : public QObject{
     std::vector<Item> listeItems;
+    static Pile instance;
+    Pile() = default;
 public:
-    Pile();
+    static Pile& obtenirPile();
     Item pop();
     void push(Item item);
     bool estVide();
