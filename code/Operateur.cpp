@@ -3,11 +3,25 @@
 // Created by Ismail Kadiri on 08/12/2020.
 //
 
-#include <iostream>
 #include "Operateur.h"
 #include "Pile.h"
 
 //Initialisation de la map contenant les arités de chaque opérateur
+
+
+
+QMap<QString, std::function<Litterale(Item, Item)>> Operateur::inventaireOpArite2 = {
+
+        {"+", opPlus}
+};
+
+QMap<QString, std::function<Litterale(Item)>> Operateur::inventaireOpArite1 = {
+        {"NEG", opNEG}
+};
+
+QMap<QString, std::function<Litterale(Item)>> Operateur::inventaireOpArite0 = {};
+
+
 
 
 QMap<QString, int> Operateur::inventaireOperateur = {
@@ -55,7 +69,19 @@ Operateur::~Operateur() noexcept {
 
 }
 
+Litterale Operateur::opPlus(Item i1, Item i2) {
 
+    Litterale l1 = i1.obtenirLitterale();
+    Litterale l2 = i2.obtenirLitterale();
+    unsigned int n = l1.getNombre() + l2.getNombre();
+
+    return Litterale(n);
+}
+
+Litterale Operateur::opNEG(Item i) {
+    return Litterale(0);
+}
+/*
 //Operateurs numériques
 
 
@@ -78,104 +104,5 @@ Item Operateur::opPlus() {
     return;
 }
 
-/*
-Item Operateur::opMoins() {
-    return <#initializer#>;
-}
-
-Item Operateur::opMul() {
-    return <#initializer#>;
-}
-
-Item Operateur::opDivision() {
-    return <#initializer#>;
-}
-
-Item Operateur::opDIV() {
-    return <#initializer#>;
-}
-
-Item Operateur::opMOD() {
-    return <#initializer#>;
-}
-
-Item Operateur::opNEG(Item &i) {
-    return <#initializer#>;
-}
-
-// ------------------------------------------------------
-
-//Operateurs logiques
-
-Item Operateur::opEgal() {
-    return <#initializer#>;
-}
-
-Item Operateur::opDifferent() {
-    return <#initializer#>;
-}
-
-Item Operateur::opInfEgal() {
-    return <#initializer#>;
-}
-
-Item Operateur::opSupEgal() {
-    return <#initializer#>;
-}
-
-Item Operateur::opSup() {
-    return <#initializer#>;
-}
-
-Item Operateur::opInf() {
-    return <#initializer#>;
-}
-
-Item Operateur::opAND() {
-    return <#initializer#>;
-}
-
-Item Operateur::opOR() {
-    return <#initializer#>;
-}
-
-Item Operateur::opNOT() {
-    return <#initializer#>;
-}
-
-// ------------------------------------------------------
-
-//Operateurs de manipulation de la Pile
-
-Item Operateur::opDUP() {
-    return <#initializer#>;
-}
-
-void Operateur::opDROP() {
-
-}
-
-void Operateur::opSWAP() {
-
-}
-
-void Operateur::opCLEAR() {
-
-}
-
-// ------------------------------------------------------
-
-//Operateurs conditionnels et de boucle
-
-void Operateur::opIFT() {
-
-}
-
-void Operateur::opEval() {
-
-}
-
 */
-
-
 
