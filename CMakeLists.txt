@@ -10,10 +10,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
-set(CMAKE_PREFIX_PATH "/Users/ismaiilkad/Qt/5.15.2/clang_64/lib/cmake")
+set(CMAKE_PREFIX_PATH "C:/Qt/5.9.9/mingw53_32/")
 
 # Add main.cpp file of project root directory as source file
-add_executable(Projet_LO21 code/main.cpp code/Exception.cpp code/Litterale.cpp code/Pile.cpp code/Interpreteur.cpp)
+add_executable(Projet_LO21 code/main.cpp code/Exception.cpp code/Litterale.cpp code/Pile.cpp code/Interpreteur.cpp code/Computer.cpp)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

@@ -14,20 +14,20 @@ Litterale* distinguerConstruire(QString s)
         if(flag3==1)//reel
         {
             return new Reel(s.toDouble());
-            // return re;
+           // return re;
         }
-        else if(flag4==1)//rationnel
+           else if(flag4==1)//rationnel
         {
             QString n1=s.section("/",0,0);
             QString d1=s.section("/",1,1);
             int n=n1.toInt();
             int d=d1.toInt();
-            return new Rationnel(&n,&d);
+           return new Rationnel(&n,&d);
 
         }
-        else //entier
+            else //entier
         {
-            return new Entier(s.toInt());
+           return new Entier(s.toInt());
 
         }
     }
@@ -39,16 +39,16 @@ Litterale* distinguerConstruire(QString s)
     }
     else if (flag1==1) //programme
     {
-        return new Programme(s.mid(1,l-2));
+       return new Programme(s.mid(1,l-2));
 
     }
     else if(flag2==1)//expression
     {
-        Atome ae=Atome(s.mid(1,l-2));
-        return new Expression(&ae);
+         Atome ae=Atome(s.mid(1,l-2));
+         return new Expression(&ae);
 
     }
-    return nullptr;
+  return nullptr;
 }
 
 
@@ -73,16 +73,16 @@ QString Atome::versString() const {
     return atome;
 }
 void Rationnel::simplifier(int*n,int *d) {
-    //if (denominateur == 1) // ou après  simplification ça devient un entier ：interpreteur doit le vérifier d＇ abord
-    if(*n==1)return;//pas besion de simplifier
-    for(int i=2;i<=*n&&i<=*d;i++)
-    {
-        if((*n)%i==0&&(*d)%i==0)
-        {
-            *n=(*n)/i;
-            *d=(*d)/i;
-            simplifier(n,d);
-        }
-    }
-    this->if_simple=1;
+  //if (denominateur == 1) // ou après  simplification ça devient un entier ：interpreteur doit le vérifier d＇ abord
+  if(*n==1)return;//pas besion de simplifier
+  for(int i=2;i<=*n&&i<=*d;i++)
+  {
+      if((*n)%i==0&&(*d)%i==0)
+      {
+        *n=(*n)/i;
+        *d=(*d)/i;
+        simplifier(n,d);
+      }
+  }
+  this->if_simple=1;
 }
