@@ -8,11 +8,11 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include "Pile.h"
 #include <QtCore/QString>
 #include <QMap>
 #include <functional>
 #include "Litterale.h"
+#include "Pile.h"
 
 class Operateur {
 

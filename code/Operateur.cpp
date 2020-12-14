@@ -15,6 +15,8 @@ QMap<QString, std::function<Litterale(Item, Item)>> Operateur::inventaireOpArite
         {"+", opPlus}
 };
 
+//test
+
 QMap<QString, std::function<Litterale(Item)>> Operateur::inventaireOpArite1 = {
         {"NEG", opNEG}
 };
