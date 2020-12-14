@@ -6,20 +6,20 @@
 #define PROJET_LO21_COMPUTER_H
 
 #include <QString>
-#include "Interpreter.h"
+#include "Interpreteur.h"
 #include "Pile.h"
 #include "Exception.h"
 
 using namespace std;
 
 class Controleur {
-	Interpreter& refIntp;
+	Interpreteur& refIntp;
 	Pile& refPile;
     QString message;
 public:
-	Controleur(Interpreter& intp, Pile& p):refIntp(intp), refPile(p){}
+	Controleur(Interpreteur& intp, Pile& p):refIntp(intp), refPile(p){}
     void commande(const QString& c) {refIntp.interprete(c);}
-    void setMessage(const QString& m):message(m) {}
+    void setMessage(const QString& m) {message = m;}
     QString getMessage() const { return message; }
 
 };

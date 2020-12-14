@@ -22,3 +22,8 @@ bool Pile::estVide() {
 unsigned int Pile::taille() {
     return listeItems.size();
 }
+
+Pile &Pile::obtenirPile() {
+    static Pile instance;
+    return instance;
+}
