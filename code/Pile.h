@@ -10,20 +10,16 @@
 #include "Litterale.h"
 
 class Item{
-    Litterale* litPointeur;
+    Litterale lit;
 public:
-    explicit Item(Litterale* l): litPointeur(l){}
-    ~Item(){ delete litPointeur; }
-    void supprimer(){ delete litPointeur; }
-    Litterale& obtenirLitterale(){return *litPointeur;}
+    explicit Item(Litterale l): lit(l){}
+    Litterale& obtenirLitterale(){return lit;}
 };
 
 class Pile : public QObject{
     std::vector<Item> listeItems;
-    static Pile instance;
-    Pile() = default;
 public:
-    static Pile& obtenirPile();
+    Pile();
     Item pop();
     void push(Item item);
     bool estVide();

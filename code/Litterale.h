@@ -31,8 +31,12 @@ public:
 //    }
 };
 
-class Numerique:public Litterale{
 
+class Numerique:public Litterale{
+    int n;
+public:
+    Numerique(int i): n(i) {}
+    int getNombre(){return n;}
 };
 
 class Reel : public Numerique{

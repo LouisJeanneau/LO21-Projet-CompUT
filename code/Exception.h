@@ -6,6 +6,7 @@
 #define PROJET_LO21_EXCEPTION_H
 
 #include <stdexcept>
+#include "string"
 
 using namespace std;
 

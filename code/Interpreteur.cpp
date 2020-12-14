@@ -14,6 +14,7 @@ void Interpreteur::interprete(QString commandeEntree) {
 
     while(commandeEntree.length() != 0){
         //Tant qu'on a pas traite toute la phrase
+
         unElement.clear();
 
         if(commandeEntree.at(0) == " "){
@@ -38,9 +39,9 @@ void Interpreteur::interprete(QString commandeEntree) {
         }
         else{
             int index = commandeEntree.indexOf(' ');
-            if(index == -1)
-                index = commandeEntree.length();
             unElement = commandeEntree.left(index);
+            if(index == -1)
+                index = 1;
             commandeEntree.remove(0, index);
             execute(unElement);
         }
@@ -49,26 +50,17 @@ void Interpreteur::interprete(QString commandeEntree) {
 }
 
 void Interpreteur::execute(QString operande) {
-    //QMap<QString, int> listeOp = Operateur.listeOperateur;
+    QMap<QString, int> listeOp = Operateur.listeOperateur;
 
-    /*
     if(operande.startsWith('\'')){
-        //Creation et empilement d'une expression
+
     }
-    else if(operande.startsWith('[')){
-        //Creation et empilement d'un programme
+    if(operande.startsWith('[')){
+
     }
-    else if (listeOp.contains(operande)){
+
+    if (listeOp.contains(operande)){
         //UTILISATION DU BON OPERATEUR
     }
 
-    else if( est numérique){
-        //Creation et empilement d'une literale numérique
-    }
-     */
-}
-
-Interpreteur &Interpreteur::obtenirInterpreteur() {
-    static Interpreteur instance;
-    return instance;
 }
