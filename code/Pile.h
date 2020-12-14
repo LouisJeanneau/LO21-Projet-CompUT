@@ -24,7 +24,7 @@ class Pile : public QObject{
     Pile() = default;
 public:
     static Pile& obtenirPile();
-    Item& pop();
+    Item pop();
     void push(Item item);
     bool estVide();
     unsigned int taille();
