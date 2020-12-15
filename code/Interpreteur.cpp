@@ -49,21 +49,24 @@ void Interpreteur::interprete(QString commandeEntree) {
 }
 
 void Interpreteur::execute(QString operande) {
-    //QMap<QString, int> listeOp = Operateur.listeOperateur;
-
+    //Test de chaque operateur
+    Litterale* resPointeur;
     /*
-    if(operande.startsWith('\'')){
-        //Creation et empilement d'une expression
-    }
-    else if(operande.startsWith('[')){
-        //Creation et empilement d'un programme
-    }
-    else if (listeOp.contains(operande)){
-        //UTILISATION DU BON OPERATEUR
-    }
+    QMap<QString, std::function<Litterale&(Item, Item)>> inventaireOpArite2=Operateur::inventaireOpArite2;
+    QMap<QString, std::function<Litterale&(Item)>> inventaireOpArite1=Operateur::inventaireOpArite1;
+    QMap<QString, std::function<Litterale&()>> inventaireOpArite0=Operateur::inventaireOpArite0;
 
-    else if( est numérique){
-        //Creation et empilement d'une literale numérique
+    if(inventaireOpArite0.contains(operande)){
+        Litterale& resPointeur=inventaireOpArite0[operande]();
+        Item iRes(&resPointeur);
+    }
+    else if(inventaireOpArite1.contains(operande)){
+        Item i1 = pile.pop();
+        Litterale& resPointeur=inventaireOpArite1[operande](i1);
+        Item iRes(&resPointeur);
+    }
+    else if(inventaireOpArite2.contains(operande)){
+
     }
      */
 }

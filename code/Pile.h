@@ -14,8 +14,10 @@ class Item{
     Litterale* litPointeur;
     string typeItem;
 public:
-    explicit Item(Litterale* l): litPointeur(l){}
-    ~Item() = default;
+    explicit Item(Litterale* l): litPointeur(l){ cout << "Construction défaut" << endl; }
+    Item(const Item& i): litPointeur(i.litPointeur){ cout << "Construction recopie" << endl;}
+    Item& operator=(const Item& i){ this->litPointeur=i.litPointeur; cout << "Construction affectation" << endl; return *this;}
+    ~Item(){ cout << "Déstruction défaut" << endl; };
     void supprimer(){ delete litPointeur; }
     Litterale& obtenirLitterale(){return *litPointeur;}
     string obtenirType() {return typeItem;}

@@ -1,4 +1,3 @@
-#include <__bit_reference>
 //
 // Created by Ismail Kadiri on 08/12/2020.
 //
@@ -7,7 +6,7 @@
 #include "Pile.h"
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
-QMap<QString, std::function<Litterale&(Item, Item)>> Operateur::inventaireOpArite2 = {
+QMap<QString, function<Litterale&(Item, Item)>> Operateur::inventaireOpArite2 = {
 
         {"+", opPlus},
         {"-", opMoins},
@@ -16,7 +15,7 @@ QMap<QString, std::function<Litterale&(Item, Item)>> Operateur::inventaireOpArit
 };
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 1
-QMap<QString, std::function<Litterale&(Item)>> Operateur::inventaireOpArite1 = {
+QMap<QString, function<Litterale&(Item)>> Operateur::inventaireOpArite1 = {
 
         {"NEG", opNEG}
 };

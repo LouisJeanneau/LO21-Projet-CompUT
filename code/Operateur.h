@@ -28,8 +28,8 @@ public:
     static QMap<QString,int> inventaireOperateur;
 
     //Maps contenant les pointeurs de fonctions associés aux opérateurs d'arité respectivement 2,1 et 0
-    static QMap<QString, std::function<Litterale&(Item, Item)>> inventaireOpArite2;
-    static QMap<QString, std::function<Litterale&(Item)>> inventaireOpArite1;
+    static QMap<QString, function<Litterale&(Item, Item)>> inventaireOpArite2;
+    static QMap<QString, function<Litterale&(Item)>> inventaireOpArite1;
     static QMap<QString, std::function<Litterale&()>> inventaireOpArite0;
 
 
@@ -37,7 +37,6 @@ public:
     static auto& operateurInstance() {
         static Operateur opInstance;
         return opInstance;
-
     }
 
     //Méthodes opérateurs

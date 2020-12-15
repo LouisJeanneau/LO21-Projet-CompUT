@@ -1,7 +1,6 @@
 #ifndef LITTERAL_H
 #define LITTERAL_H
 
-#endif // LITTERAL_H
 #include <QString>
 #include<iostream>
 using namespace std;
@@ -193,3 +192,6 @@ public:
 //    }
     QString versString() const;
 };
+
+#endif // LITTERAL_H
+
