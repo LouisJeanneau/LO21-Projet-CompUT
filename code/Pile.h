@@ -7,15 +7,19 @@
 
 #include <vector>
 #include <QObject>
+#include <string>
 #include "Litterale.h"
 
 class Item{
     Litterale* litPointeur;
+    string typeItem;
 public:
     explicit Item(Litterale* l): litPointeur(l){}
-    ~Item(){ delete litPointeur; }
+    ~Item() = default;
     void supprimer(){ delete litPointeur; }
     Litterale& obtenirLitterale(){return *litPointeur;}
+    string obtenirType() {return typeItem;}
+
 };
 
 class Pile : public QObject{

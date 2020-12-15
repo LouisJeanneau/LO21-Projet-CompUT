@@ -6,26 +6,26 @@
 #include "Operateur.h"
 #include "Pile.h"
 
-//Initialisation de la map contenant les arités de chaque opérateur
+//Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
+QMap<QString, std::function<Litterale&(Item, Item)>> Operateur::inventaireOpArite2 = {
 
+        {"+", opPlus},
+        {"-", opMoins},
+        {"=", opEgal}
 
-
-QMap<QString, std::function<Litterale(Item, Item)>> Operateur::inventaireOpArite2 = {
-
-        {"+", opPlus}
 };
 
-//test
+//Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 1
+QMap<QString, std::function<Litterale&(Item)>> Operateur::inventaireOpArite1 = {
 
-QMap<QString, std::function<Litterale(Item)>> Operateur::inventaireOpArite1 = {
         {"NEG", opNEG}
 };
 
-QMap<QString, std::function<Litterale(Item)>> Operateur::inventaireOpArite0 = {};
+//Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
+QMap<QString, std::function<Litterale&()>> Operateur::inventaireOpArite0 = {
+};
 
-
-
-
+//Initialisation de la map contenant les arités de chaque opérateur
 QMap<QString, int> Operateur::inventaireOperateur = {
 
         //Operateurs numeriques
@@ -71,40 +71,83 @@ Operateur::~Operateur() noexcept {
 
 }
 
-Litterale Operateur::opPlus(Item i1, Item i2) {
+Litterale& Operateur::opPlus(Item i1, Item i2) {
+    //récupérer les types de i1 i2
+    string typeItem1 = i1.obtenirType();
+    string typeItem2 = i2.obtenirType();
+    //tester les types
+    //récupérer les valeurs stockées
 
-    Litterale l1 = i1.obtenirLitterale();
-    Litterale l2 = i2.obtenirLitterale();
-    unsigned int n = l1.getNombre() + l2.getNombre();
+    auto& l1 = dynamic_cast<Entier &>(i1.obtenirLitterale());
+    auto& l2 = dynamic_cast<Entier &>(i2.obtenirLitterale());
+    int n1 = l1.getEntier();
+    cout << n1 << endl;
+    int n2 = l2.getEntier();
+    cout << n2 << endl;
+    //construire le nouvel littérale
+    Litterale* ptr;
+    ptr = new Entier(n1+n2);
+    return *ptr;
 
-    return Litterale(n);
+
 }
 
-Litterale Operateur::opNEG(Item i) {
-    return Litterale(0);
-}
-/*
-//Operateurs numériques
+Litterale &Operateur::opMoins(Item i1, Item i2) {
+    //récupérer les types de i1 i2
+    string typeItem1 = i1.obtenirType();
+    string typeItem2 = i2.obtenirType();
+    //tester les types
+    //récupérer les valeurs stockées
 
+    auto& l1 = dynamic_cast<Entier &>(i1.obtenirLitterale());
+    auto& l2 = dynamic_cast<Entier &>(i2.obtenirLitterale());
+    int n1 = l1.getEntier();
+    cout << n1 << endl;
+    int n2 = l2.getEntier();
+    cout << n2 << endl;
+    //construire le nouvel littérale
+    Litterale* ptr;
+    ptr = new Entier(n1-n2);
+    return *ptr;
 
-Item Operateur::opPlus() {
-
-    //Récuperer l'arité
-    unsigned int arite = inventaireOperateur["+"];
-    // vérifier que i1 et i2 sont de types compatibles avant
-    //depop arite éléments de la pile
-    Item i1 = Pile::pop();
-    Item i2 = Pile::pop();
-
-    //Si i1 et i2 sont des littérales numériques
-    //Sinon catch error -> push i1 && i2
-
-    //i1+i2 = création d'une nouvelle littérale (dépend des types) + insertion dans tableau de Pile
-    // push?
-
-
-    return;
 }
 
-*/
+Litterale& Operateur::opNEG(Item i) {
+    string typeItem1 = i.obtenirType();
+    //tester les types
+    //récupérer les valeurs stockées
+
+    auto& l = dynamic_cast<Entier &>(i.obtenirLitterale());
+    int n = l.getEntier();
+    cout << n << endl;
+
+    //construire le nouvel littérale
+    Litterale* ptr;
+    ptr = new Entier(-n);
+    return *ptr;
+}
+
+Litterale &Operateur::opEgal(Item i1, Item i2) {
+    //récupérer les types de i1 i2
+    string typeItem1 = i1.obtenirType();
+    string typeItem2 = i2.obtenirType();
+    //tester les types
+    //récupérer les valeurs stockées
+
+    auto& l1 = dynamic_cast<Entier &>(i1.obtenirLitterale());
+    auto& l2 = dynamic_cast<Entier &>(i2.obtenirLitterale());
+    int n1 = l1.getEntier();
+    cout << n1 << endl;
+    int n2 = l2.getEntier();
+    cout << n2 << endl;
+    //construire le nouvel littérale
+    Litterale* ptr;
+    if (n1==n2)
+        ptr = new Entier(1);
+    else
+        ptr = new Entier(0);
+
+    return *ptr;
+}
+
 
