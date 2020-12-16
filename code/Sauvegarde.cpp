@@ -80,5 +80,50 @@ void Sauvegarde::sauvegardeEtat(){
 }
 
 void Sauvegarde::recupereEtat(){
+    QDomDocument *d = new QDomDocument("calculatrice");
+    QFile calculatrice("calculatrice.xml");
+    if(!calculatrice.open(QIODevice::ReadOnly))
+    {
+        QMessageBox::warning(this,"Erreur à l'ouverture du document XML","Le document XML n'a pas pu être ouvert.");
+        return;
+    }
+    if (!d->setContent(&calculatrice))
+    {
+        calculatrice.close();
+        QMessageBox::warning(this, "Erreur à l'ouverture du document XML", "Le document XML n'a pas pu être attribué à l'objet QDomDocument.");
+        return;
+    }
+
+    //Pile
+    QDomNode balise = d.firstChild();
+    QDomElement element = balise.lastChildElement();
+    while(!element.isNull()){
+        //Construire une nouvelle litérale avec le texte récupéré
+        //Litterale *res = new Litterale(element.text());
+        refContr.refPile.push(*res);
+        element = element.previousSiblingElement();
+    }
+
+    //Variables
+    balise = balise.nextSibling();
+    QDomElement variable = balise.lastChildElement();
+    while(!variable.isNull()){
+        //Ajoute dans la QMap variable de persistance
+        //variable.attribute("id") : nom de la variable
+        //variable.attribute("value") : valeur de la variable
+        variable = variable.previousSiblingElement();
+    }
+
+    //Programmes
+    balise = balise.nextSibling();
+    QDomElement programme = balise.lastChildElement();
+    while(!programme.isNull()){
+        //Ajoute dans la QMap programme de persistance
+        //programme.attribute("id") : nom du programme
+        //programme.attribute("value") : valeur du programme
+    }
+
+
+    d.close();
 
 }
