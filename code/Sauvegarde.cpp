@@ -46,13 +46,22 @@ void Sauvegarde::sauvegardeEtat(){
     //Variables
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
-    for(auto e : refContr.refPers.keys()){
-        
+    for(auto v : refContr.refPers.mapVar.keys()){
+        QDomElement variable = doc.createElement("variable");
+        variables.appendChild(variable);
+        variable.setAttribute("id", v);
+        variable.setAttribute("value", refContr.refPers.mapVar.value(v));
     }  
 
     //Programmes
     QDomElement programmes = doc.createElement("programmes");
     claculatrice.appendChild(programmes);
+    for(auto p : refContr.refPers.mapProg.keys()){
+        QDomElement programme = doc.createElement("programme");
+        programmes.appendChild(programme);
+        programme.setAttribute("id", v);
+        programme.setAttribute("value", refContr.refPers.mapProg.value(p));
+    } 
 
 
     QFile fichier("calculatrice.xml");
