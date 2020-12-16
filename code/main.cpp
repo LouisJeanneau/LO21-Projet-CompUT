@@ -19,14 +19,8 @@ int main(int argc, char *argv[]) {
 
     Controleur test= Controleur(Interpreteur::obtenirInterpreteur(), Pile::obtenirPile());
 
-    Litterale* ptr1 = new Entier(5);
-    Litterale* ptr2 = new Entier(10);
-
-    Item i1(ptr1);
-    Item i2(ptr2);
-
-    Entier& ptr3 = dynamic_cast<Entier&>(Operateur::inventaireOpArite2["+"](i1, i2));
-    cout << ptr3.getEntier() << endl;
-
-    return QApplication::exec();
+    Interpreteur::obtenirInterpreteur().interprete("1 1 2 10 80");
+    Pile::obtenirPile().debug();
+    Interpreteur::obtenirInterpreteur().interprete("+ 17 +");
+    Pile::obtenirPile().debug();
 }

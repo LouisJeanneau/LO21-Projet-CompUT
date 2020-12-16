@@ -193,5 +193,10 @@ public:
     QString versString() const;
 };
 
+class ConstructeurLitterale{
+public:
+    static Litterale* distinguerConstruire(QString s);
+};
+
 #endif // LITTERAL_H
 

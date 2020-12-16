@@ -14,10 +14,18 @@ class Item{
     Litterale* litPointeur;
     string typeItem;
 public:
-    explicit Item(Litterale* l): litPointeur(l){ cout << "Construction défaut" << endl; }
-    Item(const Item& i): litPointeur(i.litPointeur){ cout << "Construction recopie" << endl;}
-    Item& operator=(const Item& i){ this->litPointeur=i.litPointeur; cout << "Construction affectation" << endl; return *this;}
-    ~Item(){ cout << "Déstruction défaut" << endl; };
+    explicit Item(Litterale* l): litPointeur(l){
+        //cout << "Construction défaut" << endl;
+    }
+    Item(const Item& i): litPointeur(i.litPointeur){
+        //cout << "Construction recopie" << endl;
+    }
+    Item& operator=(const Item& i){ this->litPointeur=i.litPointeur;
+    //cout << "Construction affectation" << endl;
+    return *this;}
+    ~Item(){
+        //cout << "Déstruction défaut" << endl;
+    };
     void supprimer(){ delete litPointeur; }
     Litterale& obtenirLitterale(){return *litPointeur;}
     string obtenirType() {return typeItem;}
@@ -30,10 +38,12 @@ class Pile : public QObject{
     Pile() = default;
 public:
     static Pile& obtenirPile();
-    Item pop();
+    void pop();
+    Item end(int n=0);
     void push(Item item);
     bool estVide();
     unsigned int taille();
+    void debug();
 };
 
 #endif //LO21_PROJET_PILE_H

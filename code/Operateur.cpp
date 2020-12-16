@@ -80,12 +80,15 @@ Litterale& Operateur::opPlus(Item i1, Item i2) {
     auto& l1 = dynamic_cast<Entier &>(i1.obtenirLitterale());
     auto& l2 = dynamic_cast<Entier &>(i2.obtenirLitterale());
     int n1 = l1.getEntier();
-    cout << n1 << endl;
+    cout << "Operateur addition" << endl;
+    cout << "Premier entier :" << n1 << endl;
     int n2 = l2.getEntier();
-    cout << n2 << endl;
+    cout << "Deuxieme entier :" << n2 << endl;
     //construire le nouvel littérale
     Litterale* ptr;
     ptr = new Entier(n1+n2);
+    Pile::obtenirPile().pop();
+    Pile::obtenirPile().pop();
     return *ptr;
 
 
