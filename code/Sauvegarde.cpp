@@ -46,6 +46,9 @@ void Sauvegarde::sauvegardeEtat(){
     //Variables
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
+    for(auto e : refContr.refPers.keys()){
+        
+    }  
 
     //Programmes
     QDomElement programmes = doc.createElement("programmes");
@@ -65,4 +68,8 @@ void Sauvegarde::sauvegardeEtat(){
     //d.save(stream, 4);
 
     fichier.close();
+}
+
+void Sauvegarde::recupereEtat(){
+
 }

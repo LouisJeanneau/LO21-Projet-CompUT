@@ -16,6 +16,7 @@ public:
 	Sauvegarde();
 	~Sauvegarde();
     void sauvegardeEtat();
+    void recupereEtat();
 };
 
 #endif //PROJET_LO21_SAUVEGARDE_H
