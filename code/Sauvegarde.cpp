@@ -106,21 +106,22 @@ void Sauvegarde::recupereEtat(){
 
     //Variables
     balise = balise.nextSibling();
-    QDomElement variable = balise.lastChildElement();
+    QDomElement variable = balise.firstChildElement();
     while(!variable.isNull()){
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
-        variable = variable.previousSiblingElement();
+        variable = variable.nextSiblingElement();
     }
 
     //Programmes
     balise = balise.nextSibling();
-    QDomElement programme = balise.lastChildElement();
+    QDomElement programme = balise.firstChildElement();
     while(!programme.isNull()){
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
+        programme = programme.nextSiblingElement();
     }
 
 
