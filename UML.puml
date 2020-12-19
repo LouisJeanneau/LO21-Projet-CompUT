@@ -266,7 +266,7 @@ Interpreteur *-- ConstructeurLitterale
 Item *-- Litterale
 Pile o-- Item
 Pile <--> Interpreteur
-fenetrePrincipale --> Persistance*
+fenetrePrincipale --> Persistance
 Controleur *--> Interpreteur
 Controleur *--> Pile
 Controleur <-- Persistance
