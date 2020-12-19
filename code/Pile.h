@@ -8,27 +8,37 @@
 #include <vector>
 #include <QObject>
 #include <string>
-#include "Litterale.h"
+#include "code/Litterale.h"
+
+using namespace std;
+
+class Litterale;
 
 class Item{
     Litterale* litPointeur;
-    string typeItem;
+    QString typeItem;
 public:
-    explicit Item(Litterale* l): litPointeur(l){
-        //cout << "Construction défaut" << endl;
+    explicit Item(Litterale* l, QString t): litPointeur(l), typeItem(t){
+        cout << "Construction défaut" << endl;
     }
     Item(const Item& i): litPointeur(i.litPointeur){
-        //cout << "Construction recopie" << endl;
+        cout << "Construction recopie" << endl;
     }
     Item& operator=(const Item& i){ this->litPointeur=i.litPointeur;
-    //cout << "Construction affectation" << endl;
+    cout << "Construction affectation" << endl;
     return *this;}
     ~Item(){
-        //cout << "Déstruction défaut" << endl;
+        cout << "Déstruction défaut" << endl;
     };
-    void supprimer(){ delete litPointeur; }
+    void supprimer(){  }
+    bool estVide(){
+        if(litPointeur == nullptr){
+            return true;
+        }
+        return false;
+    }
     Litterale& obtenirLitterale(){return *litPointeur;}
-    string obtenirType() {return typeItem;}
+    QString obtenirType() {return typeItem;}
 
 };
 

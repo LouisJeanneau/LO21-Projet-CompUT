@@ -6,7 +6,7 @@
 #include "Pile.h"
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
-QMap<QString, function<Litterale&(Item, Item)>> Operateur::inventaireOpArite2 = {
+QMap<QString, function<Item(Item, Item)>> Operateur::inventaireOpArite2 = {
 
         {"+", opPlus},
         {"-", opMoins},
@@ -15,13 +15,13 @@ QMap<QString, function<Litterale&(Item, Item)>> Operateur::inventaireOpArite2 = 
 };
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 1
-QMap<QString, function<Litterale&(Item)>> Operateur::inventaireOpArite1 = {
+QMap<QString, function<Item(Item)>> Operateur::inventaireOpArite1 = {
 
         {"NEG", opNEG}
 };
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
-QMap<QString, std::function<Litterale&()>> Operateur::inventaireOpArite0 = {
+QMap<QString, std::function<Item()>> Operateur::inventaireOpArite0 = {
 };
 
 //Initialisation de la map contenant les arités de chaque opérateur
@@ -70,34 +70,30 @@ Operateur::~Operateur() noexcept {
 
 }
 
-Litterale& Operateur::opPlus(Item i1, Item i2) {
+Item Operateur::opPlus(Item i1, Item i2) {
     //récupérer les types de i1 i2
-    string typeItem1 = i1.obtenirType();
-    string typeItem2 = i2.obtenirType();
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
     //tester les types
     //récupérer les valeurs stockées
 
-    auto& l1 = dynamic_cast<Entier &>(i1.obtenirLitterale());
-    auto& l2 = dynamic_cast<Entier &>(i2.obtenirLitterale());
+    auto &l1 = dynamic_cast<Entier &>(i1.obtenirLitterale());
+    auto &l2 = dynamic_cast<Entier &>(i2.obtenirLitterale());
     int n1 = l1.getEntier();
     cout << "Operateur addition" << endl;
     cout << "Premier entier :" << n1 << endl;
     int n2 = l2.getEntier();
     cout << "Deuxieme entier :" << n2 << endl;
     //construire le nouvel littérale
-    Litterale* ptr;
-    ptr = new Entier(n1+n2);
-    Pile::obtenirPile().pop();
-    Pile::obtenirPile().pop();
-    return *ptr;
-
-
+    auto resultat = n1 + n2;
+    return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
 }
 
-Litterale &Operateur::opMoins(Item i1, Item i2) {
+
+Item Operateur::opMoins(Item i1, Item i2) {
     //récupérer les types de i1 i2
-    string typeItem1 = i1.obtenirType();
-    string typeItem2 = i2.obtenirType();
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
     //tester les types
     //récupérer les valeurs stockées
 
@@ -108,14 +104,14 @@ Litterale &Operateur::opMoins(Item i1, Item i2) {
     int n2 = l2.getEntier();
     cout << n2 << endl;
     //construire le nouvel littérale
-    Litterale* ptr;
-    ptr = new Entier(n1-n2);
-    return *ptr;
+
+    auto resultat = n1 - n2;
+    return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
 
 }
 
-Litterale& Operateur::opNEG(Item i) {
-    string typeItem1 = i.obtenirType();
+Item Operateur::opNEG(Item i) {
+    QString typeItem1 = i.obtenirType();
     //tester les types
     //récupérer les valeurs stockées
 
@@ -124,15 +120,14 @@ Litterale& Operateur::opNEG(Item i) {
     cout << n << endl;
 
     //construire le nouvel littérale
-    Litterale* ptr;
-    ptr = new Entier(-n);
-    return *ptr;
+    auto resultat = -n;
+    return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
 }
 
-Litterale &Operateur::opEgal(Item i1, Item i2) {
+Item Operateur::opEgal(Item i1, Item i2) {
     //récupérer les types de i1 i2
-    string typeItem1 = i1.obtenirType();
-    string typeItem2 = i2.obtenirType();
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
     //tester les types
     //récupérer les valeurs stockées
 
@@ -144,12 +139,16 @@ Litterale &Operateur::opEgal(Item i1, Item i2) {
     cout << n2 << endl;
     //construire le nouvel littérale
     Litterale* ptr;
-    if (n1==n2)
-        ptr = new Entier(1);
-    else
-        ptr = new Entier(0);
+    if (n1==n2){
+        Item resultat = ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        return resultat;
+    }
+    else{
+        Item resultat = ConstructeurLitterale::distinguerConstruire(QString::number(0));
+        return resultat;
+    }
 
-    return *ptr;
+
 }
 
 

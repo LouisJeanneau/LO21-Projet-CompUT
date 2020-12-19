@@ -2,7 +2,9 @@
 #define LITTERAL_H
 
 #include <QString>
-#include<iostream>
+#include <iostream>
+#include "code/Pile.h"
+
 using namespace std;
 //package "GroupeLitterale" {
 
@@ -17,8 +19,7 @@ using namespace std;
 //    constructeur_expression(Atome & a);
 //  }
 
-
-
+class Item;
 
 class Litterale {
 public:
@@ -195,7 +196,7 @@ public:
 
 class ConstructeurLitterale{
 public:
-    static Litterale* distinguerConstruire(QString s);
+    static Item distinguerConstruire(QString s);
 };
 
 #endif // LITTERAL_H

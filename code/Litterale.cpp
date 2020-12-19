@@ -1,5 +1,6 @@
 #include"code/Litterale.h"
 #include <QString>
+#include "code/Pile.h"
 
 QString Entier::versString() const {
     return QString::number(entier);
@@ -36,7 +37,7 @@ void Rationnel::simplifier(int*n,int *d) {
   this->if_simple=1;
 }
 
-Litterale *ConstructeurLitterale::distinguerConstruire(QString s) {
+Item ConstructeurLitterale::distinguerConstruire(QString s) {
     int flag1=s.startsWith("[");//programme
     int flag2=s.startsWith("""");//expression
     int flag3=s.contains(".");//reel
@@ -46,7 +47,8 @@ Litterale *ConstructeurLitterale::distinguerConstruire(QString s) {
     {
         if(flag3==1)//reel
         {
-            return new Reel(s.toDouble());
+            Litterale* temp = new Reel(s.toDouble());
+            return Item(temp, "Reel");
             // return re;
         }
         else if(flag4==1)//rationnel
@@ -55,31 +57,34 @@ Litterale *ConstructeurLitterale::distinguerConstruire(QString s) {
             QString d1=s.section("/",1,1);
             int n=n1.toInt();
             int d=d1.toInt();
-            return new Rationnel(&n,&d);
+            Litterale* temp = new Rationnel(&n,&d);
+            return Item(temp, "Rationnel");
 
         }
         else //entier
         {
-            return new Entier(s.toInt());
+            Litterale* temp = new Entier(s.toInt());
+            return Item(temp, "Entier");
 
         }
     }
 
     else if(s[0]>='A'&&s[0]<='Z')//Atome
     {
-        return new Atome(s);
+        Litterale* temp = new Atome(s);
+        return Item(temp, "Entier");
 
     }
     else if (flag1==1) //programme
     {
-        return new Programme(s.mid(1,l-2));
-
+        Litterale* temp = new Programme(s.mid(1,l-2));
+        return Item(temp, "Programme");
     }
     else if(flag2==1)//expression
     {
         Atome ae=Atome(s.mid(1,l-2));
-        return new Expression(&ae);
-
+        Litterale* temp = new Expression(&ae);
+        return Item(temp, "Atome");
     }
-    return nullptr;
+    return Item(nullptr, "Vide");
 }
