@@ -1,9 +1,9 @@
 #ifndef LITTERAL_H
 #define LITTERAL_H
 
-#endif // LITTERAL_H
 #include <QString>
 #include<iostream>
+
 using namespace std;
 //package "GroupeLitterale" {
 
@@ -31,7 +31,7 @@ public:
 //    }
 };
 
-class Numerique:public Litterale{
+class Numerique: public Litterale{
 
 };
 
@@ -70,14 +70,15 @@ public:
 class Entier : public Numerique{
     int entier;
 public:
-    Entier(int i): entier(i) {};
-    int getEntier()const {return entier;}
+    Entier(int i): entier(i) {cout << "construction entier" << endl;};
+    Entier(const Entier &e): Entier(e.entier) {cout << "construction par recopie" << endl;};
+    int getEntier() const {return entier;}
     void negative() //operateur NEG
     {
         entier = -entier;
     }
     QString versString() const;
-    ~Entier() = default;
+    ~Entier() {cout << "entier détruit" << entier << endl;};
 };
 
 class Programme : public Litterale{
@@ -193,3 +194,5 @@ public:
 //    }
     QString versString() const;
 };
+
+#endif // LITTERAL_H

@@ -73,8 +73,8 @@ Operateur::~Operateur() noexcept {
 
 Litterale& Operateur::opPlus(Item i1, Item i2) {
     //récupérer les types de i1 i2
-    string typeItem1 = i1.obtenirType();
-    string typeItem2 = i2.obtenirType();
+    //string typeItem1 = i1.obtenirType();
+    //string typeItem2 = i2.obtenirType();
     //tester les types
     //récupérer les valeurs stockées
 
@@ -87,6 +87,8 @@ Litterale& Operateur::opPlus(Item i1, Item i2) {
     //construire le nouvel littérale
     Litterale* ptr;
     ptr = new Entier(n1+n2);
+
+    //destruction littérales i1 i2, destruction item
     return *ptr;
 
 
