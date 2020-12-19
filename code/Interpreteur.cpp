@@ -49,23 +49,46 @@ void Interpreteur::interprete(QString commandeEntree) {
 }
 
 void Interpreteur::execute(QString operande) {
-    //QMap<QString, int> listeOp = Operateur.listeOperateur;
+    //Test de chaque operateur
 
-    /*
-    if(operande.startsWith('\'')){
-        //Creation et empilement d'une expression
-    }
-    else if(operande.startsWith('[')){
-        //Creation et empilement d'un programme
-    }
-    else if (listeOp.contains(operande)){
-        //UTILISATION DU BON OPERATEUR
-    }
+    QMap<QString, std::function<Item(Item, Item)>> inventaireOpArite2=Operateur::inventaireOpArite2;
+    QMap<QString, std::function<Item(Item)>> inventaireOpArite1=Operateur::inventaireOpArite1;
+    QMap<QString, std::function<Item()>> inventaireOpArite0=Operateur::inventaireOpArite0;
 
-    else if( est numérique){
-        //Creation et empilement d'une literale numérique
+    if(inventaireOpArite0.contains(operande)){
+        Item resultat=inventaireOpArite0[operande]();
+        if(resultat.estVide()){
+            cout << "c'est la d frérot" << endl;
+            return;
+        }
+        pile.push(resultat);
     }
-     */
+    else if(inventaireOpArite1.contains(operande)){
+        Item i1 = pile.end();
+        Item resultat=inventaireOpArite1[operande](i1);
+        if(resultat.estVide()){
+            cout << "c'est la d frérot" << endl;
+            return;
+        }
+        pile.pop();
+        pile.push(resultat);
+    }
+    else if(inventaireOpArite2.contains(operande)){
+        Item i1 = pile.end();
+        Item i2 = pile.end(1);
+        Item resultat=inventaireOpArite2[operande](i1, i2);
+        if(resultat.estVide()){
+            cout << "c'est la d frérot" << endl;
+            return;
+        }
+        pile.pop();
+        pile.pop();
+        pile.push(resultat);
+    }
+    else {
+        Item resultat = ConstructeurLitterale::distinguerConstruire(operande);
+        pile.push(resultat);
+    }
 }
 
 Interpreteur &Interpreteur::obtenirInterpreteur() {
