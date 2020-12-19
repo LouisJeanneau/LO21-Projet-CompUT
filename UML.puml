@@ -86,43 +86,45 @@ Class Item{
 package "GroupeOperateur" {
 
 Class Operateur{
-    -listeOperateur : QMap<Qstring>
-    +opEVAL(Litterale & l): void
+    +{static} inventaireOpArite2: QMap<QString, std::function<Litterale&(Item, Item)>>
+    +{static} inventaireOpArite1: QMap<QString, std::function<Litterale&(Item)>>
+    +{static} inventaireOpArite0: QMap<QString, std::function<Litterale&()>>
+    +{static}opEVAL(Item & i): void
 }
 
 Class OperateurNumerique {
-    +opPLUS(Litterale & l1, Litterale & l2) : Litterale&
-    +opMOINS(Litterale & l1, Litterale & l2) : Litterale&
-    +opMUL(Litterale & l1, Litterale & l2) : Litterale&
-    +opDIVISION(Litterale & l1, Litterale & l2) : Litterale&
-    +opDIV(Litterale & l1, Litterale & l2) : Litterale&
-    +opMOD(Litterale & l1, Litterale & l2) : Litterale&
-    +opNEG(Litterale & l) : Litterale&
+    +{static}opPLUS(Item& i1, Item& i2) : Litterale&
+    +{static}opMOINS(Item& i1, Item& i2) : Litterale&
+    +{static}opMUL(Item& i1, Item& i2) : Litterale&
+    +{static}opDIVISION(Item& i1, Item& i2) : Litterale&
+    +{static}opDIV(Item& i1, Item& i2) : Litterale&
+    +{static}opMOD(Item& i1, Item& i2) : Litterale&
+    +{static}opNEG(Item& i) : Litterale&
 }
 
 Class OperateurLogique {
-    +opEGAL(Litterale & l1, Litterale & l2) : Litterale&
-    +opDIFFERENT(Litterale & l1, Litterale & l2) : Litterale&
-    +opINFEGAL(Litterale & l1, Litterale & l2) : Litterale&
-    +opSUPEGAL(Litterale & l1, Litterale & l2) : Litterale&
-    +opSUP(Litterale & l1, Litterale & l2) : Litterale&
-    +opINF(Litterale & l1, Litterale & l2) : Litterale&
-    +opAND(Litterale & l1, Litterale & l2) : Litterale&
-    +opOR(Litterale & l1, Litterale & l2) : Litterale&
-    +opNOT(Litterale & l) : Litterale&
+    +{static}opEGAL(Item& i1, Item& i2) : Litterale&
+    +{static}opDIFFERENT(Item& i1, Item& i2) : Litterale&
+    +{static}opINFEGAL(Item& i1, Item& i2) : Litterale&
+    +{static}opSUPEGAL(Item& i1, Item& i2) : Litterale&
+    +{static}opSUP(Item& i1, Item& i2) : Litterale&
+    +{static}opINF(Item& i1, Item& i2) : Litterale&
+    +{static}opAND(Item& i1, Item& i2) : Litterale&
+    +{static}opOR(Item& i1, Item& i2) : Litterale&
+    +{static}opNOT(Item& i) : Litterale&
 
 
 }
 
 Class OperateurPile {
-    +opDUP() : void
-    +opDROP() : void
-    +opSWAP() : void 
-    +opCLEAR() : void
+    +{static}opDUP(Item &) : Litterale&
+    +{static}opDROP(Item &) : void
+    +{static}opSWAP(Item &i1, Item &i2) : void
+    +{static}opCLEAR() : void
 }
 
 Class OperateurConditionnel {
-    +opIFT() : void
+    +{static}opIFT(Item &i1, Item &i2) : void
 }
 
 
