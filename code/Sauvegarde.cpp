@@ -60,7 +60,7 @@ void Sauvegarde::sauvegardeEtat(){
     for(auto p : refContr.refPers.mapProgramme.keys()){
         QDomElement programme = doc.createElement("programme");
         programmes.appendChild(programme);
-        programme.setAttribute("id", v);
+        programme.setAttribute("id", p);
         programme.setAttribute("value", refContr.refPers.mapProg.value(p));
     } 
 
@@ -112,7 +112,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
-        setMapVariable(variable.attribute("id"), variable.attribute("value"));
+        refContr.refPers.setMapVariable(variable.attribute("id"), variable.attribute("value"));
         variable = variable.nextSiblingElement();
     }
 
@@ -123,7 +123,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
-        setMapProgramme(programme.attribute("id"), programme.attribute("value"));
+        refContr.refPers.setMapProgramme(programme.attribute("id"), programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
 
