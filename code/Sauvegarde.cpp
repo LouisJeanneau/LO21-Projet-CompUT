@@ -99,8 +99,8 @@ void Sauvegarde::recupereEtat(){
     QDomElement element = balise.lastChildElement();
     while(!element.isNull()){
         //Construire une nouvelle litérale avec le texte récupéré
-        //Litterale *res = new Litterale(element.text());
-        refContr.refPile.push(*res);
+        Item res = ConstructeurLitterale::distinguerConstruire(element.text());
+        refContr.refPile.push(res);
         element = element.previousSiblingElement();
     }
 
