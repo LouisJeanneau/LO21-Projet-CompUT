@@ -41,8 +41,8 @@ Item Operateur::opPlus(Item i1, Item i2) {
         //On récupère les valeurs stockées dans les items
         double valeur1;
         double valeur2;
-        int num1=0, den1=0;
-        int num2=0, den2=0;
+        double num1, den1;
+        double num2, den2;
 
         //On récupère la valeur du premier item
         if (typeItem1 == "Entier") {
@@ -89,8 +89,25 @@ Item Operateur::opPlus(Item i1, Item i2) {
 
         //Si une des littérales est un réel, le résultat est un réel
         if (typeItem1 == "Reel" || typeItem2 == "Reel") {
-            double resultat = valeur1 + valeur2;
-            return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
+
+            //On gère le calcul dans le cas ou un des items est un rationnel
+            if (typeItem1 == "Rationnel") {
+                double r1 = num1/den1;
+                double resultat = r1 + valeur2;
+                return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
+            }
+
+            else if (typeItem2 == "Rationnel") {
+                double r2 = num2/den2;
+                double resultat = r2 + valeur1;
+                return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
+
+            }
+
+            else {
+                double resultat = valeur1 + valeur2;
+                return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
+            }
         }
 
         //Si une des littérales est un rationnel, le résultat est un rationnel sauf si le denominateur est égal à 1
@@ -112,24 +129,8 @@ Item Operateur::opPlus(Item i1, Item i2) {
 
 }
 
-
 Item Operateur::opMoins(Item i1, Item i2) {
-    //récupérer les types de i1 i2
-    QString typeItem1 = i1.obtenirType();
-    QString typeItem2 = i2.obtenirType();
-    //tester les types
-    //récupérer les valeurs stockées
 
-    auto& l1 = dynamic_cast<Entier &>(i1.obtenirLitterale());
-    auto& l2 = dynamic_cast<Entier &>(i2.obtenirLitterale());
-    int n1 = l1.getEntier();
-    cout << n1 << endl;
-    int n2 = l2.getEntier();
-    cout << n2 << endl;
-    //construire le nouvel littérale
-
-    auto resultat = n1 - n2;
-    return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
 
 }
 
