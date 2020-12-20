@@ -8,6 +8,7 @@
 #include <QString>
 #include "Interpreteur.h"
 #include "Pile.h"
+#include "Persistence.h"
 #include "Exception.h"
 
 using namespace std;
@@ -15,7 +16,7 @@ using namespace std;
 class Controleur {
 	Interpreteur& refIntp;
 	Pile& refPile;
-    Persistance& refPers;
+    Persistence& refPers;
     QString message;
 public:
 	Controleur(Interpreteur& intp, Pile& p):refIntp(intp), refPile(p){}

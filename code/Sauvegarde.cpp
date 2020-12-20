@@ -47,7 +47,7 @@ void Sauvegarde::sauvegardeEtat(){
     //Variables
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
-    for(auto v : refContr.refPers.mapVar.keys()){
+    for(auto v : refContr.refPers.mapVariable.keys()){
         QDomElement variable = doc.createElement("variable");
         variables.appendChild(variable);
         variable.setAttribute("id", v);
@@ -57,7 +57,7 @@ void Sauvegarde::sauvegardeEtat(){
     //Programmes
     QDomElement programmes = doc.createElement("programmes");
     claculatrice.appendChild(programmes);
-    for(auto p : refContr.refPers.mapProg.keys()){
+    for(auto p : refContr.refPers.mapProgramme.keys()){
         QDomElement programme = doc.createElement("programme");
         programmes.appendChild(programme);
         programme.setAttribute("id", v);
@@ -112,6 +112,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
+        setMapVariable(variable.attribute("id"), variable.attribute("value"));
         variable = variable.nextSiblingElement();
     }
 
@@ -122,6 +123,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
+        setMapProgramme(programme.attribute("id"), programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
 
