@@ -4,20 +4,9 @@
 #include <QString>
 #include <iostream>
 #include "code/Pile.h"
+#include "code/Exception.h"
 
 using namespace std;
-//package "GroupeLitterale" {
-
-
-//  class ConstructeurLitterale: public Litterale {//string,distinguer le type
-//    char[30] chaine;
-//    public:
-//    ConstructeurLitterale();
-//    constructeur_entier;
-//    constructeur_reel;
-//    constructeur_atome;
-//    constructeur_expression(Atome & a);
-//  }
 
 class Item;
 
@@ -25,10 +14,8 @@ class Litterale {
 public:
     virtual ~Litterale() = default;
     virtual QString versString() const = 0;
-//    void afficher(std::ostream& f=std::cout)const
-//    {
-//        f << versString();
-//    }
+
+
 };
 
 class Numerique:public Litterale{
@@ -37,7 +24,6 @@ class Numerique:public Litterale{
 
 class Reel : public Numerique{
     double reel;
-    //char point;
 public:
     explicit Reel(double d): reel(d) {};
     double getReel() const {return reel;}
@@ -45,26 +31,22 @@ public:
     //simplifier();??
     QString versString() const;
     ~Reel() override = default;
+    //simplifier();??
 };
 
 class Rationnel: public Numerique{
-    int if_simple=0;
     int numerateur;
     int denominateur;
-    //char slash;
+    void simplification();
+    friend class Operateur;
 public:
-    void simplifier(int*n,int *d) ;
     int getNumerateur()const{return numerateur;}
     int getDenominateur()const{return denominateur;}
-    int ifSimple()const{return if_simple;}
-    Rationnel(int* n,int* d)
-    {
-        simplifier(n,d);
-        numerateur=*n;
-        denominateur=*d;
-    }
+    void setRationnel(int n, int d);
+    Rationnel(int n,int d) { setRationnel(n, d); }
     QString versString() const;
     ~Rationnel() = default;
+    Rationnel operator+(const Rationnel & r) const;
 };
 
 class Entier : public Numerique{
@@ -72,10 +54,6 @@ class Entier : public Numerique{
 public:
     Entier(int i): entier(i) {};
     int getEntier()const {return entier;}
-    void negative() //operateur NEG
-    {
-        entier = -entier;
-    }
     QString versString() const;
     ~Entier() = default;
 };
