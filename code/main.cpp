@@ -4,14 +4,22 @@
 
 #include <iostream>
 #include <QApplication>
-#include <QPushButton>
-//BillyCommit
+#include "Interpreteur.h"
+#include "Computer.h"
+#include "fenetreprincipale.h"
+
 using namespace std;
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
-    return QApplication::exec();
+    fenetrePrincipale fenetre;
+    fenetre.show();
+
+    Controleur test= Controleur(Interpreteur::obtenirInterpreteur(), Pile::obtenirPile());
+
+    Interpreteur::obtenirInterpreteur().interprete("1 1 2 10 80");
+    Pile::obtenirPile().debug();
+    Interpreteur::obtenirInterpreteur().interprete("+ 17 +");
+    Pile::obtenirPile().debug();
+    return a.exec();
 }
