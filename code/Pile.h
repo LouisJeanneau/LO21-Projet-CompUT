@@ -7,15 +7,39 @@
 
 #include <vector>
 #include <QObject>
-#include "Litterale.h"
+#include <string>
+#include "code/Litterale.h"
+
+using namespace std;
+
+class Litterale;
 
 class Item{
     Litterale* litPointeur;
+    QString typeItem;
 public:
-    explicit Item(Litterale* l): litPointeur(l){}
-    ~Item(){ delete litPointeur; }
-    void supprimer(){ delete litPointeur; }
+    explicit Item(Litterale* l, QString t): litPointeur(l), typeItem(t){
+        cout << "Construction défaut" << endl;
+    }
+    Item(const Item& i): litPointeur(i.litPointeur){
+        cout << "Construction recopie" << endl;
+    }
+    Item& operator=(const Item& i){ this->litPointeur=i.litPointeur;
+    cout << "Construction affectation" << endl;
+    return *this;}
+    ~Item(){
+        cout << "Déstruction défaut" << endl;
+    };
+    void supprimer(){  }
+    bool estVide(){
+        if(litPointeur == nullptr){
+            return true;
+        }
+        return false;
+    }
     Litterale& obtenirLitterale(){return *litPointeur;}
+    QString obtenirType() {return typeItem;}
+
 };
 
 class Pile : public QObject{
@@ -24,10 +48,12 @@ class Pile : public QObject{
     Pile() = default;
 public:
     static Pile& obtenirPile();
-    Item pop();
+    void pop();
+    Item end(int n=0);
     void push(Item item);
     bool estVide();
     unsigned int taille();
+    void debug();
 };
 
 #endif //LO21_PROJET_PILE_H

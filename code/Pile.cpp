@@ -5,10 +5,13 @@
 #include "Pile.h"
 
 
-Item Pile::pop() {
-    Item temporaire = listeItems.back();
+void Pile::pop() {
     listeItems.pop_back();
-    return temporaire;
+}
+
+Item Pile::end(int n) {
+    Item i=listeItems.at(listeItems.size()-n-1);
+    return i;
 }
 
 void Pile::push(Item item) {
@@ -27,3 +30,12 @@ Pile &Pile::obtenirPile() {
     static Pile instance;
     return instance;
 }
+
+void Pile::debug() {
+    cout << "La pile actuellement :" << endl;
+    for(auto it=listeItems.begin(); it!=listeItems.end(); it++){
+        cout << it->obtenirLitterale().versString().toStdString() << endl;
+    }
+}
+
+
