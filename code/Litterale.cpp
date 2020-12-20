@@ -22,19 +22,40 @@ QString Expression::versString() const {
 QString Atome::versString() const {
     return atome;
 }
-void Rationnel::simplifier(int*n,int *d) {
-  //if (denominateur == 1) // ou après  simplification ça devient un entier ：interpreteur doit le vérifier d＇ abord
-  if(*n==1)return;//pas besion de simplifier
-  for(int i=2;i<=*n&&i<=*d;i++)
-  {
-      if((*n)%i==0&&(*d)%i==0)
-      {
-        *n=(*n)/i;
-        *d=(*d)/i;
-        simplifier(n,d);
-      }
-  }
-  this->if_simple=1;
+
+
+Rationnel Rationnel::operator+(const Rationnel &r) const {
+    return Rationnel(numerateur*r.denominateur + r.numerateur*denominateur, denominateur*r.denominateur);
+}
+
+void Rationnel::simplification() {
+    // si le numerateur est 0, le denominateur prend la valeur 1
+    if (numerateur==0) { denominateur=1; return; }
+    /* un denominateur ne devrait pas être 0;
+    si c’est le cas, on sort de la méthode */
+    if (denominateur==0) return;
+    /* utilisation de l’algorithme d’Euclide pour trouver le Plus Grand Commun
+    Denominateur (PGCD) entre le numerateur et le denominateur */
+    int a=numerateur, b=denominateur;
+    // on ne travaille qu’avec des valeurs positives...
+    if (a<0) a=-a; if (b<0) b=-b;
+    while(a!=b){ if (a>b) a=a-b; else b=b-a; }
+    // on divise le numerateur et le denominateur par le PGCD=a
+    numerateur/=a; denominateur/=a;
+    // si le denominateur est négatif, on fait passer le signe - au denominateur
+    if (denominateur<0) { denominateur=-denominateur; numerateur=-numerateur; }
+}
+
+void Rationnel::setRationnel(int n, int d) {
+
+    numerateur = n;
+    if (d==0) {
+        throw ComputerException("erreur : denominateur nul");
+    }
+
+    denominateur = d;
+
+    simplification();
 }
 
 Item ConstructeurLitterale::distinguerConstruire(QString s) {
@@ -43,6 +64,7 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
     int flag3=s.contains(".");//reel
     int flag4=s.contains("/");//rationnel
     int l=s.length();
+
     if(s[0]<='9'&&s[0]>='0')//numerique
     {
         if(flag3==1)//reel
@@ -57,8 +79,14 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
             QString d1=s.section("/",1,1);
             int n=n1.toInt();
             int d=d1.toInt();
-            Litterale* temp = new Rationnel(&n,&d);
-            return Item(temp, "Rationnel");
+            if (d != 1) {
+                Litterale *temp = new Rationnel(n, d);
+                return Item(temp, "Rationnel");
+            }
+            else {
+                Litterale *temp = new Entier(n);
+                return Item(temp, "Entier");
+            }
 
         }
         else //entier
