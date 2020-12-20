@@ -64,6 +64,7 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
     int flag3=s.contains(".");//reel
     int flag4=s.contains("/");//rationnel
     int l=s.length();
+
     if(s[0]<='9'&&s[0]>='0')//numerique
     {
         if(flag3==1)//reel
