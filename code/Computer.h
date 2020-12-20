@@ -15,6 +15,7 @@ using namespace std;
 class Controleur {
 	Interpreteur& refIntp;
 	Pile& refPile;
+    Persistance& refPers;
     QString message;
 public:
 	Controleur(Interpreteur& intp, Pile& p):refIntp(intp), refPile(p){}

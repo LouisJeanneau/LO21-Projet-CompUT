@@ -38,7 +38,8 @@ void Sauvegarde::sauvegardeEtat(){
     for(unsigned int i = 0; i < refContr.refPile.taille(); i++){
         QDomElement element = doc.createElement("element");
         pile.appendChild(element);
-        QString s = refContr.refPile.pop().obtenirLitterale().versString();
+        QString s = refContr.refPile.end().obtenirLitterale().versString();
+        refContr.refPile.pop();
         QDomText valeurElement = doc.createTextNode(s);
         litterale.appendChild(valeurElement);
     }
