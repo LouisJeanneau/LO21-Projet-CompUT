@@ -116,7 +116,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     }
 
     //=========================6 : Connecter signaux/slots===============
-    QObject::connect(&pile, SIGNAL(modificationEtat()),this,SLOT(refresh()));
+    QObject::connect(&pile, SIGNAL(Pile::modificationEtat()),this,SLOT(refresh()));
     connect(commande, SIGNAL(returnPressed()),this,SLOT(getNextCommande()));
 
     // CONNECTER LES BOUTONS DU CLAVIER NUMERIQUE

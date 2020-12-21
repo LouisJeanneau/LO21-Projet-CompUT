@@ -91,22 +91,22 @@ class fenetrePrincipale : public QWidget
     public slots:
     void refresh();
     void getNextCommande();
-    void empile1(){commande->setText("1"); getNextCommande();};
-    void empile2(){commande->setText("2"); getNextCommande();};
-    void empile3(){commande->setText("3"); getNextCommande();};
-    void empile4(){commande->setText("4"); getNextCommande();};
-    void empile5(){commande->setText("5"); getNextCommande();};
-    void empile6(){commande->setText("6"); getNextCommande();};
-    void empile7(){commande->setText("7"); getNextCommande();};
-    void empile8(){commande->setText("8"); getNextCommande();};
-    void empile9(){commande->setText("9"); getNextCommande();};
-    void empile0(){commande->setText("0"); getNextCommande();};
-    void empilePLUS(){commande->setText("+"); getNextCommande();};
-    void empileMOINS(){commande->setText("-"); getNextCommande();};
-    void empileFOIS(){commande->setText("*"); getNextCommande();};
-    void empileDIV(){commande->setText("/"); getNextCommande();};
-    void empileCLEAR(){commande->clear();};
-    void empileEVAL(){getNextCommande();}
+    void empile_1(){commande->setText("1"); getNextCommande();};
+    void empile_2(){commande->setText("2"); getNextCommande();};
+    void empile_3(){commande->setText("3"); getNextCommande();};
+    void empile_4(){commande->setText("4"); getNextCommande();};
+    void empile_5(){commande->setText("5"); getNextCommande();};
+    void empile_6(){commande->setText("6"); getNextCommande();};
+    void empile_7(){commande->setText("7"); getNextCommande();};
+    void empile_8(){commande->setText("8"); getNextCommande();};
+    void empile_9(){commande->setText("9"); getNextCommande();};
+    void empile_0(){commande->setText("0"); getNextCommande();};
+    void empile_PLUS(){commande->setText("+"); getNextCommande();};
+    void empile_MOINS(){commande->setText("-"); getNextCommande();};
+    void empile_FOIS(){commande->setText("*"); getNextCommande();};
+    void empile_DIV(){commande->setText("/"); getNextCommande();};
+    void empile_CLEAR(){commande->clear();};
+    void empile_EVAL(){getNextCommande();}
 
     void affichageClavierCalculateur();
 
