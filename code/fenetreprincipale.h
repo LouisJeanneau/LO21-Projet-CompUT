@@ -34,43 +34,43 @@ class fenetrePrincipale : public QWidget
     Q_OBJECT
     QLineEdit *message;
     QTableWidget *vuePile;
-    unsigned int NbItemAAfficher;
+    unsigned int nombreItemAAfficher;
     QLineEdit *commande;
     Pile& pile=Pile::obtenirPile();
     Controleur *controleur;
-    vueParametre *vue_param;
-    vueVariable *vue_variable;
-    vueProgramme *vue_programme;
+    vueParametre *vueParametre;
+    vueVariable *vueVariable;
+    vueProgramme *vueProgramme;
     Persistence *persistence;
     // Pour les vues
-    QPushButton *bouton_Variable;
-    QPushButton *bouton_Programme;
-    QPushButton *bouton_Parametre;
+    QPushButton *boutonVariable;
+    QPushButton *boutonProgramme;
+    QPushButton *boutonParametre;
     // Pour le claviers
     QPushButton *afficherClavierCalculateur;
     QPushButton *afficherClavierVariable;
-    QPushButton *bouton_0;
-    QPushButton *bouton_1;
-    QPushButton *bouton_2;
-    QPushButton *bouton_3;
-    QPushButton *bouton_4;
-    QPushButton *bouton_5;
-    QPushButton *bouton_6;
-    QPushButton *bouton_7;
-    QPushButton *bouton_8;
-    QPushButton *bouton_9;
-    QPushButton *bouton_CLEAR;
-    QPushButton *bouton_EVAL;
-    QPushButton *bouton_PLUS;
-    QPushButton *bouton_MOINS;
-    QPushButton *bouton_FOIS;
-    QPushButton *bouton_DIV;
+    QPushButton *bouton0;
+    QPushButton *bouton1;
+    QPushButton *bouton2;
+    QPushButton *bouton3;
+    QPushButton *bouton4;
+    QPushButton *bouton5;
+    QPushButton *bouton6;
+    QPushButton *bouton7;
+    QPushButton *bouton8;
+    QPushButton *bouton9;
+    QPushButton *boutonCLEAR;
+    QPushButton *boutonEVAL;
+    QPushButton *boutonPLUS;
+    QPushButton *boutonMOINS;
+    QPushButton *boutonFOIS;
+    QPushButton *boutonDIVISER;
     //Pour l'affichage :
     QVBoxLayout* couche;
     QHBoxLayout* affichageClaviers;
     QHBoxLayout* placeClaviers;
     QGridLayout *clavierNumerique;
-    QHBoxLayout *layout_vues;
+    QHBoxLayout *affichageVues;
 
     public:
     explicit fenetrePrincipale(QWidget *parent = 0);
@@ -78,9 +78,9 @@ class fenetrePrincipale : public QWidget
         //delete pile;
         delete controleur;
     }
-    unsigned int getNombreItemAAfficher(){return NbItemAAfficher;};
-    void setNombreItemAAfficher(unsigned int i){NbItemAAfficher = i;};
-    fenetrePrincipale *getComputer(){return this;};
+    unsigned int getNombreItemAAfficher(){return nombreItemAAfficher;};
+    void setNombreItemAAfficher(unsigned int i){nombreItemAAfficher = i;};
+    fenetrePrincipale *getFenetrePrincipale(){return this;};
     void refreshMethode();
     void setVariable(QString atome,QString variable){persistence->setMapVariable(atome,variable);};
     QMap<QString,QString> getMapVariable(){return persistence->getMapVariable();};
@@ -88,27 +88,27 @@ class fenetrePrincipale : public QWidget
     public slots:
     void refresh();
     void getNextCommande();
-    void empile_1(){commande->setText("1"); getNextCommande();};
-    void empile_2(){commande->setText("2"); getNextCommande();};
-    void empile_3(){commande->setText("3"); getNextCommande();};
-    void empile_4(){commande->setText("4"); getNextCommande();};
-    void empile_5(){commande->setText("5"); getNextCommande();};
-    void empile_6(){commande->setText("6"); getNextCommande();};
-    void empile_7(){commande->setText("7"); getNextCommande();};
-    void empile_8(){commande->setText("8"); getNextCommande();};
-    void empile_9(){commande->setText("9"); getNextCommande();};
-    void empile_0(){commande->setText("0"); getNextCommande();};
-    void empile_PLUS(){commande->setText("+"); getNextCommande();};
-    void empile_MOINS(){commande->setText("-"); getNextCommande();};
-    void empile_FOIS(){commande->setText("*"); getNextCommande();};
-    void empile_DIV(){commande->setText("/"); getNextCommande();};
-    void empile_CLEAR(){commande->clear();};
-    void empile_EVAL(){getNextCommande();}
+    void empile1(){commande->setText("1"); getNextCommande();};
+    void empile2(){commande->setText("2"); getNextCommande();};
+    void empile3(){commande->setText("3"); getNextCommande();};
+    void empile4(){commande->setText("4"); getNextCommande();};
+    void empile5(){commande->setText("5"); getNextCommande();};
+    void empile6(){commande->setText("6"); getNextCommande();};
+    void empile7(){commande->setText("7"); getNextCommande();};
+    void empile8(){commande->setText("8"); getNextCommande();};
+    void empile9(){commande->setText("9"); getNextCommande();};
+    void empile0(){commande->setText("0"); getNextCommande();};
+    void empilePLUS(){commande->setText("+"); getNextCommande();};
+    void empileMOINS(){commande->setText("-"); getNextCommande();};
+    void empileFOIS(){commande->setText("*"); getNextCommande();};
+    void empileDIV(){commande->setText("/"); getNextCommande();};
+    void empileCLEAR(){commande->clear();};
+    void empileEVAL(){getNextCommande();}
 
     void affichageClavierCalculateur();
 
-    void ouverture_vue_variable();
-    void ouverture_vue_programme();
-    void ouverture_vue_parametre();
+    void ouvertureVueVariable();
+    void ouvertureVueProgramme();
+    void ouvertureVueParametre();
 };
 #endif // FENETREPRINCIPALE_H

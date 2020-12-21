@@ -28,7 +28,7 @@ void vueParametre::changerNbAfficherPile(){
     QMessageBox msgBox;
     //msgBox.setText(choixNb->text()+Number);
     //msgBox.exec();
-    fenetrePrincipale->setNumberItemAAfficher(Number);
+    fenetrePrincipale->setNombreItemAAfficher(Number);
     fenetrePrincipale->refreshMethode();
 
 }
