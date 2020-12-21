@@ -9,7 +9,6 @@
 #include <functional>
 #include "Pile.h"
 #include "Exception.h"
-#include "Operateur.h"
 
 class Interpreteur{
     Pile& pile=Pile::obtenirPile();

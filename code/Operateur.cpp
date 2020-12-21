@@ -67,7 +67,6 @@ Operateur::Operateur() {
 
 Operateur::~Operateur() noexcept {
     std::cout << "Destruction Operateur" << std::endl;
-
 }
 
 Item Operateur::opPlus(Item i1, Item i2) {

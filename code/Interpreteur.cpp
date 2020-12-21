@@ -2,10 +2,11 @@
 // Created by Louis on 06/12/2020.
 //
 
-#include "Operateur.cpp"
+
 #include "Interpreteur.h"
 #include <iostream>
 #include <QMap>
+#include "Operateur.h"
 
 using namespace std;
 
