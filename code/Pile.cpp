@@ -40,7 +40,4 @@ void Pile::debug() {
     }
 }
 
-void Pile::modificationEtat() {
-}
-
 

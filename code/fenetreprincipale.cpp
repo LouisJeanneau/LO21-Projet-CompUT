@@ -1,4 +1,5 @@
 #include "fenetreprincipale.h"
+#include "Pile.h"
 
 fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     : QWidget(parent) // Appel au constructeur de la classe de base
@@ -116,7 +117,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     }
 
     //=========================6 : Connecter signaux/slots===============
-    QObject::connect(&pile, SIGNAL(Pile::modificationEtat()),this,SLOT(refresh()));
+    QObject::connect(&Pile::obtenirPile(), SIGNAL(modificationEtat()),this,SLOT(refresh()));
     connect(commande, SIGNAL(returnPressed()),this,SLOT(getNextCommande()));
 
     // CONNECTER LES BOUTONS DU CLAVIER NUMERIQUE
@@ -141,9 +142,9 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     QObject::connect(afficherClavierCalculateur,SIGNAL(clicked()),this,SLOT(affichageClavierCalculateur()));
 
     //AFFICHER LES VUES
-    QObject::connect(boutonVariable,SIGNAL(clicked()),this,SLOT(ouverture_vue_variable()));
-    QObject::connect(boutonProgramme,SIGNAL(clicked()),this,SLOT(ouverture_vue_programme()));
-    QObject::connect(boutonParametre,SIGNAL(clicked()),this,SLOT(ouverture_vue_parametre()));
+    QObject::connect(boutonVariable,SIGNAL(clicked()),this,SLOT(ouvertureVueVariable()));
+    QObject::connect(boutonProgramme,SIGNAL(clicked()),this,SLOT(ouvertureVueProgramme()));
+    QObject::connect(boutonParametre,SIGNAL(clicked()),this,SLOT(ouvertureVueParametre()));
 
     //PARAMETRE
     //QObject::connect(this->vueParametre, SIGNAL(valueChanged()),QComputer::vuePile,SLOT());

@@ -43,7 +43,7 @@ public:
 };
 
 class Pile : public QObject{
-
+Q_OBJECT
     static Pile instance;
     Pile() = default;
     friend class vuePrincipale;
