@@ -17,9 +17,5 @@ int main(int argc, char *argv[]) {
 
     Controleur test= Controleur(Interpreteur::obtenirInterpreteur(), Pile::obtenirPile());
 
-    Interpreteur::obtenirInterpreteur().interprete("1 1 2 10 80");
-    Pile::obtenirPile().debug();
-    Interpreteur::obtenirInterpreteur().interprete("+ 17 +");
-    Pile::obtenirPile().debug();
     return a.exec();
 }

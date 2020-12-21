@@ -5,7 +5,7 @@ vueParametre::vueParametre(QWidget * parent):
 {
 
     setWindowTitle("Modification des Paramètres");
-    Pile pile;
+    Pile& Pile = Pile::obtenirPile();
     choixNb = new QSpinBox;
     messageParametre = new QLabel("Entrez le nombre d'étages de Pile à afficher :");
     layoutParametre = new QHBoxLayout;

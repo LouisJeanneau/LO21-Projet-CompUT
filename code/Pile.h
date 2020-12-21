@@ -43,9 +43,10 @@ public:
 };
 
 class Pile : public QObject{
-    std::vector<Item> listeItems;
+
     static Pile instance;
     Pile() = default;
+    friend class vuePrincipale;
 public:
     static Pile& obtenirPile();
     void pop();
@@ -54,6 +55,7 @@ public:
     bool estVide();
     unsigned int taille();
     void debug();
+    std::vector<Item> listeItems;
 signals:
     void modificationEtat();
 };

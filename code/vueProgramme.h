@@ -2,6 +2,8 @@
 #define VUEPROGRAMME_H
 #include "fenetreprincipale.h"
 
+class fenetrePrincipale;
+
 class vueProgramme : public QWidget {
 Q_OBJECT
     QLineEdit *entreeAtomePG;

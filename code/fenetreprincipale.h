@@ -28,9 +28,12 @@
 #include "vueProgramme.h"
 #include "vueParametre.h"
 
+class vueParametre;
+class vueProgramme;
+class vueVariable;
+
 class fenetrePrincipale : public QWidget
 {
-
     Q_OBJECT
     QLineEdit *message;
     QTableWidget *vuePile;
@@ -39,9 +42,9 @@ class fenetrePrincipale : public QWidget
     Pile& pile=Pile::obtenirPile();
     Controleur *controleur;
     vueParametre *vueParametre;
-    vueVariable *vueVariable;
-    vueProgramme *vueProgramme;
-    Persistence *persistence;
+    vueVariable* vueVariable;
+    vueProgramme* vueProgramme;
+    Persistence* persistence;
     // Pour les vues
     QPushButton *boutonVariable;
     QPushButton *boutonProgramme;

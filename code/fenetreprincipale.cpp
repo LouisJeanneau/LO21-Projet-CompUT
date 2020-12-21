@@ -165,8 +165,8 @@ void fenetrePrincipale :: refresh() {
 
     //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
     unsigned int nb = 0;
-    for(auto it=pile.listeItems;it!=pile->end() && nb <getNombreItemAAfficher(); ++it, ++nb){
-        vuePile->item(nb,0)->setText((*it).toString());
+    for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
+        vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
 }
 void fenetrePrincipale::getNextCommande(){
@@ -244,7 +244,7 @@ void fenetrePrincipale :: refreshMethode() {
         labelList << str;
     }
     vuePile->setVerticalHeaderLabels(labelList);
-    message-> setText(pile->getMessage());
+    //message-> setText(pile->getMessage());
 
     //On efface tout
     for(unsigned int i = 0; i<getNombreItemAAfficher();i++){
@@ -253,8 +253,8 @@ void fenetrePrincipale :: refreshMethode() {
 
     //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
     unsigned int nb = 0;
-    for(Pile::iterator it=pile->begin();it!=pile->end() && nb <getNombreItemAAfficher(); ++it, ++nb){
-        vuePile->item(nb,0)->setText((*it).toString());
+    for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
+        vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
 
 }
