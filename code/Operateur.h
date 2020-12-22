@@ -21,6 +21,8 @@ private:
     ~Operateur() noexcept;
     Operateur(const Operateur&) = delete;
     Operateur& operator=(const Operateur &) = delete;
+    static bool typeValide(Item& i);
+    static std::vector<double> recupererValeur(Item& i);
 
 
 public:

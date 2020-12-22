@@ -65,7 +65,7 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
     int flag4=s.contains("/");//rationnel
     int l=s.length();
 
-    if(s[0]<='9'&&s[0]>='0')//numerique
+    if(s[0]<='9'&& s[0]>='0')//numerique
     {
         if(flag3==1)//reel
         {
@@ -97,7 +97,7 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
         }
     }
 
-    else if(s[0]>='A'&&s[0]<='Z')//Atome
+    else if(s[0]>='A'&& s[0]<='Z')//Atome
     {
         Litterale* temp = new Atome(s);
         return Item(temp, "Entier");

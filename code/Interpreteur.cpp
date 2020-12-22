@@ -76,7 +76,7 @@ void Interpreteur::execute(QString operande) {
     else if(inventaireOpArite2.contains(operande)){
         Item i1 = pile.end();
         Item i2 = pile.end(1);
-        Item resultat=inventaireOpArite2[operande](i1, i2);
+        Item resultat=inventaireOpArite2[operande](i2, i1);
         if(resultat.estVide()){
             cout << "c'est la d frérot" << endl;
             return;
