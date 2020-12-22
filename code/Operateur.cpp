@@ -64,7 +64,7 @@ std::vector<double> Operateur::recupererValeur(Item &i) {
 
 Item Operateur::opPlus(Item i1, Item i2) {
 
-    //On récupère les types des items i1 et i2
+    //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
@@ -74,14 +74,14 @@ Item Operateur::opPlus(Item i1, Item i2) {
 
     else {
 
-        //On récupère les valeurs stockées dans les items
+        //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
         vector<double> valeurItem2(2);
 
-        //On récupère la valeur du premier item
+        //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
 
-        //On  récupère la valeur du 2ème item
+        //On  récupére la valeur du 2ème item
         valeurItem2 = recupererValeur(i2);
 
         //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
@@ -118,7 +118,7 @@ Item Operateur::opPlus(Item i1, Item i2) {
 
 Item Operateur::opMoins(Item i1, Item i2) {
 
-    //On récupère les types des items i1 et i2
+    //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
@@ -128,14 +128,14 @@ Item Operateur::opMoins(Item i1, Item i2) {
 
     else {
 
-        //On récupère les valeurs stockées dans les items
+        //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
         vector<double> valeurItem2(2);
 
-        //On récupère la valeur du premier item
+        //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
 
-        //On  récupère la valeur du 2ème item
+        //On  récupére la valeur du 2ème item
         valeurItem2 = recupererValeur(i2);
 
         //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
@@ -171,7 +171,7 @@ Item Operateur::opMoins(Item i1, Item i2) {
 
 Item Operateur::opMul(Item i1, Item i2) {
 
-    //On récupère les types des items i1 et i2
+    //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
@@ -181,14 +181,14 @@ Item Operateur::opMul(Item i1, Item i2) {
 
     else {
 
-        //On récupère les valeurs stockées dans les items
+        //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
         vector<double> valeurItem2(2);
 
-        //On récupère la valeur du premier item
+        //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
 
-        //On  récupère la valeur du 2ème item
+        //On  récupére la valeur du 2ème item
         valeurItem2 = recupererValeur(i2);
 
         //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
@@ -223,7 +223,7 @@ Item Operateur::opMul(Item i1, Item i2) {
 
 Item Operateur::opDivision(Item i1, Item i2) {
 
-    //On récupère les types des items i1 et i2
+    //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
@@ -233,14 +233,14 @@ Item Operateur::opDivision(Item i1, Item i2) {
 
     else {
 
-        //On récupère les valeurs stockées dans les items
+        //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
         vector<double> valeurItem2(2);
 
-        //On récupère la valeur du premier item
+        //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
 
-        //On  récupère la valeur du 2ème item
+        //On  récupére la valeur du 2ème item
         valeurItem2 = recupererValeur(i2);
 
         //On interdit les divisions par zéro
@@ -274,6 +274,7 @@ Item Operateur::opDivision(Item i1, Item i2) {
             int i1 = valeurItem1[0];
             int i2 = valeurItem2[0];
 
+            //Si le reste est nul, on retourne un entier, sinon on retourne un rationnel
             if (i1%i2 != 0) {
                 Rationnel r(valeurItem1[0], valeurItem2[0]);
                 QString resultatString = QString::number(r.getNumerateur()) + "/" + QString::number(r.getDenominateur());
@@ -289,7 +290,7 @@ Item Operateur::opDivision(Item i1, Item i2) {
 
 Item Operateur::opDIV(Item i1, Item i2) {
 
-    //On récupère les types des items i1 et i2
+    //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
@@ -299,14 +300,14 @@ Item Operateur::opDIV(Item i1, Item i2) {
 
     else {
 
-        //On récupère les valeurs stockées dans les items
+        //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
         vector<double> valeurItem2(2);
 
-        //On récupère la valeur du premier item
+        //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
 
-        //On  récupère la valeur du 2ème item
+        //On  récupére la valeur du 2ème item
         valeurItem2 = recupererValeur(i2);
 
         //On interdit les divisons par zéro
@@ -326,7 +327,7 @@ Item Operateur::opDIV(Item i1, Item i2) {
 
 Item Operateur::opMOD(Item i1, Item i2) {
 
-    //On récupère les types des items i1 et i2
+    //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
@@ -336,21 +337,21 @@ Item Operateur::opMOD(Item i1, Item i2) {
 
     else {
 
-        //On récupère les valeurs stockées dans les items
+        //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
         vector<double> valeurItem2(2);
 
-        //On récupère la valeur du premier item
+        //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
 
-        //On  récupère la valeur du 2ème item
+        //On  récupére la valeur du 2ème item
         valeurItem2 = recupererValeur(i2);
 
         //On interdit les divisons par zéro
         if (valeurItem1[0] == 0 || valeurItem2[0] == 0)
             throw ComputerException("Division par zéro");
 
-        //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
+        //On traite les entiers, réels et rationnels comme des réels
 
         double r1 = valeurItem1[0]/valeurItem1[1];
         double r2 = valeurItem2[0]/valeurItem2[1];
@@ -366,7 +367,7 @@ Item Operateur::opMOD(Item i1, Item i2) {
 
 Item Operateur::opNEG(Item i) {
 
-    //On récupère le type de l'item
+    //On récupére le type de l'item
     QString typeItem = i.obtenirType();
 
     //On vérifie que l'opération est réalisée sur un type valide
@@ -375,7 +376,7 @@ Item Operateur::opNEG(Item i) {
 
     else {
 
-        //On récupère la valeur stockée dans l'item
+        //On récupére la valeur stockée dans l'item
         vector<double> valeurItem(2);
         valeurItem = recupererValeur(i);
 
