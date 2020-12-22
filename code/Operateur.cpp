@@ -13,13 +13,22 @@ QMap<QString, function<Item(Item, Item)>> Operateur::inventaireOpArite2 = {
         {"*", opMul},
         {"/", opDivision},
         {"DIV", opDIV},
-        {"MOD", opMOD}
+        {"MOD", opMOD},
+        {"=", opEgal},
+        {"!=", opDifferent},
+        {">=", opSupEgal},
+        {">", opSup},
+        {"<=", opInfEgal},
+        {"<", opInf},
+        {"AND", opAND},
+        {"OR", opOR}
 
 };
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 1
 QMap<QString, function<Item(Item)>> Operateur::inventaireOpArite1 = {
-        {"NEG", opNEG}
+        {"NEG", opNEG},
+        {"NOT", opNOT}
 };
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
@@ -382,7 +391,7 @@ Item Operateur::opNEG(Item i) {
 
         //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
 
-        //Si la littérale est un réel ou un entier
+        //Si la littérale est xun réel ou un entier
         if (typeItem == "Reel" || typeItem == "Entier")
             return ConstructeurLitterale::distinguerConstruire(QString::number(-valeurItem[0]));
 
@@ -397,5 +406,327 @@ Item Operateur::opNEG(Item i) {
 
     }
 }
+
+Item Operateur::opEgal(Item i1, Item i2) {
+
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i1) || !typeValide(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+        //On récupére la valeur du premier item
+        valeurItem1 = recupererValeur(i1);
+
+        //On  récupére la valeur du 2ème item
+        valeurItem2 = recupererValeur(i2);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        double r2 = valeurItem2[0]/valeurItem2[1];
+
+        //Si l'opération d'égalité est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (r1 == r2)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }
+}
+
+Item Operateur::opDifferent(Item i1, Item i2) {
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i1) || !typeValide(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+        //On récupére la valeur du premier item
+        valeurItem1 = recupererValeur(i1);
+
+        //On  récupére la valeur du 2ème item
+        valeurItem2 = recupererValeur(i2);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        double r2 = valeurItem2[0]/valeurItem2[1];
+
+        //Si l'opération de différence est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (r1 != r2)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }
+}
+
+Item Operateur::opInfEgal(Item i1, Item i2) {
+
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i1) || !typeValide(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+        //On récupére la valeur du premier item
+        valeurItem1 = recupererValeur(i1);
+
+        //On  récupére la valeur du 2ème item
+        valeurItem2 = recupererValeur(i2);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        double r2 = valeurItem2[0]/valeurItem2[1];
+
+        //Si l'opération inférieure ou égale est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (r1 <= r2)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }
+}
+
+Item Operateur::opSupEgal(Item i1, Item i2) {
+
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i1) || !typeValide(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+        //On récupére la valeur du premier item
+        valeurItem1 = recupererValeur(i1);
+
+        //On  récupére la valeur du 2ème item
+        valeurItem2 = recupererValeur(i2);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        double r2 = valeurItem2[0]/valeurItem2[1];
+
+        //Si l'opération supérieur ou égale est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (r1 >= r2)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }
+}
+
+Item Operateur::opSup(Item i1, Item i2) {
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i1) || !typeValide(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+        //On récupére la valeur du premier item
+        valeurItem1 = recupererValeur(i1);
+
+        //On  récupére la valeur du 2ème item
+        valeurItem2 = recupererValeur(i2);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        double r2 = valeurItem2[0]/valeurItem2[1];
+
+        //Si l'opération supérieure est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (r1 > r2)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }
+}
+
+Item Operateur::opInf(Item i1, Item i2) {
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i1) || !typeValide(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+        //On récupére la valeur du premier item
+        valeurItem1 = recupererValeur(i1);
+
+        //On  récupére la valeur du 2ème item
+        valeurItem2 = recupererValeur(i2);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        double r2 = valeurItem2[0]/valeurItem2[1];
+
+        //Si l'opération inférieure est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (r1 < r2)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }
+}
+
+Item Operateur::opAND(Item i1, Item i2) {
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i1) || !typeValide(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+        //On récupére la valeur du premier item
+        valeurItem1 = recupererValeur(i1);
+
+        //On  récupére la valeur du 2ème item
+        valeurItem2 = recupererValeur(i2);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        double r2 = valeurItem2[0]/valeurItem2[1];
+
+        //Si l'opération AND est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (r1 && r2)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }
+}
+
+Item Operateur::opOR(Item i1, Item i2) {
+
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i1) || !typeValide(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+        //On récupére la valeur du premier item
+        valeurItem1 = recupererValeur(i1);
+
+        //On  récupére la valeur du 2ème item
+        valeurItem2 = recupererValeur(i2);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        double r2 = valeurItem2[0]/valeurItem2[1];
+
+        //Si l'opération OR est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (r1 || r2)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }
+}
+
+Item Operateur::opNOT(Item i) {
+
+    //On récupére les types des items i1 et i2
+    QString typeItem1 = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeValide(i))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére la valeur stockée dans l'item
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item
+        valeurItem = recupererValeur(i);
+
+        //On traite les entiers, réels et rationnels comme des réels
+
+        double r = valeurItem[0]/valeurItem[1];
+
+        //Si l'opération NOT est vérifiée on renvoit la littérale 1 sinon la littérale 0
+
+        if (!r)
+            return ConstructeurLitterale::distinguerConstruire(QString::number(1));
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(0));
+
+    }}
 
 

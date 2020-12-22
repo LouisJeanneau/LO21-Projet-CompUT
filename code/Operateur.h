@@ -61,7 +61,7 @@ public:
     static Item opInf(Item i1, Item i2);
     static Item opAND(Item i1, Item i2);
     static Item opOR(Item i1, Item i2);
-    static Item opNOT(Item i1, Item i2);
+    static Item opNOT(Item i);
 
     //Operateurs de manipulation de la Pile
     static void opDUP(Item i); //retourne une copie de Litterale au haut de la pile
