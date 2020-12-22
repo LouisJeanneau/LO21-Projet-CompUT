@@ -64,8 +64,26 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
     int flag3=s.contains(".");//reel
     int flag4=s.contains("/");//rationnel
     int l=s.length();
+    if(flag3)
+    {
+      int indexPoint=s.indexOf(".");
+      int flag5=0;//la mantisse est suppoée =000...
+      for(int i=indexPoint+1;i<l;i++)
+       if(s[i]!=0)
+          flag5=1;//la mantisse n'est pas equivalent a 000...
+      if(flag5==0)
+      {
+        s.chop(s.length()-indexPoint);
+        distinguerConstruire(s);//traité comme un entier
+      }
+    }
+    int flag6=s.startsWith("-");
+    int flag7=s.startsWith(".");//.56
+    if(flag7)
+        s="0"+s;
 
-    if(s[0]<='9'&&s[0]>='0')//numerique
+
+    if(flag6||(s[0]<='9'&&s[0]>='0'))//numerique
     {
         if(flag3==1)//reel
         {
