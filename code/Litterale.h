@@ -26,7 +26,7 @@ class Reel : public Numerique{
     double reel;
 public:
     explicit Reel(double d): reel(d) {};
-    double getReel() const {return reel;}
+    double obtenirReel() const {return reel;}
     void negative(){reel=-reel;};  
     QString versString() const;
     ~Reel() override = default;   
@@ -38,8 +38,8 @@ class Rationnel: public Numerique{
     void simplification();
     friend class Operateur;
 public:
-    int getNumerateur()const{return numerateur;}
-    int getDenominateur()const{return denominateur;}
+    int obtenirNumerateur()const{return numerateur;}
+    int obtenirDenominateur()const{return denominateur;}
     void setRationnel(int n, int d);
     Rationnel(int n,int d) { setRationnel(n, d); }
     QString versString() const;
@@ -51,7 +51,7 @@ class Entier : public Numerique{
     int entier;
 public:
     Entier(int i): entier(i) {};
-    int getEntier()const {return entier;}
+    int obtenirEntier()const {return entier;}
     QString versString() const;
     ~Entier() = default;
 };
@@ -61,7 +61,7 @@ class Programme : public Litterale{
     int delimitateur;
 public:
     Programme(QString s) : programme(std::move(s)) {}
-    QString getProgramme()const {return programme;};
+    QString obtenirProgramme()const {return programme;};
     ~Programme() = default;
     QString versString() const;
 };
@@ -74,8 +74,8 @@ class Atome : public Litterale{
     Programme * p = nullptr;
     Numerique * n = nullptr; 
 public:
-    QString getAtome()const {return atome;}
-    int getfonction ()const{return fonction;}
+    QString obtenirAtome()const {return atome;}
+    int obtenirfonction ()const{return fonction;}
     void Associer(Programme* pro = nullptr,Numerique* nu = nullptr){
         if(pro!=nullptr)
         {
@@ -88,9 +88,9 @@ public:
         }//initialiser ou remplacer l'association
     }
     explicit Atome(QString s) : atome(std::move(s)) {}
-    int ifDejaIdentifi(){return fonction==1||fonction==2 ;}; 
+    int siDejaIdentifi(){return fonction==1||fonction==2 ;}; 
 
-    int ifPredefini(QString a)//1:predefini,il faut rectifier
+    int siPredefini(QString a)//1:predefini,il faut rectifier
     {
         if(QString::compare(a,"DIV")||\
                 QString::compare(a,"NEG")||\
@@ -133,4 +133,5 @@ public:
 };
 
 #endif // LITTERAL_H
+
 
