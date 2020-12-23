@@ -13,14 +13,21 @@ Q_OBJECT
     QVBoxLayout *listeProgramme;
     QLabel *texteCreationProgramme;
     QLabel *texteProgrammeEnregistre;
+    QTableWidget *tableProgramme;
     fenetrePrincipale *fenetrePrincipale;
+    QLabel *texteSuppressionPG;
+    QComboBox *choixSuppressionPG;
+    QPushButton *validerSuppresionPG;
 public:
 explicit vueProgramme(QWidget *parent = 0);
     ~vueProgramme(){};
     void setFenetrePrincipale(class fenetrePrincipale* fenetrePrincipaleCopie){fenetrePrincipale = fenetrePrincipaleCopie;};
     class fenetrePrincipale *getFenetrePrincipale(){return fenetrePrincipale;};
+    void refreshProgramme();
 public slots:
 void ajouterProgramme();
+void supprimerProgramme();
+void recupererKey();
 };
 
 #endif // VUEPROGRAMME_H

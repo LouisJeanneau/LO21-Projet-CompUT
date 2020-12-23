@@ -47,8 +47,11 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     boutonMOINS = new QPushButton("-");
     boutonFOIS = new QPushButton("*");
     boutonDIVISER = new QPushButton("/");
-
-    tableBoutonVariable = new QTableWidget(Persistence::mapVariable.size(),2);
+    if(Persistence::mapVariable.size()>Persistence::mapProgramme.size()){
+        tableBoutonVariable = new QTableWidget(Persistence::mapVariable.size(),2);
+    }else {
+        tableBoutonVariable = new QTableWidget(Persistence::mapProgramme.size(),2);
+    }
 
     //CREATION LAYOUT DE L'APPLICATION + DES CLAVIERS
     couche = new QVBoxLayout;
@@ -123,6 +126,11 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     for(unsigned int i = 0; i<getNombreItemAAfficher();i++){
         vuePile->setItem(i,0,new QTableWidgetItem(""));
     }
+    unsigned int nb = 0;
+    for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
+        vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
+    }
+
     //=====TEST BOUTON VARIABLE=====//
     QStringList nomColonnesVariableProgramme;
     nomColonnesVariableProgramme << "Variables";
@@ -133,6 +141,11 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     int i = 0;
     for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
         creerNouveauBoutonVariable(i,it.key(),it.value());
+        i++;
+    }
+    i = 0;
+    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+        creerNouveauBoutonProgramme(i,it.key(),it.value());
         i++;
     }
 
@@ -299,7 +312,7 @@ void fenetrePrincipale :: refreshMethode() {
 void fenetrePrincipale::creerNouveauBoutonVariable(int i,QString key,QString valeur){
     QPushButton *nouvelleVariable = new QPushButton(key);
     QSignalMapper * mapper = new QSignalMapper(this);
-    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileVariable(QString)));
+    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileVariableProgramme(QString)));
 
     mapper->setMapping(nouvelleVariable, valeur);
     QObject::connect(nouvelleVariable,SIGNAL(clicked()),mapper,SLOT(map()));
@@ -307,15 +320,38 @@ void fenetrePrincipale::creerNouveauBoutonVariable(int i,QString key,QString val
     tableBoutonVariable->setCellWidget(i,0,nouvelleVariable);
 }
 
+void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString valeur){
+    QPushButton *nouveauProgramme = new QPushButton(key);
+    QSignalMapper * mapper = new QSignalMapper(this);
+    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileVariableProgramme(QString)));
+    mapper->setMapping(nouveauProgramme, valeur);
+    QObject::connect(nouveauProgramme,SIGNAL(clicked()),mapper,SLOT(map()));
+    tableBoutonVariable->setCellWidget(i,1,nouveauProgramme);
+}
+
 void fenetrePrincipale::refreshTableVariable(){
-    for(int i = 0; i<Persistence::mapVariable.size();i++){
-        tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
-    }
-    tableBoutonVariable->setRowCount(Persistence::mapVariable.size());
+    if(Persistence::mapVariable.size()>Persistence::mapProgramme.size()){
+        for(int i = 0; i<Persistence::mapVariable.size();i++){
+            tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
+            tableBoutonVariable->setItem(i,1,new QTableWidgetItem(""));
+        }
+        tableBoutonVariable->setRowCount(Persistence::mapVariable.size());
+    }else {
+        for(int i = 0; i<Persistence::mapProgramme.size();i++){
+            tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
+            tableBoutonVariable->setItem(i,1,new QTableWidgetItem(""));
+        }
+        tableBoutonVariable->setRowCount(Persistence::mapProgramme.size());
+    };
     QMap<QString,QString>::iterator it;
     int j = 0;
     for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
         creerNouveauBoutonVariable(j,it.key(),it.value());
+        j++;
+    }
+    j = 0;
+    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+        creerNouveauBoutonProgramme(j,it.key(),it.value());
         j++;
     }
 }

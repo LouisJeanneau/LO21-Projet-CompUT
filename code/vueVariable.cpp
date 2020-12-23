@@ -16,7 +16,7 @@ vueVariable::vueVariable(QWidget * parent):
     layoutSaisie = new QHBoxLayout;
     texteSuppression = new QLabel("Choisir l'élément à supprimer :");
     choixSuppression = new QComboBox;
-    validerSuppresion = new QPushButton("Supprimer");
+    validerSuppression = new QPushButton("Supprimer");
 
     layoutSaisie->addWidget(entreeAtome);
     layoutSaisie->addWidget(entreeVariable);
@@ -43,19 +43,16 @@ vueVariable::vueVariable(QWidget * parent):
     listeVariable->addWidget(texteSuppression);
     QHBoxLayout *coucheSuppression = new QHBoxLayout;
     coucheSuppression->addWidget(choixSuppression);
-    coucheSuppression->addWidget(validerSuppresion);
+    coucheSuppression->addWidget(validerSuppression);
     listeVariable->addLayout(coucheSuppression);
     setLayout(listeVariable);
     QObject::connect(validerCreation,SIGNAL(clicked()),this,SLOT(ajouterVariable()));
-    mapper = new QSignalMapper(this);
-    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(enleverMapVariable(QString)));
-    QObject::connect(validerSuppresion,SIGNAL(clicked()),mapper,SLOT(map()));
-    mapper->setMapping(validerSuppresion, choixSuppression->currentText());
-    QObject::connect(choixSuppression,SIGNAL(currentIndexChanged()),this,SLOT(miseAJourMapper()));
+    QObject::connect(validerSuppression,SIGNAL(clicked()),this,SLOT(recupererKey()));
 }
 
-void vueVariable::miseAJourMapper(){
-    mapper->setMapping(validerSuppresion, choixSuppression->currentText());
+void vueVariable::recupererKey(){
+    Persistence::mapVariable.remove(choixSuppression->currentText());
+    refreshVariable();
 }
 
 void vueVariable::ajouterVariable(){
@@ -64,7 +61,17 @@ void vueVariable::ajouterVariable(){
     if(saisieAtome!=NULL && saisieVariable!=NULL){
         entreeAtome->clear();
         entreeVariable->clear();
-        Persistence::mapVariable.insert(saisieAtome,saisieVariable);
+        QMap<QString,QString>::iterator it;
+        int i = 0;
+        for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
+            if(saisieAtome == it.key()){
+                it.value()=saisieVariable;
+                i = 1;
+            }
+        }
+        if(i == 0){
+            Persistence::mapVariable.insert(saisieAtome,saisieVariable);
+        }
         refreshVariable();
     } else {
         QMessageBox::critical(this,"Erreur","Remplissez tous les champs avant de valider.");

@@ -17,8 +17,7 @@ Q_OBJECT
     fenetrePrincipale *fenetrePrincipale;
     QLabel *texteSuppression;
     QComboBox *choixSuppression;
-    QPushButton *validerSuppresion;
-    QSignalMapper * mapper;
+    QPushButton *validerSuppression;
 public:
 explicit vueVariable(QWidget *parent = 0);
     ~vueVariable(){};
@@ -28,10 +27,6 @@ explicit vueVariable(QWidget *parent = 0);
 public slots:
 void ajouterVariable();
 void supprimerVariable();
-void enleverMapVariable(QString key){
-    Persistence::mapVariable.remove(key);
-    refreshVariable();
-}
-void miseAJourMapper();
+void recupererKey();
 };
 #endif // VUEVARIABLE_H

@@ -99,6 +99,8 @@ public:
 
     void creerNouveauBoutonVariable(int i,QString key,QString value);
 
+    void creerNouveauBoutonProgramme(int i,QString key,QString value);
+
 public slots:
 
     void refresh();
@@ -183,7 +185,7 @@ public slots:
 
     void empile_EVAL() { getNextCommande(); }
 
-    void empileVariable(QString valeur) {
+    void empileVariableProgramme(QString valeur) {
         commande->setText(valeur);
         getNextCommande();
     };
