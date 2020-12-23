@@ -27,11 +27,9 @@ class Reel : public Numerique{
 public:
     explicit Reel(double d): reel(d) {};
     double getReel() const {return reel;}
-    void negative(){reel=-reel;}; //l'operateur NEG???
-    //simplifier();??
+    void negative(){reel=-reel;};  
     QString versString() const;
-    ~Reel() override = default;
-    //simplifier();??
+    ~Reel() override = default;   
 };
 
 class Rationnel: public Numerique{
@@ -59,35 +57,22 @@ public:
 };
 
 class Programme : public Litterale{
-    //char crochet1,crochet2;
-    QString programme;//y compris les sous-programme,il faut interpréter
+    QString programme;
     int delimitateur;
-    //Programme * sousProgramme = nullptr;
 public:
     Programme(QString s) : programme(std::move(s)) {}
     QString getProgramme()const {return programme;};
     ~Programme() = default;
     QString versString() const;
-//    void afficherProgramme()
-//    {
-//        cout<<"["<<endl;
-//        for(int i=0;programme[i]!='\0'&&i<=delimitateur;i++)
-//            cout<<programme[i]<<endl;
-//        if(l>delimitateur)
-//            cout<<"...\n"<<endl;
-//        cout<<"]"<<endl;
-//    }
 };
 
 
 class Atome : public Litterale{
-    QString atome;//[ ] pas compris
+    QString atome;
     int delimitateur;
     int fonction=0; //indiquer le role joue:0:non associé（par defaut） 1 :identificateur de numerique 2:identificateur de programme
     Programme * p = nullptr;
-    Numerique * n = nullptr; //au cas de bouton
-    //Atome * suivant=nullptr; //pour chercher:
-    //Expression*??
+    Numerique * n = nullptr; 
 public:
     QString getAtome()const {return atome;}
     int getfonction ()const{return fonction;}
@@ -100,19 +85,10 @@ public:
         {
             fonction=1;
             n=nu;
-        }//initialiser ou remplacer l'association'
+        }//initialiser ou remplacer l'association
     }
     explicit Atome(QString s) : atome(std::move(s)) {}
-    int ifDejaIdentifi(){return fonction==1||fonction==2 ;}; //sinon créer une expression???
-//    int ifCorrectSyntaxe(QString a)
-//    {
-//        if(a[0]<'A'||a[0]>'Z')return 0;
-//        for(int i=1;a[i]!='\0';i++)
-//            if(a[i]<'A'||a[i]>'Z'||(a[i]<='9'&&a[i]>='0'))
-//                return 0;//pas Majuscule ,il faut rectifier
-
-//        return 1;
-//    }
+    int ifDejaIdentifi(){return fonction==1||fonction==2 ;}; 
 
     int ifPredefini(QString a)//1:predefini,il faut rectifier
     {
@@ -133,42 +109,21 @@ public:
         else return 0;
     }
 
-//    void afficherAtome()
-//    {
-//        for(int i=0;atome[i]!='\0'&&i<=delimitateur;i++)
-//            std::cout<<atome[i]<<endl;
-//        if(l>delimitateur)
-//            cout<<"...\n"<<endl;
-//    }
+
     QString versString() const;
-    ~Atome() {delete p;delete n;}//???
-    void effacer(){p=nullptr;n=nullptr;}    //peuvent effacé par FORGET
+    ~Atome() {delete p;delete n;}
+    void effacer(){p=nullptr;n=nullptr;}    //FORGET
 };
 
-//class ListeAtome{
-//    Atome* debut;
-//    ListeAtome(const ListeAtome &la) = delete;
-//    ListeAtome& operator=(const ListeAtome &la) = delete;
-//    static ListeAtome instance;
-
-//public:
-
-//    ListeAtome* ajouterAtome();
-//};
 
 class Expression : public Litterale{
-    Atome * atome; //identifier
+    Atome * atome; 
 public:
     Expression(Atome* a): atome(a) {};
-    ~Expression() {//??
+    ~Expression() {
         delete atome;
     }
-//    void afficherExpression()
-//    {
-//        cout<<"'"<<endl;
-//        atome->afficherAtome();
-//        cout<<"'"<<endl;
-//    }
+
     QString versString() const;
 };
 
