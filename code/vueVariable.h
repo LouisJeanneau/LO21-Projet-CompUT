@@ -13,7 +13,12 @@ Q_OBJECT
     QVBoxLayout *listeVariable;
     QLabel *texteCreationVariable;
     QLabel *texteVariableEnregistre;
+    QTableWidget *tableVariable;
     fenetrePrincipale *fenetrePrincipale;
+    QLabel *texteSuppression;
+    QComboBox *choixSuppression;
+    QPushButton *validerSuppresion;
+    QSignalMapper * mapper;
 public:
 explicit vueVariable(QWidget *parent = 0);
     ~vueVariable(){};
@@ -22,5 +27,11 @@ explicit vueVariable(QWidget *parent = 0);
     void refreshVariable();
 public slots:
 void ajouterVariable();
+void supprimerVariable();
+void enleverMapVariable(QString key){
+    Persistence::mapVariable.remove(key);
+    refreshVariable();
+}
+void miseAJourMapper();
 };
 #endif // VUEVARIABLE_H

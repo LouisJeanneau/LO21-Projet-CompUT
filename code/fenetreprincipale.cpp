@@ -16,13 +16,16 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     vueParametre->setFenetrePrincipale(this);
     vueVariable->setFenetrePrincipale(this);
     vueProgramme->setFenetrePrincipale(this);
-    persistence = new Persistence;
 
 
     // Boutons pour le clavier
-    afficherClavierCalculateur = new QPushButton("Clavier Calculateur");
-    afficherClavierVariable = new QPushButton("Clavier Variable");
+    afficherClavierCalculateur = new QPushButton("Afficher Clavier Calculateur");
+    afficherClavierVariable = new QPushButton("Afficher Clavier Variable");
     afficherClavierCalculateur->setToolTip("Cliquez pour afficher/cacher le clavier");
+    cacherClavierCalculateur = new QPushButton("Cacher Clavier Calculateur");
+    cacherClavierVariable = new QPushButton("Cacher Clavier Variable");
+    afficherClavierCalculateur->setVisible(false);
+    afficherClavierVariable->setVisible(false);
 
     boutonVariable = new QPushButton("Variable");
     boutonProgramme = new QPushButton("Programme");
@@ -45,6 +48,8 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     boutonFOIS = new QPushButton("*");
     boutonDIVISER = new QPushButton("/");
 
+    tableBoutonVariable = new QTableWidget(Persistence::mapVariable.size(),2);
+
     //CREATION LAYOUT DE L'APPLICATION + DES CLAVIERS
     couche = new QVBoxLayout;
     clavierNumerique = new QGridLayout;
@@ -59,7 +64,9 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     //Layout horizontal des deux boutons d'affichages claviers
     affichageClaviers->addWidget(afficherClavierCalculateur);
+    affichageClaviers->addWidget(cacherClavierCalculateur);
     affichageClaviers->addWidget(afficherClavierVariable);
+    affichageClaviers->addWidget(cacherClavierVariable);
 
     //Layout Clavier Numérique
     clavierNumerique->addWidget(bouton1,0,0,1,1);
@@ -81,6 +88,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     //Layout Horizontal des deux claviers
     placeClaviers->addLayout(clavierNumerique);
+    placeClaviers->addWidget(tableBoutonVariable);
 
     //LAYOUT Positionner les objets sur la fenêtre
     couche->addLayout(affichageVues);
@@ -115,6 +123,19 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     for(unsigned int i = 0; i<getNombreItemAAfficher();i++){
         vuePile->setItem(i,0,new QTableWidgetItem(""));
     }
+    //=====TEST BOUTON VARIABLE=====//
+    QStringList nomColonnesVariableProgramme;
+    nomColonnesVariableProgramme << "Variables";
+    nomColonnesVariableProgramme << "Programmes";
+    tableBoutonVariable->setHorizontalHeaderLabels(nomColonnesVariableProgramme);
+    tableBoutonVariable->verticalHeader()->setVisible(false);
+    QMap<QString,QString>::iterator it;
+    int i = 0;
+    for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
+        creerNouveauBoutonVariable(i,it.key(),it.value());
+        i++;
+    }
+
 
     //=========================6 : Connecter signaux/slots===============
     QObject::connect(&Pile::obtenirPile(), SIGNAL(modificationEtat()),this,SLOT(refresh()));
@@ -140,14 +161,15 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     //AFFICHER LE CLAVIER OU NON
     QObject::connect(afficherClavierCalculateur,SIGNAL(clicked()),this,SLOT(affichageClavierCalculateur()));
+    QObject::connect(afficherClavierVariable,SIGNAL(clicked()),this,SLOT(affichageClavierVariable()));
+    QObject::connect(cacherClavierCalculateur,SIGNAL(clicked()),this,SLOT(cacheClavierCalculateur()));
+    QObject::connect(cacherClavierVariable,SIGNAL(clicked()),this,SLOT(cacheClavierVariable()));
 
     //AFFICHER LES VUES
     QObject::connect(boutonVariable,SIGNAL(clicked()),this,SLOT(ouvertureVueVariable()));
     QObject::connect(boutonProgramme,SIGNAL(clicked()),this,SLOT(ouvertureVueProgramme()));
     QObject::connect(boutonParametre,SIGNAL(clicked()),this,SLOT(ouvertureVueParametre()));
 
-    //PARAMETRE
-    //QObject::connect(this->vueParametre, SIGNAL(valueChanged()),QComputer::vuePile,SLOT());
     //==========================================================================
     //7 : Focus barre de commande
     commande->setFocus();
@@ -185,26 +207,18 @@ void fenetrePrincipale::getNextCommande(){
         commande->clear();
     }
 }
+void fenetrePrincipale::affichageClavierVariable(){
+    tableBoutonVariable->setVisible(true);
+    afficherClavierVariable->setVisible(false);
+    cacherClavierVariable->setVisible(true);
+}
+void fenetrePrincipale::cacheClavierVariable(){
+    tableBoutonVariable->setVisible(false);
+    cacherClavierVariable->setVisible(false);
+    afficherClavierVariable->setVisible(true);
+}
 
 void fenetrePrincipale::affichageClavierCalculateur(){
-    if (bouton0->isVisible()){
-        bouton0->setVisible(false);
-        bouton1->setVisible(false);
-        bouton2->setVisible(false);
-        bouton3->setVisible(false);
-        bouton4->setVisible(false);
-        bouton5->setVisible(false);
-        bouton6->setVisible(false);
-        bouton7->setVisible(false);
-        bouton8->setVisible(false);
-        bouton9->setVisible(false);
-        boutonPLUS->setVisible(false);
-        boutonMOINS->setVisible(false);
-        boutonFOIS->setVisible(false);
-        boutonDIVISER->setVisible(false);
-        boutonCLEAR->setVisible(false);
-        boutonEVAL->setVisible(false);
-    } else {
         bouton0->setVisible(true);
         bouton1->setVisible(true);
         bouton2->setVisible(true);
@@ -221,7 +235,29 @@ void fenetrePrincipale::affichageClavierCalculateur(){
         boutonDIVISER->setVisible(true);
         boutonCLEAR->setVisible(true);
         boutonEVAL->setVisible(true);
-    }
+        afficherClavierCalculateur->setVisible(false);
+        cacherClavierCalculateur->setVisible(true);
+}
+
+void fenetrePrincipale::cacheClavierCalculateur(){
+    bouton0->setVisible(false);
+    bouton1->setVisible(false);
+    bouton2->setVisible(false);
+    bouton3->setVisible(false);
+    bouton4->setVisible(false);
+    bouton5->setVisible(false);
+    bouton6->setVisible(false);
+    bouton7->setVisible(false);
+    bouton8->setVisible(false);
+    bouton9->setVisible(false);
+    boutonPLUS->setVisible(false);
+    boutonMOINS->setVisible(false);
+    boutonFOIS->setVisible(false);
+    boutonDIVISER->setVisible(false);
+    boutonCLEAR->setVisible(false);
+    boutonEVAL->setVisible(false);
+    cacherClavierCalculateur->setVisible(false);
+    afficherClavierCalculateur->setVisible(true);
 }
 
 void fenetrePrincipale::ouvertureVueVariable(){
@@ -258,4 +294,28 @@ void fenetrePrincipale :: refreshMethode() {
         vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
 
+}
+
+void fenetrePrincipale::creerNouveauBoutonVariable(int i,QString key,QString valeur){
+    QPushButton *nouvelleVariable = new QPushButton(key);
+    QSignalMapper * mapper = new QSignalMapper(this);
+    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileVariable(QString)));
+
+    mapper->setMapping(nouvelleVariable, valeur);
+    QObject::connect(nouvelleVariable,SIGNAL(clicked()),mapper,SLOT(map()));
+
+    tableBoutonVariable->setCellWidget(i,0,nouvelleVariable);
+}
+
+void fenetrePrincipale::refreshTableVariable(){
+    for(int i = 0; i<Persistence::mapVariable.size();i++){
+        tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
+    }
+    tableBoutonVariable->setRowCount(Persistence::mapVariable.size());
+    QMap<QString,QString>::iterator it;
+    int j = 0;
+    for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
+        creerNouveauBoutonVariable(j,it.key(),it.value());
+        j++;
+    }
 }

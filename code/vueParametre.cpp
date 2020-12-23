@@ -3,9 +3,7 @@
 vueParametre::vueParametre(QWidget * parent):
     QWidget(parent)
 {
-
     setWindowTitle("Modification des Paramètres");
-    Pile& Pile = Pile::obtenirPile();
     choixNb = new QSpinBox;
     messageParametre = new QLabel("Entrez le nombre d'étages de Pile à afficher :");
     layoutParametre = new QHBoxLayout;
@@ -18,8 +16,6 @@ vueParametre::vueParametre(QWidget * parent):
     setLayout(layoutParametre);
 
     QObject::connect(choixNb,SIGNAL(valueChanged(int)),this,SLOT(changerNbAfficherPile()));
-
-
 }
 
 void vueParametre::changerNbAfficherPile(){
@@ -30,7 +26,6 @@ void vueParametre::changerNbAfficherPile(){
     //msgBox.exec();
     fenetrePrincipale->setNombreItemAAfficher(Number);
     fenetrePrincipale->refreshMethode();
-
 }
 
 

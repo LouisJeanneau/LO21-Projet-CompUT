@@ -15,9 +15,9 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QSpinBox>
-#include <QLCDNumber>
 #include <QMap>
-#include <QByteArray>
+#include <QSignalMapper>
+#include <QComboBox>
 #include "Pile.h"
 #include "Interpreteur.h"
 #include "Litterale.h"
@@ -45,7 +45,6 @@ Q_OBJECT
     vueParametre *vueParametre;
     vueVariable *vueVariable;
     vueProgramme *vueProgramme;
-    Persistence *persistence;
     // Pour les vues
     QPushButton *boutonVariable;
     QPushButton *boutonProgramme;
@@ -53,6 +52,8 @@ Q_OBJECT
     // Pour le claviers
     QPushButton *afficherClavierCalculateur;
     QPushButton *afficherClavierVariable;
+    QPushButton *cacherClavierCalculateur;
+    QPushButton *cacherClavierVariable;
     QPushButton *bouton0;
     QPushButton *bouton1;
     QPushButton *bouton2;
@@ -69,6 +70,8 @@ Q_OBJECT
     QPushButton *boutonMOINS;
     QPushButton *boutonFOIS;
     QPushButton *boutonDIVISER;
+    //Clavier Variable :
+    QTableWidget *tableBoutonVariable;
     //Pour l'affichage :
     QVBoxLayout *couche;
     QHBoxLayout *affichageClaviers;
@@ -92,9 +95,9 @@ public:
 
     void refreshMethode();
 
-    void setVariable(QString atome, QString variable) { persistence->setMapVariable(atome, variable); };
+    void refreshTableVariable();
 
-    QMap<QString, QString> getMapVariable() { return persistence->getMapVariable(); };
+    void creerNouveauBoutonVariable(int i,QString key,QString value);
 
 public slots:
 
@@ -172,11 +175,26 @@ public slots:
         getNextCommande();
     };
 
-    void empile_CLEAR() { commande->clear(); };
+    void empile_CLEAR() {
+        commande->clear();
+        pile.listeItems.clear();
+        refreshMethode();
+    };
 
     void empile_EVAL() { getNextCommande(); }
 
+    void empileVariable(QString valeur) {
+        commande->setText(valeur);
+        getNextCommande();
+    };
+
     void affichageClavierCalculateur();
+
+    void affichageClavierVariable();
+
+    void cacheClavierVariable();
+
+    void cacheClavierCalculateur();
 
     void ouvertureVueVariable();
 
