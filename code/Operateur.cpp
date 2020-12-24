@@ -53,17 +53,17 @@ std::vector<double> Operateur::recupererValeur(Item &i) {
 
     if (typeItem == "Entier") {
         auto &litterale1 = dynamic_cast<Entier &>(i.obtenirLitterale());
-        valeur[0] = static_cast<int>(litterale1.getEntier());
+        valeur[0] = static_cast<int>(litterale1.obtenirEntier());
     }
     else if (typeItem == "Reel") {
         auto &litterale1 = dynamic_cast<Reel &>(i.obtenirLitterale());
-        valeur[0] = litterale1.getReel();
+        valeur[0] = litterale1.obtenirReel();
     }
 
     else if (typeItem == "Rationnel") {
         auto &litterale1 = dynamic_cast<Rationnel &>(i.obtenirLitterale());
-        valeur[0] = litterale1.getNumerateur();
-        valeur[1] = litterale1.getDenominateur();
+        valeur[0] = litterale1.obtenirNumerateur();
+        valeur[1] = litterale1.obtenirDenominateur();
     }
     else
         throw ComputerException("Type non valide pour l'item 1");
@@ -109,7 +109,7 @@ Item Operateur::opPlus(Item i1, Item i2) {
         else if (typeItem1 == "Rationnel" || typeItem2 == "Rationnel") {
 
             Rationnel r3(valeurItem1[0] * valeurItem2[1] + valeurItem2[0] * valeurItem1[1], valeurItem1[1] * valeurItem2[1]);
-            QString resultatString = QString::number(r3.getNumerateur()) + "/" + QString::number(r3.getDenominateur());
+            QString resultatString = QString::number(r3.obtenirNumerateur()) + "/" + QString::number(r3.obtenirDenominateur());
             return ConstructeurLitterale::distinguerConstruire(resultatString);
 
         }
@@ -163,7 +163,7 @@ Item Operateur::opMoins(Item i1, Item i2) {
         else if (typeItem1 == "Rationnel" || typeItem2 == "Rationnel") {
 
             Rationnel r3(valeurItem1[0] * valeurItem2[1] - valeurItem2[0] * valeurItem1[1], valeurItem1[1] * valeurItem2[1]);
-            QString resultatString = QString::number(r3.getNumerateur()) + "/" + QString::number(r3.getDenominateur());
+            QString resultatString = QString::number(r3.obtenirNumerateur()) + "/" + QString::number(r3.obtenirDenominateur());
             return ConstructeurLitterale::distinguerConstruire(resultatString);
 
         }
@@ -216,7 +216,7 @@ Item Operateur::opMul(Item i1, Item i2) {
         else if (typeItem1 == "Rationnel" || typeItem2 == "Rationnel") {
 
             Rationnel r3(valeurItem1[0] * valeurItem2[0], valeurItem1[1] * valeurItem2[1]);
-            QString resultatString = QString::number(r3.getNumerateur()) + "/" + QString::number(r3.getDenominateur());
+            QString resultatString = QString::number(r3.obtenirNumerateur()) + "/" + QString::number(r3.obtenirDenominateur());
             return ConstructeurLitterale::distinguerConstruire(resultatString);
 
         }
@@ -272,7 +272,7 @@ Item Operateur::opDivision(Item i1, Item i2) {
         else if (typeItem1 == "Rationnel" || typeItem2 == "Rationnel") {
 
             Rationnel r3(valeurItem1[0] * valeurItem2[1], valeurItem1[1] * valeurItem2[0]);
-            QString resultatString = QString::number(r3.getNumerateur()) + "/" + QString::number(r3.getDenominateur());
+            QString resultatString = QString::number(r3.obtenirNumerateur()) + "/" + QString::number(r3.obtenirDenominateur());
             return ConstructeurLitterale::distinguerConstruire(resultatString);
 
         }
@@ -286,7 +286,7 @@ Item Operateur::opDivision(Item i1, Item i2) {
             //Si le reste est nul, on retourne un entier, sinon on retourne un rationnel
             if (i1%i2 != 0) {
                 Rationnel r(valeurItem1[0], valeurItem2[0]);
-                QString resultatString = QString::number(r.getNumerateur()) + "/" + QString::number(r.getDenominateur());
+                QString resultatString = QString::number(r.obtenirNumerateur()) + "/" + QString::number(r.obtenirDenominateur());
                 return ConstructeurLitterale::distinguerConstruire(resultatString);
             }
 
@@ -399,7 +399,7 @@ Item Operateur::opNEG(Item i) {
         else if (typeItem == "Rationnel") {
 
             Rationnel r3(-valeurItem[0], valeurItem[1]);
-            QString resultatString = QString::number(r3.getNumerateur()) + "/" + QString::number(r3.getDenominateur());
+            QString resultatString = QString::number(r3.obtenirNumerateur()) + "/" + QString::number(r3.obtenirDenominateur());
             return ConstructeurLitterale::distinguerConstruire(resultatString);
 
         }

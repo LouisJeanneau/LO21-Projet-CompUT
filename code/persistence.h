@@ -5,9 +5,10 @@
 
 class Persistence
 {
-    QMap<QString, QString> mapVariable;
-    QMap<QString, QString> mapProgramme;
+
 public:
+    static QMap<QString, QString> mapVariable;
+    static QMap<QString, QString> mapProgramme;
     Persistence(){
         mapVariable.insert("VAR","42");
     };
