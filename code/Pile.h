@@ -8,7 +8,7 @@
 #include <vector>
 #include <QObject>
 #include <string>
-#include "code/Litterale.h"
+#include "Litterale.h"
 
 using namespace std;
 
@@ -20,14 +20,11 @@ class Item{
 public:
     explicit Item(Litterale* l, QString t): litPointeur(l), typeItem(t){
         cout << "Construction défaut" << endl;
-        cout << "type de l'item construit: " << typeItem.toStdString() << endl;
     }
-    Item(const Item& i): litPointeur(i.litPointeur), typeItem(i.typeItem) {
+    Item(const Item& i): litPointeur(i.litPointeur){
         cout << "Construction recopie" << endl;
     }
-
     Item& operator=(const Item& i){ this->litPointeur=i.litPointeur;
-    this->typeItem=i.typeItem;
     cout << "Construction affectation" << endl;
     return *this;}
     ~Item(){
@@ -46,9 +43,10 @@ public:
 };
 
 class Pile : public QObject{
-    std::vector<Item> listeItems;
+Q_OBJECT
     static Pile instance;
     Pile() = default;
+    friend class vuePrincipale;
 public:
     static Pile& obtenirPile();
     void pop();
@@ -57,6 +55,9 @@ public:
     bool estVide();
     unsigned int taille();
     void debug();
+    std::vector<Item> listeItems;
+signals:
+    void modificationEtat();
 };
 
 #endif //LO21_PROJET_PILE_H
