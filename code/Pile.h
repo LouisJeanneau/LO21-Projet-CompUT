@@ -58,7 +58,7 @@ public:
     void debug();
     std::vector<Item> listeItems;
 signals:
-    void modificationEtat();
+    void modificationEtat(QString etat);
 };
 
 #endif //LO21_PROJET_PILE_H

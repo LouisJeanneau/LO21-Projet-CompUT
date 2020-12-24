@@ -29,9 +29,12 @@ void Interpreteur::interprete(QString commandeEntree) {
             execute(unElement);
         }
         else if(commandeEntree.at(0) == "["){
-            int index = commandeEntree.lastIndexOf(']');
-            if(index == -1)
-                throw ComputerException("Programme non finie");
+            int index = commandeEntree.lastIndexOf("]");
+            if(index == -1){
+                //throw ComputerException("Programme non finie");
+                cout << commandeEntree.toStdString() << endl;
+            }
+
             unElement = commandeEntree.left(index+1);
             commandeEntree.remove(0, index+1);
             execute(unElement);
@@ -58,27 +61,35 @@ void Interpreteur::execute(QString operande) {
     if(inventaireOpArite0.contains(operande)){
         Item resultat=inventaireOpArite0[operande]();
         if(resultat.estVide()){
-            cout << "c'est la d frérot" << endl;
+            pile.modificationEtat("Opération arité 0 ratée");
             return;
         }
         pile.push(resultat);
     }
     else if(inventaireOpArite1.contains(operande)){
+        if(pile.estVide()){
+            pile.modificationEtat("Il manque un opérateur pour cette opération");
+            return;
+        }
         Item i1 = pile.end();
         Item resultat=inventaireOpArite1[operande](i1);
         if(resultat.estVide()){
-            cout << "c'est la d frérot" << endl;
+            pile.modificationEtat("Opération arité 1 ratée");
             return;
         }
         pile.pop();
         pile.push(resultat);
     }
     else if(inventaireOpArite2.contains(operande)){
+        if(pile.taille()<=2){
+            pile.modificationEtat("Il manque un ou plusieurs opérateur pour cette opération");
+            return;
+        }
         Item i1 = pile.end();
         Item i2 = pile.end(1);
         Item resultat=inventaireOpArite2[operande](i2, i1);
         if(resultat.estVide()){
-            cout << "c'est la d frérot" << endl;
+            pile.modificationEtat("Opération arité 2 ratée");
             return;
         }
         pile.pop();

@@ -7,7 +7,7 @@
 
 void Pile::pop() {
     listeItems.pop_back();
-    modificationEtat();
+    modificationEtat("Pop réussi");
 }
 
 Item Pile::end(int n) {
@@ -17,7 +17,7 @@ Item Pile::end(int n) {
 
 void Pile::push(Item item) {
     listeItems.push_back(item);
-    modificationEtat();
+    modificationEtat("Push d'un item réussi");
 }
 
 bool Pile::estVide() {

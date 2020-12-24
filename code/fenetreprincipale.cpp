@@ -192,7 +192,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
 //===================SLOTS QCOMPUTER
 
-void fenetrePrincipale :: refresh() {
+void fenetrePrincipale :: refresh(QString etat) {
     //message-> setText(pile.getMessage()); ////////////////////////////A FAIRE
     //On efface tout
     for(unsigned int i = 0; i<getNombreItemAAfficher();i++){
@@ -208,6 +208,9 @@ void fenetrePrincipale :: refresh() {
 void fenetrePrincipale::getNextCommande(){
     message->clear();
     QString saisieComplete = commande->text();
+    controleur->commande(saisieComplete);
+    commande->clear();
+    /*
     QTextStream stream(&saisieComplete);
     QString unElement;
     do {
@@ -219,6 +222,7 @@ void fenetrePrincipale::getNextCommande(){
     if(message->text()==NULL){
         commande->clear();
     }
+     */
 }
 void fenetrePrincipale::affichageClavierVariable(){
     tableBoutonVariable->setVisible(true);
