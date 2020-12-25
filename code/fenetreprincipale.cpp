@@ -200,9 +200,9 @@ void fenetrePrincipale :: refresh() {
     }
 
     //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
-    unsigned int nb = 0;
+    unsigned int nb = 1;
     for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
-        vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
+        vuePile->item(pile.taille()-nb,0)->setText(it->obtenirLitterale().versString());
     }
 }
 void fenetrePrincipale::getNextCommande(){

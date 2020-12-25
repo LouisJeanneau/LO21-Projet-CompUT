@@ -60,22 +60,41 @@ void vueProgramme::recupererKey(){
 
 void vueProgramme::ajouterProgramme(){
     QString saisieAtomePG = entreeAtomePG->text();
+    saisieAtomePG = saisieAtomePG.toUpper();
     QString saisieProgramme = entreeProgramme->text();
     if(saisieAtomePG!=NULL && saisieProgramme!=NULL){
-        entreeAtomePG->clear();
-        entreeProgramme->clear();
-        QMap<QString,QString>::iterator it;
-        int i = 0;
-        for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
-            if(saisieAtomePG == it.key()){
-                it.value()=saisieProgramme;
-                i = 1;
+        if(saisieAtomePG == '0' || saisieAtomePG == '1' || saisieAtomePG == '2' || saisieAtomePG == '3' || saisieAtomePG == '4' ||
+           saisieAtomePG == '5' || saisieAtomePG == '6' || saisieAtomePG == '7' || saisieAtomePG == '8' || saisieAtomePG == '9' ||
+           saisieAtomePG == '+' || saisieAtomePG == '-' || saisieAtomePG == '*' || saisieAtomePG == '/' ||
+           saisieAtomePG == "CLEAR" || saisieAtomePG == "EVAL"){
+           QMessageBox::critical(this,"Erreur","Cet atome ne peut pas être réutilisé.");
+           entreeAtomePG->clear();
+        } else {
+            int estProgramme = 0;
+            for (int i = 0; i<saisieProgramme.size();i++){
+                if (saisieProgramme[i] == ' '){
+                    estProgramme = 1;
+                }
             }
+            if(estProgramme == 0){
+                QMessageBox::critical(this,"Erreur","Pour enregistrer une variable, utilisez l'onglet Variable.");
+                return;
+            }
+            entreeAtomePG->clear();
+            entreeProgramme->clear();
+            QMap<QString,QString>::iterator it;
+            int i = 0;
+            for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+                if(saisieAtomePG == it.key()){
+                    it.value()=saisieProgramme;
+                    i = 1;
+                }
+            }
+            if(i == 0){
+                Persistence::mapProgramme.insert(saisieAtomePG,saisieProgramme);
+            }
+            refreshProgramme();
         }
-        if(i == 0){
-            Persistence::mapProgramme.insert(saisieAtomePG,saisieProgramme);
-        }
-        refreshProgramme();
     } else {
         QMessageBox::critical(this,"Erreur","Remplissez tous les champs avant de valider.");
     }
