@@ -26,12 +26,10 @@ class Reel : public Numerique{
     double reel;
 public:
     explicit Reel(double d): reel(d) {};
-    double getReel() const {return reel;}
-    void negative(){reel=-reel;}; //l'operateur NEG???
-    //simplifier();??
+    double obtenirReel() const {return reel;}
+    void negative(){reel=-reel;};  
     QString versString() const;
-    ~Reel() override = default;
-    //simplifier();??
+    ~Reel() override = default;   
 };
 
 class Rationnel: public Numerique{
@@ -40,8 +38,8 @@ class Rationnel: public Numerique{
     void simplification();
     friend class Operateur;
 public:
-    int getNumerateur()const{return numerateur;}
-    int getDenominateur()const{return denominateur;}
+    int obtenirNumerateur()const{return numerateur;}
+    int obtenirDenominateur()const{return denominateur;}
     void setRationnel(int n, int d);
     Rationnel(int n,int d) { setRationnel(n, d); }
     QString versString() const;
@@ -53,44 +51,31 @@ class Entier : public Numerique{
     int entier;
 public:
     Entier(int i): entier(i) {};
-    int getEntier()const {return entier;}
+    int obtenirEntier()const {return entier;}
     QString versString() const;
     ~Entier() = default;
 };
 
 class Programme : public Litterale{
-    //char crochet1,crochet2;
-    QString programme;//y compris les sous-programme,il faut interpréter
+    QString programme;
     int delimitateur;
-    //Programme * sousProgramme = nullptr;
 public:
     Programme(QString s) : programme(std::move(s)) {}
-    QString getProgramme()const {return programme;};
+    QString obtenirProgramme()const {return programme;};
     ~Programme() = default;
     QString versString() const;
-//    void afficherProgramme()
-//    {
-//        cout<<"["<<endl;
-//        for(int i=0;programme[i]!='\0'&&i<=delimitateur;i++)
-//            cout<<programme[i]<<endl;
-//        if(l>delimitateur)
-//            cout<<"...\n"<<endl;
-//        cout<<"]"<<endl;
-//    }
 };
 
 
 class Atome : public Litterale{
-    QString atome;//[ ] pas compris
+    QString atome;
     int delimitateur;
     int fonction=0; //indiquer le role joue:0:non associé（par defaut） 1 :identificateur de numerique 2:identificateur de programme
     Programme * p = nullptr;
-    Numerique * n = nullptr; //au cas de bouton
-    //Atome * suivant=nullptr; //pour chercher:
-    //Expression*??
+    Numerique * n = nullptr; 
 public:
-    QString getAtome()const {return atome;}
-    int getfonction ()const{return fonction;}
+    QString obtenirAtome()const {return atome;}
+    int obtenirfonction ()const{return fonction;}
     void Associer(Programme* pro = nullptr,Numerique* nu = nullptr){
         if(pro!=nullptr)
         {
@@ -100,21 +85,12 @@ public:
         {
             fonction=1;
             n=nu;
-        }//initialiser ou remplacer l'association'
+        }//initialiser ou remplacer l'association
     }
     explicit Atome(QString s) : atome(std::move(s)) {}
-    int ifDejaIdentifi(){return fonction==1||fonction==2 ;}; //sinon créer une expression???
-//    int ifCorrectSyntaxe(QString a)
-//    {
-//        if(a[0]<'A'||a[0]>'Z')return 0;
-//        for(int i=1;a[i]!='\0';i++)
-//            if(a[i]<'A'||a[i]>'Z'||(a[i]<='9'&&a[i]>='0'))
-//                return 0;//pas Majuscule ,il faut rectifier
+    int siDejaIdentifi(){return fonction==1||fonction==2 ;}; 
 
-//        return 1;
-//    }
-
-    int ifPredefini(QString a)//1:predefini,il faut rectifier
+    int siPredefini(QString a)//1:predefini,il faut rectifier
     {
         if(QString::compare(a,"DIV")||\
                 QString::compare(a,"NEG")||\
@@ -133,42 +109,21 @@ public:
         else return 0;
     }
 
-//    void afficherAtome()
-//    {
-//        for(int i=0;atome[i]!='\0'&&i<=delimitateur;i++)
-//            std::cout<<atome[i]<<endl;
-//        if(l>delimitateur)
-//            cout<<"...\n"<<endl;
-//    }
+
     QString versString() const;
-    ~Atome() {delete p;delete n;}//???
-    void effacer(){p=nullptr;n=nullptr;}    //peuvent effacé par FORGET
+    ~Atome() {delete p;delete n;}
+    void effacer(){p=nullptr;n=nullptr;}    //FORGET
 };
 
-//class ListeAtome{
-//    Atome* debut;
-//    ListeAtome(const ListeAtome &la) = delete;
-//    ListeAtome& operator=(const ListeAtome &la) = delete;
-//    static ListeAtome instance;
-
-//public:
-
-//    ListeAtome* ajouterAtome();
-//};
 
 class Expression : public Litterale{
-    Atome * atome; //identifier
+    Atome * atome; 
 public:
     Expression(Atome* a): atome(a) {};
-    ~Expression() {//??
+    ~Expression() {
         delete atome;
     }
-//    void afficherExpression()
-//    {
-//        cout<<"'"<<endl;
-//        atome->afficherAtome();
-//        cout<<"'"<<endl;
-//    }
+
     QString versString() const;
 };
 
@@ -178,4 +133,5 @@ public:
 };
 
 #endif // LITTERAL_H
+
 
