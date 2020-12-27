@@ -5,6 +5,7 @@
 
 class Persistence
 {
+
 public:
     static QMap<QString, QString> mapVariable;
     static QMap<QString, QString> mapProgramme;

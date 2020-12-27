@@ -7,7 +7,7 @@
 
 void Pile::pop() {
     listeItems.pop_back();
-    modificationEtat("Pop réussi");
+    modifierEtat("Pop réussi");
 }
 
 Item Pile::end(int n) {
@@ -17,7 +17,7 @@ Item Pile::end(int n) {
 
 void Pile::push(Item item) {
     listeItems.push_back(item);
-    modificationEtat("Push d'un item réussi");
+    modifierEtat("Push d'un item réussi");
 }
 
 bool Pile::estVide() {
@@ -38,6 +38,15 @@ void Pile::debug() {
     for(auto it=listeItems.begin(); it!=listeItems.end(); it++){
         cout << it->obtenirLitterale().versString().toStdString() << endl;
     }
+}
+
+void Pile::modifierEtat(QString e) {
+    etat=e;
+    emit refresh();
+}
+
+QString Pile::obtenirEtat() {
+    return etat;
 }
 
 

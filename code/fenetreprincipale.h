@@ -103,7 +103,7 @@ public:
 
 public slots:
 
-    void refresh(QString etat);
+    void refresh();
 
     void getNextCommande();
 

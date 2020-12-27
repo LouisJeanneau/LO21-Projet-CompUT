@@ -47,6 +47,7 @@ class Pile : public QObject{
 Q_OBJECT
     static Pile instance;
     Pile() = default;
+    QString etat;
     friend class vuePrincipale;
 public:
     static Pile& obtenirPile();
@@ -56,9 +57,11 @@ public:
     bool estVide();
     unsigned int taille();
     void debug();
+    QString obtenirEtat();
     std::vector<Item> listeItems;
-signals:
-    void modificationEtat(QString etat);
+    void modifierEtat(QString e);
+    signals:
+    void refresh();
 };
 
 #endif //LO21_PROJET_PILE_H

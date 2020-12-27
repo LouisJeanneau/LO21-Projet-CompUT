@@ -151,7 +151,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
 
     //=========================6 : Connecter signaux/slots===============
-    QObject::connect(&Pile::obtenirPile(), SIGNAL(modificationEtat()),this,SLOT(refresh()));
+    QObject::connect(&Pile::obtenirPile(), SIGNAL(refresh()),this,SLOT(refresh()));
     connect(commande, SIGNAL(returnPressed()),this,SLOT(getNextCommande()));
 
     // CONNECTER LES BOUTONS DU CLAVIER NUMERIQUE
@@ -192,8 +192,8 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
 //===================SLOTS QCOMPUTER
 
-void fenetrePrincipale :: refresh(QString etat) {
-    //message-> setText(pile.getMessage()); ////////////////////////////A FAIRE
+void fenetrePrincipale :: refresh() {
+    message-> setText(pile.obtenirEtat());
     //On efface tout
     for(unsigned int i = 0; i<getNombreItemAAfficher();i++){
         vuePile->item(i,0)->setText("");
