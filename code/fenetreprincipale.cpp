@@ -1,15 +1,20 @@
 #include "fenetreprincipale.h"
 #include "Pile.h"
+#include "Sauvegarde.h"
 
 fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     : QWidget(parent) // Appel au constructeur de la classe de base
 {
+
+    sauvegarde = new Sauvegarde(pile);
+    sauvegarde->recupereEtat();
     //Créer les différents Objets
     nombreItemAAfficher = 5;
     message = new QLineEdit;
     vuePile = new QTableWidget(getNombreItemAAfficher(),1);
     commande = new QLineEdit;
-    controleur = new Controleur(Interpreteur::obtenirInterpreteur(),pile);
+    refIntp = new Interpreteur(Interpreteur::obtenirInterpreteur());
+    //controleur = new Controleur(Interpreteur::obtenirInterpreteur(),pile);
     vueParametre = new class vueParametre();
     vueVariable = new class vueVariable();
     vueProgramme = new class vueProgramme();
@@ -47,10 +52,10 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     boutonMOINS = new QPushButton("-");
     boutonFOIS = new QPushButton("*");
     boutonDIVISER = new QPushButton("/");
-    if(Persistence::mapVariable.size()>Persistence::mapProgramme.size()){
-        tableBoutonVariable = new QTableWidget(Persistence::mapVariable.size(),2);
+    if(persistence.getMapVariableSize()>persistence.getMapProgrammeSize()){
+        tableBoutonVariable = new QTableWidget(persistence.getMapVariableSize(),2);
     }else {
-        tableBoutonVariable = new QTableWidget(Persistence::mapProgramme.size(),2);
+        tableBoutonVariable = new QTableWidget(persistence.getMapProgrammeSize(),2);
     }
 
     //CREATION LAYOUT DE L'APPLICATION + DES CLAVIERS
@@ -127,7 +132,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
         vuePile->setItem(i,0,new QTableWidgetItem(""));
     }
     unsigned int nb = 0;
-    for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
+    for(auto it=pile.listeItems.end();it!=pile.listeItems.begin() && nb <getNombreItemAAfficher(); ++it, ++nb){
         vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
 
@@ -139,12 +144,12 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     tableBoutonVariable->verticalHeader()->setVisible(false);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
+    for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
         creerNouveauBoutonVariable(i,it.key(),it.value());
         i++;
     }
     i = 0;
-    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
         creerNouveauBoutonProgramme(i,it.key(),it.value());
         i++;
     }
@@ -200,9 +205,9 @@ void fenetrePrincipale :: refresh() {
     }
 
     //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
-    unsigned int nb = 1;
+    unsigned int nb = 0;
     for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
-        vuePile->item(pile.taille()-nb,0)->setText(it->obtenirLitterale().versString());
+        vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
 }
 void fenetrePrincipale::getNextCommande(){
@@ -213,7 +218,7 @@ void fenetrePrincipale::getNextCommande(){
     do {
         stream >> unElement;
         if(unElement != ""){
-            controleur->commande(unElement);
+            refIntp->interprete(unElement);
         }
     } while(unElement!="");
     if(message->text()==NULL){
@@ -330,27 +335,27 @@ void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString 
 }
 
 void fenetrePrincipale::refreshTableVariable(){
-    if(Persistence::mapVariable.size()>Persistence::mapProgramme.size()){
-        for(int i = 0; i<Persistence::mapVariable.size();i++){
+    if(persistence.getMapVariableSize()>persistence.getMapProgrammeSize()){
+        for(unsigned int i = 0; i<persistence.getMapVariableSize();i++){
             tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
             tableBoutonVariable->setItem(i,1,new QTableWidgetItem(""));
         }
-        tableBoutonVariable->setRowCount(Persistence::mapVariable.size());
+        tableBoutonVariable->setRowCount(persistence.getMapVariableSize());
     }else {
-        for(int i = 0; i<Persistence::mapProgramme.size();i++){
+        for(unsigned int i = 0; i<persistence.getMapProgrammeSize();i++){
             tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
             tableBoutonVariable->setItem(i,1,new QTableWidgetItem(""));
         }
-        tableBoutonVariable->setRowCount(Persistence::mapProgramme.size());
+        tableBoutonVariable->setRowCount(persistence.getMapProgrammeSize());
     };
     QMap<QString,QString>::iterator it;
     int j = 0;
-    for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
+    for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
         creerNouveauBoutonVariable(j,it.key(),it.value());
         j++;
     }
     j = 0;
-    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
         creerNouveauBoutonProgramme(j,it.key(),it.value());
         j++;
     }

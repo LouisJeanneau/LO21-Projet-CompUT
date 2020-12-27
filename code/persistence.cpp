@@ -1,6 +1,6 @@
 #include "Persistence.h"
 
-
+/*
 QMap<QString, QString> Persistence::mapVariable {
     //{"A","15"},
     //{"B","50"},
@@ -13,3 +13,9 @@ QMap<QString, QString> Persistence::mapProgramme {
     //{"E","50"},
     //{"F","60"},
 };
+*/
+
+Persistence &Persistence::getPersistence(){
+    static Persistence instance;
+    return instance;
+}

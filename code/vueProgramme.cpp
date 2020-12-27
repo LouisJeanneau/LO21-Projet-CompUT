@@ -11,7 +11,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     entreeProgramme = new QLineEdit;
     entreeProgramme->setPlaceholderText("ex: [ DUP 0 < [NEG] IFT ]");
     validerCreationPG = new QPushButton("Valider");
-    tableProgramme = new QTableWidget(Persistence::mapProgramme.size(),2);
+    tableProgramme = new QTableWidget(persistence.getMapProgrammeSize(),2);
     listeProgramme = new QVBoxLayout;
     layoutSaisiePG = new QHBoxLayout;
     texteSuppressionPG = new QLabel("Choisir l'élément à supprimer :");
@@ -32,7 +32,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     tableProgramme->verticalHeader()->setVisible(false);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);
@@ -54,7 +54,7 @@ vueProgramme::vueProgramme(QWidget * parent):
 }
 
 void vueProgramme::recupererKey(){
-    Persistence::mapProgramme.remove(choixSuppressionPG->currentText());
+    persistence.getMapProgramme().remove(choixSuppressionPG->currentText());
     refreshProgramme();
 }
 
@@ -84,14 +84,14 @@ void vueProgramme::ajouterProgramme(){
             entreeProgramme->clear();
             QMap<QString,QString>::iterator it;
             int i = 0;
-            for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+            for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
                 if(saisieAtomePG == it.key()){
                     it.value()=saisieProgramme;
                     i = 1;
                 }
             }
             if(i == 0){
-                Persistence::mapProgramme.insert(saisieAtomePG,saisieProgramme);
+                persistence.getMapProgramme().insert(saisieAtomePG,saisieProgramme);
             }
             refreshProgramme();
         }
@@ -101,17 +101,17 @@ void vueProgramme::ajouterProgramme(){
 }
 
 void vueProgramme::refreshProgramme(){
-    tableProgramme->setRowCount(Persistence::mapProgramme.size());
+    tableProgramme->setRowCount(persistence.getMapProgrammeSize());
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
         tableProgramme->setCellWidget(i,0,new QLabel(""));
         tableProgramme->setCellWidget(i,1,new QLabel(""));
         i++;
     }
     choixSuppressionPG->clear();
     i = 0;
-    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);
