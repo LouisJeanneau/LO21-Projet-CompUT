@@ -11,9 +11,9 @@
 
 class Sauvegarde : public QWidget
 {
-    Controleur& refContr;
+    Pile& refPile;
 public:
-	Sauvegarde();
+	Sauvegarde(Pile& p) : refPile(p) {}
 	~Sauvegarde();
     void sauvegardeEtat();
     void recupereEtat();

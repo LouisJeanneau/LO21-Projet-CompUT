@@ -13,16 +13,6 @@
 
 using namespace std;
 
-Sauvegarde::Sauvegarde() : QWidget()
-{
-
-}
-
-Sauvegarde::~Sauvegarde()
-{
-
-}
-
 void Sauvegarde::sauvegardeEtat(){
     
     QDomDocument d;
@@ -35,11 +25,11 @@ void Sauvegarde::sauvegardeEtat(){
     //Pile
     QDomElement pile = d.createElement("pile");
     calculatrice.appendChild(pile);
-    for(unsigned int i = 0; i < refContr.refPile.taille(); i++){
+    for(unsigned int i = 0; i < refPile.taille(); i++){
         QDomElement element = doc.createElement("element");
         pile.appendChild(element);
-        QString s = refContr.refPile.end().obtenirLitterale().versString();
-        refContr.refPile.pop();
+        QString s = refPile.end().obtenirLitterale().versString();
+        refPile.pop();
         QDomText valeurElement = doc.createTextNode(s);
         litterale.appendChild(valeurElement);
     }
@@ -47,21 +37,21 @@ void Sauvegarde::sauvegardeEtat(){
     //Variables
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
-    for(auto v : refContr.refPers.mapVariable.keys()){
+    for(auto v : Persistence::mapVariable.keys()){
         QDomElement variable = doc.createElement("variable");
         variables.appendChild(variable);
         variable.setAttribute("id", v);
-        variable.setAttribute("value", refContr.refPers.mapVar.value(v));
+        variable.setAttribute("value", Persistence::mapVariable.value(v));
     }  
 
     //Programmes
     QDomElement programmes = doc.createElement("programmes");
     claculatrice.appendChild(programmes);
-    for(auto p : refContr.refPers.mapProgramme.keys()){
+    for(auto p : Persistence::mapProgramme.keys()){
         QDomElement programme = doc.createElement("programme");
         programmes.appendChild(programme);
         programme.setAttribute("id", p);
-        programme.setAttribute("value", refContr.refPers.mapProg.value(p));
+        programme.setAttribute("value", Persistence::mapProgramme.value(p));
     } 
 
 
@@ -101,7 +91,7 @@ void Sauvegarde::recupereEtat(){
     while(!element.isNull()){
         //Construire une nouvelle litérale avec le texte récupéré
         Item res = ConstructeurLitterale::distinguerConstruire(element.text());
-        refContr.refPile.push(res);
+        refPile.push(res);
         element = element.previousSiblingElement();
     }
 
@@ -112,7 +102,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
-        refContr.refPers.setMapVariable(variable.attribute("id"), variable.attribute("value"));
+        Persistence::setMapVariable(variable.attribute("id"), variable.attribute("value"));
         variable = variable.nextSiblingElement();
     }
 
@@ -123,7 +113,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
-        refContr.refPers.setMapProgramme(programme.attribute("id"), programme.attribute("value"));
+        Persistence::setMapProgramme(programme.attribute("id"), programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
 
