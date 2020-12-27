@@ -36,7 +36,6 @@ class Rationnel: public Numerique{
     int numerateur;
     int denominateur;
     void simplification();
-    friend class Operateur;
 public:
     int obtenirNumerateur()const{return numerateur;}
     int obtenirDenominateur()const{return denominateur;}

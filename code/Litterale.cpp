@@ -97,6 +97,18 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
             QString d1=s.section("/",1,1);
             int n=n1.toInt();
             int d=d1.toInt();
+
+            /* utilisation de l’algorithme d’Euclide pour trouver le Plus Grand Commun
+            Denominateur (PGCD) entre le numerateur et le denominateur */
+            int a=n, b=d;
+            // on ne travaille qu’avec des valeurs positives...
+            if (a<0) a=-a; if (b<0) b=-b;
+            while(a!=b){ if (a>b) a=a-b; else b=b-a; }
+            // on divise le numerateur et le denominateur par le PGCD=a
+            n/=a; d/=a;
+            // si le denominateur est négatif, on fait passer le signe - au denominateur
+            if (d<0) { d=-d; n=-n; }
+
             if (d != 1) {
                 Litterale *temp = new Rationnel(n, d);
                 return Item(temp, "Rationnel");
