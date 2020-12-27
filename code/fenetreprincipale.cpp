@@ -127,7 +127,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
         vuePile->setItem(i,0,new QTableWidgetItem(""));
     }
     unsigned int nb = 0;
-    for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
+    for(auto it=pile.copierListeItems().begin();it!=pile.copierListeItems().end() && nb <getNombreItemAAfficher(); ++it, ++nb){
         vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
 
@@ -201,7 +201,8 @@ void fenetrePrincipale :: refresh() {
 
     //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
     unsigned int nb = 0;
-    for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
+    vector<Item> liste = pile.copierListeItems();
+    for(auto it=liste.rbegin();it!=liste.rend() && nb <getNombreItemAAfficher(); ++it, ++nb){
         vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
 }
@@ -307,10 +308,10 @@ void fenetrePrincipale :: refreshMethode() {
 
     //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
     unsigned int nb = 0;
-    for(auto it=pile.listeItems.begin();it!=pile.listeItems.end() && nb <getNombreItemAAfficher(); ++it, ++nb){
+    vector<Item> liste = pile.copierListeItems();
+    for(auto it=liste.rbegin();it!=liste.rend() && nb <getNombreItemAAfficher(); ++it, ++nb){
         vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
-
 }
 
 void fenetrePrincipale::creerNouveauBoutonVariable(int i,QString key,QString valeur){

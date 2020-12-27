@@ -8,6 +8,8 @@
 #include <vector>
 #include <QObject>
 #include <string>
+#include <functional>
+#include <QMap>
 #include "Litterale.h"
 
 using namespace std;
@@ -45,10 +47,10 @@ public:
 
 class Pile : public QObject{
 Q_OBJECT
+    QString etat;
+    std::vector<Item> listeItems;
     static Pile instance;
     Pile() = default;
-    QString etat;
-    friend class vuePrincipale;
 public:
     static Pile& obtenirPile();
     void pop();
@@ -58,10 +60,19 @@ public:
     unsigned int taille();
     void debug();
     QString obtenirEtat();
-    std::vector<Item> listeItems;
     void modifierEtat(QString e);
+    std::vector<Item> copierListeItems();
+
+    static QMap<QString, std::function<void(Pile& p)>> inventaireOpPile;
+
+    void swap(Pile &p);
+    void clear();
+    void drop(Pile &p);
+    void dup(Pile &p);
+
     signals:
     void refresh();
+
 };
 
 #endif //LO21_PROJET_PILE_H

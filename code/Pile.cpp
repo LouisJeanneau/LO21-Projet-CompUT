@@ -2,8 +2,19 @@
 // Created by Louis on 06/12/2020.
 //
 
+
 #include "Pile.h"
 
+QMap<QString, std::function<void(Pile& p)>> Pile::inventaireOpPile{
+
+        {"CLEAR", &obtenirPile.clear},
+
+};
+
+
+void Pile::clear() {
+    etat="Pile vidée";
+}
 
 void Pile::pop() {
     listeItems.pop_back();
@@ -48,5 +59,10 @@ void Pile::modifierEtat(QString e) {
 QString Pile::obtenirEtat() {
     return etat;
 }
+
+std::vector<Item> Pile::copierListeItems() {
+    return listeItems;
+}
+
 
 

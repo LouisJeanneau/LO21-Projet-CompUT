@@ -179,7 +179,7 @@ public slots:
 
     void empile_CLEAR() {
         commande->clear();
-        pile.listeItems.clear();
+        //TODO
         refreshMethode();
     };
 
