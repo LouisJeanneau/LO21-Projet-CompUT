@@ -12,7 +12,9 @@ class Item;
 
 class Litterale {
 public:
-    virtual ~Litterale() = default;
+    virtual ~Litterale() {
+        cout << "Litterale detruite" << endl;
+    }
     virtual QString versString() const = 0;
 
 
@@ -29,7 +31,9 @@ public:
     double obtenirReel() const {return reel;}
     void negative(){reel=-reel;};  
     QString versString() const;
-    ~Reel() override = default;   
+    ~Reel() {
+        cout << "Reel detruite" << endl;
+    }
 };
 
 class Rationnel: public Numerique{
@@ -42,7 +46,9 @@ public:
     void setRationnel(int n, int d);
     Rationnel(int n,int d) { setRationnel(n, d); }
     QString versString() const;
-    ~Rationnel() = default;
+    ~Rationnel() {
+        cout << "Rationnel detruite" << endl;
+    }
     Rationnel operator+(const Rationnel & r) const;
 };
 
@@ -52,7 +58,9 @@ public:
     Entier(int i): entier(i) {};
     int obtenirEntier()const {return entier;}
     QString versString() const;
-    ~Entier() = default;
+    ~Entier() {
+        cout << "Entier detruit" << endl;
+    }
 };
 
 class Programme : public Litterale{
@@ -61,7 +69,9 @@ class Programme : public Litterale{
 public:
     Programme(QString s) : programme(std::move(s)) {}
     QString obtenirProgramme()const {return programme;};
-    ~Programme() = default;
+    ~Programme() {
+        cout << "Programme detruite" << endl;
+    }
     QString versString() const;
 };
 

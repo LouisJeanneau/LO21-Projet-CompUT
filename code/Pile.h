@@ -16,61 +16,74 @@ using namespace std;
 
 class Litterale;
 
-class Item{
-    Litterale* litPointeur;
+class Item {
+    Litterale *litPointeur{};
     QString typeItem;
 public:
-    explicit Item(Litterale* l, QString t): litPointeur(l), typeItem(t){
-        cout << "Construction défaut" << endl;
-    }
-    Item(const Item& i): litPointeur(i.litPointeur), typeItem(i.typeItem){
-        cout << "Construction recopie" << endl;
-    }
-    Item& operator=(const Item& i){ this->litPointeur=i.litPointeur;
-    this->typeItem = i.typeItem;
-    cout << "Construction affectation" << endl;
-    return *this;}
-    ~Item(){
-        cout << "Déstruction défaut" << endl;
+    explicit Item(Litterale *l, QString t);
+    Item(const Item &i);
+    Item &operator=(const Item &i);
+
+    ~Item() {
+        cout << "Destruction defaut" << endl;
     };
-    void supprimer(){  }
-    bool estVide(){
-        if(litPointeur == nullptr){
+
+    void supprimer();
+
+    bool estVide() {
+        if (litPointeur == nullptr) {
             return true;
         }
         return false;
     }
-    Litterale& obtenirLitterale(){return *litPointeur;}
-    QString obtenirType() {return typeItem;}
+
+    Litterale &obtenirLitterale() { return *litPointeur; }
+
+    QString obtenirType() { return typeItem; }
 
 };
 
-class Pile : public QObject{
+class Pile : public QObject {
 Q_OBJECT
     QString etat;
     std::vector<Item> listeItems;
     static Pile instance;
+
     Pile() = default;
+
 public:
-    static Pile& obtenirPile();
+    static Pile &obtenirPile();
+
     void pop();
-    Item end(int n=0);
+
+    Item end(int n = 0);
+
     void push(Item item);
+
     bool estVide();
+
     unsigned int taille();
+
     void debug();
+
     QString obtenirEtat();
+
     void modifierEtat(QString e);
+
     std::vector<Item> copierListeItems();
 
-    static QMap<QString, std::function<void(Pile& p)>> inventaireOpPile;
+    static map<QString, std::function<void()>> inventaireOpPile;
 
-    void swap(Pile &p);
+    void swap();
+
     void clear();
-    void drop(Pile &p);
-    void dup(Pile &p);
 
-    signals:
+    void drop();
+
+    void dup();
+
+signals:
+
     void refresh();
 
 };

@@ -5,16 +5,21 @@
 
 #include "Pile.h"
 
-QMap<QString, std::function<void(Pile& p)>> Pile::inventaireOpPile{
-
-        {"CLEAR", &obtenirPile.clear},
-
-};
-
-
-void Pile::clear() {
-    etat="Pile vidée";
+Item::Item(Litterale *l, QString t) : litPointeur(l), typeItem(t){
+    cout << "Construction defaut" << endl;
 }
+
+Item::Item(const Item &i) : litPointeur(i.litPointeur), typeItem(i.typeItem) {
+    cout << "Construction recopie" << endl;
+}
+
+Item &Item::operator=(const Item &i) {
+    this->litPointeur = i.litPointeur;
+    this->typeItem = i.typeItem;
+    cout << "Construction affectation" << endl;
+    return *this;
+}
+
 
 void Pile::pop() {
     listeItems.pop_back();
@@ -64,5 +69,21 @@ std::vector<Item> Pile::copierListeItems() {
     return listeItems;
 }
 
+void Pile::clear() {
+    try {
+        for (auto it = listeItems.begin(); it != listeItems.end(); it++)
+            it->supprimer();
+        modifierEtat("Pile vidée");
+    } catch (ComputerException &ce) {
+        modifierEtat("Erreur lors du clear de la pile");
+    }
+}
 
+void Pile::swap() {
+
+}
+
+void Item::supprimer() {
+    delete litPointeur;
+}
 

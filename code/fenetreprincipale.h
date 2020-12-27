@@ -178,9 +178,8 @@ public slots:
     };
 
     void empile_CLEAR() {
-        commande->clear();
-        //TODO
-        refreshMethode();
+        commande->setText("CLEAR");
+        getNextCommande();
     };
 
     void empile_EVAL() { getNextCommande(); }

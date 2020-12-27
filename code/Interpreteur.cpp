@@ -59,12 +59,13 @@ void Interpreteur::execute(QString operande) {
     QMap<QString, std::function<Item()>> inventaireOpArite0=Operateur::inventaireOpArite0;
 
     if(inventaireOpArite0.contains(operande)){
-        Item resultat=inventaireOpArite0[operande]();
-        if(resultat.estVide()){
-            pile.modifierEtat("Opération arité 0 ratée");
+        try {
+            Item resultat=inventaireOpArite0[operande]();
+            pile.push(resultat);
+        } catch (ComputerException &ce) {
+            pile.modifierEtat(ce.what());
             return;
         }
-        pile.push(resultat);
     }
     else if(inventaireOpArite1.contains(operande)){
         if(pile.estVide()){
@@ -75,6 +76,7 @@ void Interpreteur::execute(QString operande) {
         try {
             Item resultat=inventaireOpArite1[operande](i1);
             pile.pop();
+            i1.supprimer();
             pile.push(resultat);
         } catch (ComputerException &ce) {
             pile.modifierEtat(ce.what());
@@ -91,7 +93,9 @@ void Interpreteur::execute(QString operande) {
         try {
             Item resultat=inventaireOpArite2[operande](i2, i1);
             pile.pop();
+            i1.supprimer();
             pile.pop();
+            i2.supprimer();
             pile.push(resultat);
             return;
         } catch (ComputerException &ce) {
@@ -99,6 +103,10 @@ void Interpreteur::execute(QString operande) {
             return;
         }
 
+    }
+    else if(operande == "CLEAR"){
+        pile.clear();
+        return;
     }
     else {
         Item resultat = ConstructeurLitterale::distinguerConstruire(operande);
