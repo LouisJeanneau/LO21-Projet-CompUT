@@ -31,10 +31,6 @@ QMap<QString, function<Item(Item)>> Operateur::inventaireOpArite1 = {
         {"NOT", opNOT}
 };
 
-//Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
-QMap<QString, std::function<Item()>> Operateur::inventaireOpArite0 = {
-};
-
 
 bool Operateur::typeValide(Item &i) {
     QString typeItem = i.obtenirType();
@@ -728,5 +724,20 @@ Item Operateur::opNOT(Item i) {
             return ConstructeurLitterale::distinguerConstruire(QString::number(0));
 
     }}
+
+void Operateur::opEval(Item i) {
+    if (i.obtenirType() != "Expression")
+        throw ComputerException("Évaluation d'un item n'étant pas une expression");
+    else {
+        Interpreteur& interpreteur = Interpreteur::obtenirInterpreteur();
+        auto &litterale = i.obtenirLitterale();
+        QString litteraleString = litterale.versString();
+        interpreteur.execute(litteraleString.section("'", 1, 1));
+    }
+}
+
+void Operateur::opIFT(Item i1, Item i2) {
+
+}
 
 

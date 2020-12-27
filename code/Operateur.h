@@ -12,13 +12,14 @@
 #include "Litterale.h"
 #include "Pile.h"
 #include "Exception.h"
+#include "Interpreteur.h"
 
 class Operateur {
 
 private:
 
-    Operateur();
-    ~Operateur() noexcept;
+    Operateur() = default;
+    ~Operateur() noexcept = default;
     Operateur(const Operateur&) = delete;
     Operateur& operator=(const Operateur &) = delete;
     static bool typeValide(Item& i);
@@ -30,7 +31,6 @@ public:
     //Maps contenant les pointeurs de fonctions associés aux opérateurs d'arité respectivement 2,1 et 0
     static QMap<QString, function<Item(Item, Item)>> inventaireOpArite2;
     static QMap<QString, function<Item(Item)>> inventaireOpArite1;
-    static QMap<QString, std::function<Item()>> inventaireOpArite0;
 
 
     //Design pattern singleton
@@ -41,7 +41,7 @@ public:
 
     //Méthodes opérateurs
 
-    void opEval(Item i);
+    static void opEval(Item i);
 
     //Operateurs Numeriques
     static Item opPlus(Item i1, Item i2);
@@ -63,15 +63,8 @@ public:
     static Item opOR(Item i1, Item i2);
     static Item opNOT(Item i);
 
-    //Operateurs de manipulation de la Pile
-    static void opDUP(Item i); //retourne une copie de Litterale au haut de la pile
-    static void opDROP(Item i); //supprime le premier Litterale dans la pile
-    static void opSWAP(Item i1, Item i2); //intervertit les deux derniers éléments empilés dans la pile
-    static void opCLEAR(); //vide tous les éléments de la pile
-
     //Operateurs conditionnels et de boucles
     static void opIFT(Item i1, Item i2); //test logique
-
 
 
 };
