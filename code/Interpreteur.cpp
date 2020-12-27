@@ -72,13 +72,14 @@ void Interpreteur::execute(QString operande) {
             return;
         }
         Item i1 = pile.end();
-        Item resultat=inventaireOpArite1[operande](i1);
-        if(resultat.estVide()){
-            pile.modifierEtat("Opération arité 1 ratée");
+        try {
+            Item resultat=inventaireOpArite1[operande](i1);
+            pile.pop();
+            pile.push(resultat);
+        } catch (ComputerException &ce) {
+            pile.modifierEtat(ce.what());
             return;
         }
-        pile.pop();
-        pile.push(resultat);
     }
     else if(inventaireOpArite2.contains(operande)){
         if(pile.taille()<2){
@@ -87,14 +88,17 @@ void Interpreteur::execute(QString operande) {
         }
         Item i1 = pile.end();
         Item i2 = pile.end(1);
-        Item resultat=inventaireOpArite2[operande](i2, i1);
-        if(resultat.estVide()){
-            pile.modifierEtat("Opération arité 2 ratée");
+        try {
+            Item resultat=inventaireOpArite2[operande](i2, i1);
+            pile.pop();
+            pile.pop();
+            pile.push(resultat);
+            return;
+        } catch (ComputerException &ce) {
+            pile.modifierEtat(ce.what());
             return;
         }
-        pile.pop();
-        pile.pop();
-        pile.push(resultat);
+
     }
     else {
         Item resultat = ConstructeurLitterale::distinguerConstruire(operande);
