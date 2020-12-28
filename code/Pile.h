@@ -72,8 +72,6 @@ public:
 
     std::vector<Item> copierListeItems();
 
-    static map<QString, std::function<void()>> inventaireOpPile;
-
     void swap();
 
     void clear();

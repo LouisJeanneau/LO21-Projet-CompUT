@@ -71,8 +71,9 @@ std::vector<Item> Pile::copierListeItems() {
 
 void Pile::clear() {
     try {
-        for (auto it = listeItems.begin(); it != listeItems.end(); it++)
+        for (auto it = listeItems.begin(); it != listeItems.end(); ++it)
             it->supprimer();
+        listeItems.clear();
         modifierEtat("Pile vidée");
     } catch (ComputerException &ce) {
         modifierEtat("Erreur lors du clear de la pile");
@@ -80,7 +81,38 @@ void Pile::clear() {
 }
 
 void Pile::swap() {
+    try{
+        Item itemTop = listeItems.back();
+        listeItems.pop_back();
+        Item itemSecond = listeItems.back();
+        listeItems.pop_back();
+        listeItems.push_back(itemTop);
+        listeItems.push_back(itemSecond);
+        modifierEtat("Swap réussi");
+    } catch (ComputerException &ce) {
+        modifierEtat("Erreur lors du swap de la pile");
+    }
+}
 
+void Pile::drop() {
+    try{
+        listeItems.back().supprimer();
+        listeItems.pop_back();
+        modifierEtat("Drop réussi");
+    } catch (ComputerException &ce) {
+        modifierEtat("Erreur lors du drop");
+    }
+}
+
+void Pile::dup() {
+    try{
+        QString stringTemp = listeItems.back().obtenirLitterale().versString();
+        Item itemTemp = ConstructeurLitterale::distinguerConstruire(stringTemp);
+        listeItems.push_back(itemTemp);
+        modifierEtat("Dupréussi");
+    } catch (ComputerException &ce) {
+        modifierEtat("Erreur lors du dup");
+    }
 }
 
 void Item::supprimer() {

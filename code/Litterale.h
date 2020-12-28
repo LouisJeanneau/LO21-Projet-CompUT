@@ -21,7 +21,9 @@ public:
 };
 
 class Numerique:public Litterale{
-
+public:
+    Numerique() = default;
+    ~Numerique() = default;
 };
 
 class Reel : public Numerique{

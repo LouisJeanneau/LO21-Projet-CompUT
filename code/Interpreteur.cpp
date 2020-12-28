@@ -108,6 +108,18 @@ void Interpreteur::execute(QString operande) {
         pile.clear();
         return;
     }
+    else if(operande == "SWAP"){
+        pile.swap();
+        return;
+    }
+    else if(operande == "DROP"){
+        pile.drop();
+        return;
+    }
+    else if(operande == "DUP"){
+        pile.dup();
+        return;
+    }
     else {
         Item resultat = ConstructeurLitterale::distinguerConstruire(operande);
         pile.push(resultat);
