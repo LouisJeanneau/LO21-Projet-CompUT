@@ -98,6 +98,7 @@ void Interpreteur::execute(QString operande) {
 
         Item i = pile.end();
         try {
+            pile.pop();
             Operateur::opEval(i);
             i.supprimer();
             return;

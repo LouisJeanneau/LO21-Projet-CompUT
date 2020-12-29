@@ -733,7 +733,7 @@ void Operateur::opEval(Item i) {
         auto &litterale = i.obtenirLitterale();
         QString litteraleString = litterale.versString();
         litteraleString.chop(1);
-        interpreteur.execute(litteraleString.remove(0,1));
+        interpreteur.interprete(litteraleString.remove(0,1));
     }
 }
 
