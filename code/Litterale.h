@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <iostream>
-#include "code/Pile.h"
-#include "code/Exception.h"
+#include "Pile.h"
+#include "Exception.h"
 
 using namespace std;
 

@@ -29,6 +29,6 @@ public slots:
 void ajouterProgramme();
 void supprimerProgramme();
 void recupererKey();
+void appelRefreshProgramme();
 };
-
 #endif // VUEPROGRAMME_H

@@ -1,6 +1,6 @@
-#include"code/Litterale.h"
+#include"Litterale.h"
 #include <QString>
-#include "code/Pile.h"
+#include "Pile.h"
 
 QString Entier::versString() const {
     return QString::number(entier);

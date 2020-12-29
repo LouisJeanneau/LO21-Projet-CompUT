@@ -32,7 +32,8 @@ vueProgramme::vueProgramme(QWidget * parent):
     tableProgramme->verticalHeader()->setVisible(false);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (auto it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
+    auto mapProgramme = persistence.getMapProgramme();
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);
@@ -46,9 +47,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     coucheSuppression->addWidget(choixSuppressionPG);
     coucheSuppression->addWidget(validerSuppresionPG);
     listeProgramme->addLayout(coucheSuppression);
-
     setLayout(listeProgramme);
-
     QObject::connect(validerCreationPG,SIGNAL(clicked()),this,SLOT(ajouterProgramme()));
     QObject::connect(validerSuppresionPG,SIGNAL(clicked()),this,SLOT(recupererKey()));
 }
@@ -122,6 +121,6 @@ void vueProgramme::refreshProgramme(){
     fenetrePrincipale->refreshTableVariable();
 };
 
-void vueProgramme::supprimerProgramme(){
-
+void vueProgramme::appelRefreshProgramme() {
+    refreshProgramme();
 }
