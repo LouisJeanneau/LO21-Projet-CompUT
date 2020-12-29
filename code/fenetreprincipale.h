@@ -18,6 +18,7 @@
 #include <QMap>
 #include <QSignalMapper>
 #include <QComboBox>
+#include <QtXml>
 #include "Pile.h"
 #include "Interpreteur.h"
 #include "Litterale.h"
@@ -27,6 +28,7 @@
 #include "vueVariable.h"
 #include "vueProgramme.h"
 #include "vueParametre.h"
+#include "Sauvegarde.h"
 
 class vueParametre;
 
@@ -41,7 +43,10 @@ Q_OBJECT
     unsigned int nombreItemAAfficher;
     QLineEdit *commande;
     Pile &pile = Pile::obtenirPile();
-    Controleur *controleur;
+    //Controleur *controleur;
+    Sauvegarde *sauvegarde;
+    Persistence &persistence = Persistence::getPersistence();
+    Interpreteur *refIntp;
     vueParametre *vueParametre;
     vueVariable *vueVariable;
     vueProgramme *vueProgramme;
@@ -84,7 +89,8 @@ public:
 
     ~fenetrePrincipale() {
         //delete pile;
-        delete controleur;
+        //delete controleur;
+        delete refIntp;
     }
 
     unsigned int getNombreItemAAfficher() { return nombreItemAAfficher; };
