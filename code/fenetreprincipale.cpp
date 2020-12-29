@@ -110,10 +110,10 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     //3 : Mettre un titre à la fenêtre
     setWindowTitle("Comp'UT");
     //4 : Couleur à la barre + empêcher l'édition
-    message->setStyleSheet("background-color :#16697a; color : #ffa62b");
+    message->setStyleSheet("background-color :#456268; color : #fcf8ec");
     message->setReadOnly(true);
     //5 : Bonne apparence vuePile + non modifiable
-    vuePile->setStyleSheet("background-color :#ffa62b; color : #db6400");
+    vuePile->setStyleSheet("background-color :#d0e8f2; color : #456268");
     //vuePile->verticalHeader();
     vuePile->horizontalHeader()->setVisible(false);
     vuePile->horizontalHeader()->setStretchLastSection(true);
@@ -148,7 +148,6 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
         i++;
     }
     i = 0;
-    qDebug() << "test10ter";
     auto mapProgramme = persistence.getMapProgramme();
     for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         creerNouveauBoutonProgramme(i,it.key(),it.value());
@@ -159,6 +158,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     //=========================6 : Connecter signaux/slots===============
     QObject::connect(&Pile::obtenirPile(), SIGNAL(refresh()),this,SLOT(refresh()));
     QObject::connect(&Persistence::getPersistence(), SIGNAL(actualiserAffichage()), vueVariable, SLOT(appelRefreshVariable()));
+    QObject::connect(&Persistence::getPersistence(), SIGNAL(actualiserAffichage()), vueProgramme, SLOT(appelRefreshProgramme()));
     connect(commande, SIGNAL(returnPressed()),this,SLOT(getNextCommande()));
 
     // CONNECTER LES BOUTONS DU CLAVIER NUMERIQUE
@@ -215,26 +215,13 @@ void fenetrePrincipale :: refresh() {
 }
 void fenetrePrincipale::getNextCommande(){
     message->clear();
-    QString saisieComplete = commande->text();
+    QString saisieComplete = commande->text().toUpper();
     try {
         refIntp->interprete(saisieComplete);
     } catch (ComputerException &ce) {
 
     }
     commande->clear();
-    /*
-    QTextStream stream(&saisieComplete);
-    QString unElement;
-    do {
-        stream >> unElement;
-        if(unElement != ""){
-
-        }
-    } while(unElement!="");
-    if(message->text()==NULL){
-        commande->clear();
-    }
-     */
 }
 void fenetrePrincipale::affichageClavierVariable(){
     tableBoutonVariable->setVisible(true);
@@ -328,7 +315,7 @@ void fenetrePrincipale :: refreshMethode() {
 void fenetrePrincipale::creerNouveauBoutonVariable(int i,QString key,QString valeur){
     QPushButton *nouvelleVariable = new QPushButton(key);
     QSignalMapper * mapper = new QSignalMapper(this);
-    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileVariableProgramme(QString)));
+    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileVariable(QString)));
 
     mapper->setMapping(nouvelleVariable, valeur);
     QObject::connect(nouvelleVariable,SIGNAL(clicked()),mapper,SLOT(map()));
@@ -339,7 +326,7 @@ void fenetrePrincipale::creerNouveauBoutonVariable(int i,QString key,QString val
 void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString valeur){
     QPushButton *nouveauProgramme = new QPushButton(key);
     QSignalMapper * mapper = new QSignalMapper(this);
-    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileVariableProgramme(QString)));
+    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileProgramme(QString)));
     mapper->setMapping(nouveauProgramme, valeur);
     QObject::connect(nouveauProgramme,SIGNAL(clicked()),mapper,SLOT(map()));
     tableBoutonVariable->setCellWidget(i,1,nouveauProgramme);

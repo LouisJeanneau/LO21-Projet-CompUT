@@ -3,7 +3,6 @@
 vueVariable::vueVariable(QWidget * parent):
     QWidget(parent)
 {
-    qDebug() << "test";
     setWindowTitle("Modification des variables");
     texteCreationVariable = new QLabel("Entrez votre nouvelle variable :");
     texteVariableEnregistre = new QLabel("Variables enregistrées :");
@@ -19,7 +18,7 @@ vueVariable::vueVariable(QWidget * parent):
     choixSuppression = new QComboBox;
     validerSuppression = new QPushButton("Supprimer");
 
-    qDebug() << "test";
+
     layoutSaisie->addWidget(entreeAtome);
     layoutSaisie->addWidget(entreeVariable);
     layoutSaisie->addWidget(validerCreation);
@@ -33,7 +32,6 @@ vueVariable::vueVariable(QWidget * parent):
     tableVariable->verticalHeader()->setVisible(false);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    qDebug() << "test persistence";
     auto mapVariable = persistence.getMapVariable();
     for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         QLabel *key = new QLabel(it.key());
@@ -56,7 +54,7 @@ vueVariable::vueVariable(QWidget * parent):
 
 void vueVariable::recupererKey(){
     persistence.supprimerVariable(choixSuppression->currentText());
-    refreshVariable()
+    refreshVariable();
 }
 
 void vueVariable::ajouterVariable(){

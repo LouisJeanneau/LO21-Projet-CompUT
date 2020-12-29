@@ -32,7 +32,8 @@ vueProgramme::vueProgramme(QWidget * parent):
     tableProgramme->verticalHeader()->setVisible(false);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (auto it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
+    auto mapProgramme = persistence.getMapProgramme();
+    for(auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);
@@ -54,64 +55,37 @@ vueProgramme::vueProgramme(QWidget * parent):
 }
 
 void vueProgramme::recupererKey(){
-    persistence.getMapProgramme().remove(choixSuppressionPG->currentText());
+    persistence.supprimerProgramme(choixSuppressionPG->currentText());
     refreshProgramme();
 }
 
-void vueProgramme::ajouterProgramme(){
+void vueProgramme::ajouterProgramme() {
     QString saisieAtomePG = entreeAtomePG->text();
     saisieAtomePG = saisieAtomePG.toUpper();
     QString saisieProgramme = entreeProgramme->text();
-    if(saisieAtomePG!=NULL && saisieProgramme!=NULL){
-        if(saisieAtomePG == '0' || saisieAtomePG == '1' || saisieAtomePG == '2' || saisieAtomePG == '3' || saisieAtomePG == '4' ||
-           saisieAtomePG == '5' || saisieAtomePG == '6' || saisieAtomePG == '7' || saisieAtomePG == '8' || saisieAtomePG == '9' ||
-           saisieAtomePG == '+' || saisieAtomePG == '-' || saisieAtomePG == '*' || saisieAtomePG == '/' ||
-           saisieAtomePG == "CLEAR" || saisieAtomePG == "EVAL"){
-           QMessageBox::critical(this,"Erreur","Cet atome ne peut pas être réutilisé.");
-           entreeAtomePG->clear();
-        } else {
-            int estProgramme = 0;
-            for (int i = 0; i<saisieProgramme.size();i++){
-                if (saisieProgramme[i] == ' '){
-                    estProgramme = 1;
-                }
-            }
-            if(estProgramme == 0){
-                QMessageBox::critical(this,"Erreur","Pour enregistrer une variable, utilisez l'onglet Variable.");
-                return;
-            }
-            entreeAtomePG->clear();
-            entreeProgramme->clear();
-            QMap<QString,QString>::iterator it;
-            int i = 0;
-            for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
-                if(saisieAtomePG == it.key()){
-                    it.value()=saisieProgramme;
-                    i = 1;
-                }
-            }
-            if(i == 0){
-                persistence.getMapProgramme().insert(saisieAtomePG,saisieProgramme);
-            }
-            refreshProgramme();
-        }
-    } else {
-        QMessageBox::critical(this,"Erreur","Remplissez tous les champs avant de valider.");
+    try {
+        persistence.ajouterProgramme(saisieAtomePG, saisieProgramme);
+    } catch (ComputerException &ce) {
+        QMessageBox::critical(this,"Erreur",ce.what());
     }
+    entreeAtomePG->clear();
+    entreeProgramme->clear();
+    refreshProgramme();
 }
 
 void vueProgramme::refreshProgramme(){
+    std::cout << "Salut moi c'est refreshProgramme" << std::endl;
     tableProgramme->setRowCount(persistence.getMapProgrammeSize());
-    QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
+    auto mapProgramme = persistence.getMapProgramme();
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         tableProgramme->setCellWidget(i,0,new QLabel(""));
         tableProgramme->setCellWidget(i,1,new QLabel(""));
         i++;
     }
     choixSuppressionPG->clear();
     i = 0;
-    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);
@@ -120,8 +94,10 @@ void vueProgramme::refreshProgramme(){
         i++;
     }
     fenetrePrincipale->refreshTableVariable();
+}
+
+void vueProgramme::appelRefreshProgramme() {
+    refreshProgramme();
 };
 
-void vueProgramme::supprimerProgramme(){
 
-}

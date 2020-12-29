@@ -10,11 +10,8 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    qDebug() << "test1";
     QApplication a(argc, argv);
-    qDebug() << "test2";
     fenetrePrincipale fenetre;
-    qDebug() << "test3";
     fenetre.show();
     return a.exec();
 }
