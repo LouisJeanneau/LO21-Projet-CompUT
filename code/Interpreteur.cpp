@@ -98,17 +98,30 @@ void Interpreteur::execute(QString operande) {
         return;
     }
     else if(operande == "SWAP"){
+        if(pile.taille()<2) {
+            pile.modifierEtat("Il manque une ou plusieurs opérandes pour cette opération");
+            return;
+        }
         pile.swap();
         return;
     }
     else if(operande == "DROP"){
+        if(pile.taille()<1){
+            pile.modifierEtat("Il manque une opérande pour cette opération");
+            return;
+        }
         pile.drop();
         return;
     }
     else if(operande == "DUP"){
+        if(pile.taille()<1){
+            pile.modifierEtat("Il manque une opérande pour cette opération");
+            return;
+        }
         pile.dup();
         return;
     }
+
     else {
         Item resultat = ConstructeurLitterale::distinguerConstruire(operande);
         pile.push(resultat);

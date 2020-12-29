@@ -70,7 +70,7 @@ class Programme : public Litterale{
 public:
     Programme(QString s) : programme(std::move(s)) {}
     ~Programme() {
-        cout << "Programme detruite" << endl;
+        cout << "Programme detruit" << endl;
     }
     QString versString() const;
 };
