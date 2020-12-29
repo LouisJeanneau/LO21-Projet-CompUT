@@ -118,6 +118,8 @@ Item Operateur::opPlus(Item i1, Item i2) {
 
     }
 
+    throw ComputerException("Un problème est survenu");
+
 }
 
 
@@ -171,6 +173,9 @@ Item Operateur::opMoins(Item i1, Item i2) {
         }
 
     }
+
+    throw ComputerException("Un problème est survenu");
+
 }
 
 Item Operateur::opMul(Item i1, Item i2) {
@@ -223,6 +228,9 @@ Item Operateur::opMul(Item i1, Item i2) {
         }
 
     }
+
+    throw ComputerException("Un problème est survenu");
+
 }
 
 Item Operateur::opDivision(Item i1, Item i2) {
@@ -290,6 +298,9 @@ Item Operateur::opDivision(Item i1, Item i2) {
         }
 
     }
+
+    throw ComputerException("Un problème est survenu");
+
 }
 
 Item Operateur::opDIV(Item i1, Item i2) {
@@ -400,6 +411,9 @@ Item Operateur::opNEG(Item i) {
         }
 
     }
+
+    throw ComputerException("Un problème est survenu");
+
 }
 
 Item Operateur::opEgal(Item i1, Item i2) {
@@ -780,9 +794,6 @@ void Operateur::opIFT(Item i1, Item i2) {
         //Si r1 est différent de 0 alors on évalue i2, sinon on ne l'évalue pas
         if (r2)
             opEval(i2);
-
-        //Il faut liberer la mémoire alloué à la littérale qui était contenue dans l'item res, sinon la mémoire fuite
-        res.supprimer();
     }
 }
 
