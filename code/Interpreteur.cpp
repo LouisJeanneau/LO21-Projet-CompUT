@@ -93,9 +93,11 @@ void Interpreteur::execute(QString operande) {
         }
 
     }
-
     else if(operande == "EVAL"){
-
+        if(pile.estVide()){
+            pile.modifierEtat("Il manque une opérande pour cette opération");
+            return;
+        }
         Item i = pile.end();
         try {
             pile.pop();
@@ -103,6 +105,7 @@ void Interpreteur::execute(QString operande) {
             i.supprimer();
             return;
         } catch (ComputerException &ce) {
+            pile.push(i);
             pile.modifierEtat(ce.what());
             return;
         }
@@ -113,26 +116,14 @@ void Interpreteur::execute(QString operande) {
         return;
     }
     else if(operande == "SWAP"){
-        if(pile.taille()<2){
-            pile.modifierEtat("Il manque une ou plusieurs opérandes pour cette opération");
-            return;
-        }
         pile.swap();
         return;
     }
     else if(operande == "DROP"){
-        if(pile.taille()<1){
-            pile.modifierEtat("Il manque une opérande pour cette opération");
-            return;
-        }
         pile.drop();
         return;
     }
     else if(operande == "DUP"){
-        if(pile.taille()<1){
-            pile.modifierEtat("Il manque une opérande pour cette opération");
-            return;
-        }
         pile.dup();
         return;
     }
@@ -144,14 +135,15 @@ void Interpreteur::execute(QString operande) {
         Item i1 = pile.end();
         Item i2 = pile.end(1);
         try {
-            QString atome = i2.obtenirLitterale().versString();
+            QString atome = i1.obtenirLitterale().versString();
             atome.chop(1);
             atome.remove(0,1);
-            persistence.ajouterVariable(i1.obtenirLitterale().versString(), i2.obtenirLitterale().versString());
+            persistence.ajouterVariable(atome, i2.obtenirLitterale().versString());
             pile.pop();
             i1.supprimer();
             pile.pop();
             i2.supprimer();
+            
             return;
         } catch (ComputerException &ce) {
             pile.modifierEtat(ce.what());

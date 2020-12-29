@@ -22,6 +22,7 @@ void Persistence::ajouterVariable(QString saisieAtome, QString saisieVariable) {
             }
             else{
                 mapVariable.insert(saisieAtome,saisieVariable);
+
                 return;
             }
         }

@@ -10,8 +10,9 @@
 #include <QMap>
 #include <QWidget>
 
-class Persistence
+class Persistence : public QObject
 {
+    Q_OBJECT
     static Persistence instance;
     Persistence() = default;
     QMap<QString, QString> mapVariable;
@@ -24,6 +25,8 @@ public:
     QMap<QString, QString> getMapProgramme(){return mapProgramme;};
     unsigned int getMapProgrammeSize(){return mapProgramme.size();};
     static Persistence& getPersistence();
+    signals:
+    void actualiserAffichage();
 };
 
 #endif // PERSISTENCE_H

@@ -70,6 +70,7 @@ void vueVariable::ajouterVariable(){
 }
 
 void vueVariable::refreshVariable(){
+    std::cout << "Salut moi c'est refreshVariable" << std::endl;
     tableVariable->setRowCount(persistence.getMapVariableSize());
     int i = 0;
     auto mapVariable = persistence.getMapVariable();

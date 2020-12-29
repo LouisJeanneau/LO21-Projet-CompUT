@@ -22,11 +22,15 @@ Item &Item::operator=(const Item &i) {
 
 
 void Pile::pop() {
+    if(estVide())
+        throw ComputerException("Echec du pop, Pile vide");
     listeItems.pop_back();
     modifierEtat("Pop réussi");
 }
 
 Item Pile::end(int n) {
+    if(estVide())
+        throw ComputerException("Echec du end, Pile vide");
     Item i=listeItems.at(listeItems.size()-n-1);
     return i;
 }
@@ -82,9 +86,9 @@ void Pile::clear() {
 
 void Pile::swap() {
     try{
-        Item itemTop = listeItems.back();
+        Item itemTop = end();
         listeItems.pop_back();
-        Item itemSecond = listeItems.back();
+        Item itemSecond = end();
         listeItems.pop_back();
         listeItems.push_back(itemTop);
         listeItems.push_back(itemSecond);
@@ -96,6 +100,10 @@ void Pile::swap() {
 
 void Pile::drop() {
     try{
+        if(estVide()){
+            modifierEtat("Erreur lors du drop");
+            return;
+        }
         listeItems.back().supprimer();
         listeItems.pop_back();
         modifierEtat("Drop réussi");
@@ -106,10 +114,10 @@ void Pile::drop() {
 
 void Pile::dup() {
     try{
-        QString stringTemp = listeItems.back().obtenirLitterale().versString();
+        QString stringTemp = end().obtenirLitterale().versString();
         Item itemTemp = ConstructeurLitterale::distinguerConstruire(stringTemp);
         listeItems.push_back(itemTemp);
-        modifierEtat("Dupréussi");
+        modifierEtat("Dup réussi");
     } catch (ComputerException &ce) {
         modifierEtat("Erreur lors du dup");
     }

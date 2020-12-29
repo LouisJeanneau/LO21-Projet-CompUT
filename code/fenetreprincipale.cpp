@@ -155,6 +155,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     //=========================6 : Connecter signaux/slots===============
     QObject::connect(&Pile::obtenirPile(), SIGNAL(refresh()),this,SLOT(refresh()));
+    QObject::connect(&persistence, SIGNAL(actualiser()), vueVariable, SLOT(refreshVariable()));
     connect(commande, SIGNAL(returnPressed()),this,SLOT(getNextCommande()));
 
     // CONNECTER LES BOUTONS DU CLAVIER NUMERIQUE
@@ -342,6 +343,7 @@ void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString 
 }
 
 void fenetrePrincipale::refreshTableVariable(){
+    std::cout << "Salut moi c'est refreshTableVariable" << std::endl;
     if(persistence.getMapVariableSize()>persistence.getMapProgrammeSize()){
         for(unsigned int i = 0; i<persistence.getMapVariableSize();i++){
             tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
