@@ -55,10 +55,11 @@ void Interpreteur::execute(QString operande) {
 
     QMap<QString, std::function<Item(Item, Item)>> inventaireOpArite2=Operateur::inventaireOpArite2;
     QMap<QString, std::function<Item(Item)>> inventaireOpArite1=Operateur::inventaireOpArite1;
+    QMap<QString, std::function<Item()>> inventaireOpArite0=Operateur::inventaireOpArite0;
 
-    if(Operateur::inventaireOpArite0.contains(operande)){
+    if(inventaireOpArite0.contains(operande)){
         try {
-            Item resultat=Operateur::inventaireOpArite0[operande]();
+            Item resultat=inventaireOpArite0[operande]();
             pile.push(resultat);
         } catch (ComputerException &ce) {
             pile.modifierEtat(ce.what());
@@ -117,38 +118,6 @@ void Interpreteur::execute(QString operande) {
     else if(operande == "DUP"){
         pile.dup();
         return;
-    }
-    else if(operande == "STO"){
-        if(pile.taille()<2){
-            pile.modifierEtat("Il manque un ou plusieurs opérateur pour cette opération");
-            return;
-        }
-        Item i1 = pile.end();
-        Item i2 = pile.end(1);
-        try {
-            QString atome = i2.obtenirLitterale().versString();
-            atome.chop(1);
-            atome.remove(0,1);
-            persistence.ajouterVariable(i1.obtenirLitterale().versString(), i2.obtenirLitterale().versString());
-            pile.pop();
-            i1.supprimer();
-            pile.pop();
-            i2.supprimer();
-            return;
-        } catch (ComputerException &ce) {
-            pile.modifierEtat(ce.what());
-            return;
-        }
-    }
-    else if(persistence.getMapVariable().contains(operande)){
-        try {
-            QString temp=persistence.getMapVariable().operator[](operande);
-            Item resultat = ConstructeurLitterale::distinguerConstruire(temp);
-            pile.push(resultat);
-        } catch (ComputerException &ce) {
-            pile.modifierEtat(ce.what());
-            return;
-        }
     }
     else {
         Item resultat = ConstructeurLitterale::distinguerConstruire(operande);

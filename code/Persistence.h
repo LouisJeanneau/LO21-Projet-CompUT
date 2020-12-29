@@ -1,3 +1,10 @@
+//
+// Created by Ismail Kadiri on 29/12/2020.
+//
+
+#ifndef PROJET_LO21_PERSISTENCE_H
+#define PROJET_LO21_PERSISTENCE_H
+
 #ifndef PERSISTENCE_H
 #define PERSISTENCE_H
 #include <QMap>
@@ -20,3 +27,6 @@ public:
 };
 
 #endif // PERSISTENCE_H
+
+
+#endif //PROJET_LO21_PERSISTENCE_H
