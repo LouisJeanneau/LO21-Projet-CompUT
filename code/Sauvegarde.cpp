@@ -102,7 +102,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
-        persistence.setMapVariable(variable.attribute("id"), variable.attribute("value"));
+        persistence.ajouterVariable(variable.attribute("id"), variable.attribute("value"));
         variable = variable.nextSiblingElement();
     }
 

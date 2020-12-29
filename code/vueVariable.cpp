@@ -59,41 +59,14 @@ void vueVariable::ajouterVariable(){
     QString saisieAtome = entreeAtome->text();
     saisieAtome = saisieAtome.toUpper();
     QString saisieVariable = entreeVariable->text();
-    if(saisieAtome!=NULL && saisieVariable!=NULL){
-        if(saisieAtome == '0' || saisieAtome == '1' || saisieAtome == '2' || saisieAtome == '3' || saisieAtome == '4' ||
-           saisieAtome == '5' || saisieAtome == '6' || saisieAtome == '7' || saisieAtome == '8' || saisieAtome == '9' ||
-           saisieAtome == '+' || saisieAtome == '-' || saisieAtome == '*' || saisieAtome == '/' ||
-           saisieAtome == "CLEAR" || saisieAtome == "EVAL"){
-           QMessageBox::critical(this,"Erreur","Cet atome ne peut pas être réutilisé.");
-           entreeAtome->clear();
-        } else {
-            for (int i = 0; i<saisieVariable.size();i++){
-                if (saisieVariable[i] == ' '){
-                    QMessageBox::critical(this,"Erreur","Rentrez une unique expression sans espace pour une variable.");
-                    return;
-                }
-            }
-            entreeAtome->clear();
-            entreeVariable->clear();
-            QMap<QString,QString>::iterator it;
-            int i = 0;
-            cout << "la ca va" << endl;
-            for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
-                if(saisieAtome == it.key()){
-                    it.value()=saisieVariable;
-                    i = 1;
-                }
-            }
-            cout << "la ca va deuxieme du nom" << endl;
-            if(i == 0){
-                cout << "la ca va TROISIEME du nom" << endl;
-                persistence.setMapVariable(saisieAtome,saisieVariable);
-            }
-            refreshVariable();
-        }
-    } else {
-        QMessageBox::critical(this,"Erreur","Remplissez tous les champs avant de valider.");
+    try {
+        persistence.ajouterVariable(saisieAtome, saisieVariable);
+    } catch (ComputerException &ce) {
+        QMessageBox::critical(this,"Erreur",ce.what());
     }
+    entreeAtome->clear();
+    entreeVariable->clear();
+    refreshVariable();
 }
 
 void vueVariable::refreshVariable(){

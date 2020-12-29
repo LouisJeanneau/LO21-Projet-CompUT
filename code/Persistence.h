@@ -10,7 +10,7 @@ class Persistence
     QMap<QString, QString> mapVariable;
     QMap<QString, QString> mapProgramme;
 public:
-    void setMapVariable(QString atome,QString variable){mapVariable.insert(atome,variable);};
+    void ajouterVariable(QString atome,QString variable);
     QMap<QString, QString> getMapVariable(){return mapVariable;};
     unsigned int getMapVariableSize(){return mapVariable.size();};
     void setMapProgramme(QString atome,QString variable){mapProgramme.insert(atome,variable);};
