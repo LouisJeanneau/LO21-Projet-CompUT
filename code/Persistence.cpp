@@ -1,4 +1,4 @@
-#include "persistence.h"
+#include "Persistence.h"
 
 
 QMap<QString, QString> Persistence::mapVariable {
