@@ -726,13 +726,20 @@ Item Operateur::opNOT(Item i) {
     }}
 
 void Operateur::opEval(Item i) {
-    if (i.obtenirType() != "Expression")
-        throw ComputerException("Évaluation d'un item n'étant pas une expression");
+    if (i.obtenirType() != "Expression" && i.obtenirType() != "Programme")
+        throw ComputerException("Évaluation d'un item n'étant ni une expression ni un programme");
     else {
         Interpreteur& interpreteur = Interpreteur::obtenirInterpreteur();
         auto &litterale = i.obtenirLitterale();
         QString litteraleString = litterale.versString();
-        interpreteur.execute(litteraleString.section("'", 1, 1));
+        if (i.obtenirType() == "Expression")
+            interpreteur.execute(litteraleString.section("'", 1, 1));
+        else if (i.obtenirType() == "Programme")
+            interpreteur.execute(litteraleString.section("[", 1, 1));
+        else
+            throw ComputerException("Évaluation d'un item n'étant ni une expression ni un programme");
+
+
     }
 }
 
