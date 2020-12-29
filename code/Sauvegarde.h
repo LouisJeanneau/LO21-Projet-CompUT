@@ -17,7 +17,7 @@ class Sauvegarde : public QWidget
     Persistence &persistence = Persistence::getPersistence();
 public:
     Sauvegarde(Pile& p) : refPile(p) {};
-	~Sauvegarde();
+	~Sauvegarde() = default;
     void sauvegardeEtat();
     void recupereEtat();
 };

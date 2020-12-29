@@ -17,12 +17,8 @@ QString Programme::versString() const {
     return "["+programme+"]";
 }
 QString Expression::versString() const {
-    return """+this->atome->versString()+""";
+    return expression;
 }
-QString Atome::versString() const {
-    return atome;
-}
-
 
 Rationnel Rationnel::operator+(const Rationnel &r) const {
     return Rationnel(numerateur*r.denominateur + r.numerateur*denominateur, denominateur*r.denominateur);
@@ -60,7 +56,7 @@ void Rationnel::setRationnel(int n, int d) {
 
 Item ConstructeurLitterale::distinguerConstruire(QString s) {
     int flag1=s.startsWith("[");//programme
-    int flag2=s.startsWith("""");//expression
+    int flag2=s.startsWith("'");//expression
     int flag3=s.contains(".");//reel
     int flag4=s.contains("/");//rationnel
     int l=s.length();
@@ -126,13 +122,6 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
 
         }
     }
-
-    else if(s[0]>='A'&&s[0]<='Z')//Atome
-    {
-        Litterale* temp = new Atome(s);
-        return Item(temp, "Entier");
-
-    }
     else if (flag1==1) //programme
     {
         Litterale* temp = new Programme(s.mid(1,l-2));
@@ -140,9 +129,16 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
     }
     else if(flag2==1)//expression
     {
-        Atome ae=Atome(s.mid(1,l-2));
-        Litterale* temp = new Expression(&ae);
-        return Item(temp, "Atome");
+        Litterale* temp = new Expression(s);
+        return Item(temp, "Expression");
     }
-    return Item(nullptr, "Vide");
+    else if(s[0]>='A'&&s[0]<='Z')//Atome non lié
+    {
+        s.insert(0, QString("'"));
+        s.append("'");
+        Litterale* temp = new Expression(s);
+        return Item(temp, "Expression");
+
+    }
+    throw ComputerException("Aucun type d'item trouvé");
 }

@@ -1,13 +1,12 @@
 #include "fenetreprincipale.h"
 #include "Pile.h"
-#include "Sauvegarde.h"
 
 fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     : QWidget(parent) // Appel au constructeur de la classe de base
 {
 
-    sauvegarde = new Sauvegarde(pile);
-    sauvegarde->recupereEtat();
+    //sauvegarde = new Sauvegarde(pile);
+    //sauvegarde->recupereEtat();
     //Créer les différents Objets
     nombreItemAAfficher = 5;
     message = new QLineEdit;
@@ -214,7 +213,11 @@ void fenetrePrincipale :: refresh() {
 void fenetrePrincipale::getNextCommande(){
     message->clear();
     QString saisieComplete = commande->text();
-    controleur->commande(saisieComplete);
+    try {
+        refIntp->interprete(saisieComplete);
+    } catch (ComputerException &ce) {
+
+    }
     commande->clear();
     /*
     QTextStream stream(&saisieComplete);
@@ -222,7 +225,7 @@ void fenetrePrincipale::getNextCommande(){
     do {
         stream >> unElement;
         if(unElement != ""){
-            refIntp->interprete(unElement);
+
         }
     } while(unElement!="");
     if(message->text()==NULL){

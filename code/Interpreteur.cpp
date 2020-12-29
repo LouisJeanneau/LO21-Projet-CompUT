@@ -23,7 +23,7 @@ void Interpreteur::interprete(QString commandeEntree) {
             cout << "axiome" << endl;
             int index = commandeEntree.indexOf('\'', 1);
             if(index == -1)
-                throw ComputerException("Axiome non finie");
+                throw ComputerException(commandeEntree.toStdString());
             unElement = commandeEntree.left(index+1);
             commandeEntree.remove(0, index+1);
             execute(unElement);
@@ -48,7 +48,6 @@ void Interpreteur::interprete(QString commandeEntree) {
             execute(unElement);
         }
     }
-
 }
 
 void Interpreteur::execute(QString operande) {
