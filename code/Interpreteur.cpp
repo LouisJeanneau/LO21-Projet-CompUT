@@ -126,6 +126,8 @@ void Interpreteur::execute(QString operande) {
             i2.supprimer();
             return;
         } catch (ComputerException &ce) {
+            pile.push(i1);
+            pile.push(i2);
             pile.modifierEtat(ce.what());
             return;
         }
