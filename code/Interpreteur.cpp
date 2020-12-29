@@ -55,20 +55,10 @@ void Interpreteur::execute(QString operande) {
 
     QMap<QString, std::function<Item(Item, Item)>> inventaireOpArite2=Operateur::inventaireOpArite2;
     QMap<QString, std::function<Item(Item)>> inventaireOpArite1=Operateur::inventaireOpArite1;
-    QMap<QString, std::function<Item()>> inventaireOpArite0=Operateur::inventaireOpArite0;
 
-    if(inventaireOpArite0.contains(operande)){
-        try {
-            Item resultat=inventaireOpArite0[operande]();
-            pile.push(resultat);
-        } catch (ComputerException &ce) {
-            pile.modifierEtat(ce.what());
-            return;
-        }
-    }
-    else if(inventaireOpArite1.contains(operande)){
+    if(inventaireOpArite1.contains(operande)){
         if(pile.estVide()){
-            pile.modifierEtat("Il manque un opérateur pour cette opération");
+            pile.modifierEtat("Il manque une opérande pour cette opération");
             return;
         }
         Item i1 = pile.end();
@@ -84,7 +74,7 @@ void Interpreteur::execute(QString operande) {
     }
     else if(inventaireOpArite2.contains(operande)){
         if(pile.taille()<2){
-            pile.modifierEtat("Il manque un ou plusieurs opérateur pour cette opération");
+            pile.modifierEtat("Il manque une ou plusieurs opérandes pour cette opération");
             return;
         }
         Item i1 = pile.end();
