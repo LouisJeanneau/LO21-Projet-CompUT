@@ -111,6 +111,26 @@ void Interpreteur::execute(QString operande) {
         }
     }
 
+    else if(operande == "IFT"){
+        if(pile.taille()<2){
+            pile.modifierEtat("Il manque une ou plusieurs opérandes pour cette opération");
+            return;
+        }
+        Item i2 = pile.end();
+        Item i1 = pile.end(1);
+        try {
+            pile.pop();
+            pile.pop();
+            Operateur::opIFT(i1,i2);
+            i1.supprimer();
+            i2.supprimer();
+            return;
+        } catch (ComputerException &ce) {
+            pile.modifierEtat(ce.what());
+            return;
+        }
+
+    }
     else if(operande == "CLEAR"){
         pile.clear();
         return;

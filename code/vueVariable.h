@@ -26,8 +26,9 @@ explicit vueVariable(QWidget *parent = 0);
     class fenetrePrincipale *getFenetrePrincipale(){return fenetrePrincipale;}
     void refreshVariable();
 public slots:
-void ajouterVariable();
-void supprimerVariable();
-void recupererKey();
+    void appelRefreshVariable(){refreshVariable();};
+    void ajouterVariable();
+    void supprimerVariable();
+    void recupererKey();
 };
 #endif // VUEVARIABLE_H
