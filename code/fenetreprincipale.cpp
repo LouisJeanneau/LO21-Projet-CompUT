@@ -13,7 +13,6 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     vuePile = new QTableWidget(getNombreItemAAfficher(),1);
     commande = new QLineEdit;
     refIntp = new Interpreteur(Interpreteur::obtenirInterpreteur());
-    //controleur = new Controleur(Interpreteur::obtenirInterpreteur(),pile);
     vueParametre = new class vueParametre();
     vueVariable = new class vueVariable();
     vueProgramme = new class vueProgramme();
@@ -358,12 +357,13 @@ void fenetrePrincipale::refreshTableVariable(){
     };
     QMap<QString,QString>::iterator it;
     int j = 0;
-    for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
+    auto mapVariable = persistence.getMapVariable();
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         creerNouveauBoutonVariable(j,it.key(),it.value());
         j++;
     }
     j = 0;
-    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
+    for (auto it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
         creerNouveauBoutonProgramme(j,it.key(),it.value());
         j++;
     }

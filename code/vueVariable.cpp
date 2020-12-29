@@ -77,14 +77,17 @@ void vueVariable::ajouterVariable(){
             entreeVariable->clear();
             QMap<QString,QString>::iterator it;
             int i = 0;
+            cout << "la ca va" << endl;
             for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
                 if(saisieAtome == it.key()){
                     it.value()=saisieVariable;
                     i = 1;
                 }
             }
+            cout << "la ca va deuxieme du nom" << endl;
             if(i == 0){
-                persistence.getMapVariable().insert(saisieAtome,saisieVariable);
+                cout << "la ca va TROISIEME du nom" << endl;
+                persistence.setMapVariable(saisieAtome,saisieVariable);
             }
             refreshVariable();
         }
@@ -95,16 +98,17 @@ void vueVariable::ajouterVariable(){
 
 void vueVariable::refreshVariable(){
     tableVariable->setRowCount(persistence.getMapVariableSize());
-    QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
+    auto mapVariable = persistence.getMapVariable();
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         tableVariable->setCellWidget(i,0,new QLabel(""));
         tableVariable->setCellWidget(i,1,new QLabel(""));
         i++;
     }
     choixSuppression->clear();
     i = 0;
-    for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
+
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableVariable->setCellWidget(i,0,key);
