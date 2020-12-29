@@ -726,45 +726,61 @@ Item Operateur::opNOT(Item i) {
     }}
 
 void Operateur::opEval(Item i) {
+
+    //On n'évalue qu'une expression ou un programme pour pas générer de problèmes
     if (i.obtenirType() != "Expression" && i.obtenirType() != "Programme")
         throw ComputerException("Évaluation d'un item n'étant ni une expression ni un programme");
     else {
+        //On récupère une ref sur l'interpreteur
         Interpreteur& interpreteur = Interpreteur::obtenirInterpreteur();
+
+        //On récupère la littérale pointée par l'item
         auto &litterale = i.obtenirLitterale();
+
+        //On récupère la valeur stockée dans la littérale en une chaîne de caractère en retirant les délimitateurs '' ou []
         QString litteraleString = litterale.versString();
         litteraleString.chop(1);
         litteraleString.remove(0, 1);
+
+        //On envoie la chaîne de caractère à l'interpreteur
         interpreteur.interprete(litteraleString);
     }
 }
 
 void Operateur::opIFT(Item i1, Item i2) {
 
+    //On récupère une ref sur la pile
     Pile& pile = Pile::obtenirPile();
 
+    //Si le premier item contient une littérale numérique, on réalise le test directement sur la valeur de la littérale
     if (typeNumerique(i1)) {
 
+        //On récupère la valeur, et on la traite comme un réel (gère les cas d'entiers, rationnels, et réels)
         vector<double> valeurItem1 = recupererValeur(i1);
         double r1 = valeurItem1[0]/valeurItem1[1];
 
+        //Si r1 est différent de 0 alors on évalue i2, sinon on ne l'évalue pas
         if (r1)
             opEval(i2);
-        else
-            pile.drop();
+
     }
 
     else if (i1.obtenirType() == "Expression" || i1.obtenirType() == "Programme") {
+
+        //On évalue le premier item
         opEval(i1);
+
+        //On récupère l'item le plus haut de la pile suite à l'évaluation en le retirant de la pile
         Item res = pile.end();
         pile.pop();
+
+        //On récupère la valeur, et on la traite comme un réel (gère les cas d'entiers, rationnels, et réels)
         vector<double> valeurItemRes = recupererValeur(res);
         double r2 = valeurItemRes[0]/valeurItemRes[1];
 
+        //Si r1 est différent de 0 alors on évalue i2, sinon on ne l'évalue pas
         if (r2)
             opEval(i2);
-        else
-            pile.drop();
-
 
     }
 }
