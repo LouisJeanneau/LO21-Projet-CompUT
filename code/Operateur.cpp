@@ -741,7 +741,9 @@ void Operateur::opEval(Item i) {
 void Operateur::opIFT(Item i1, Item i2) {
 
     Pile& pile = Pile::obtenirPile();
+
     if (typeNumerique(i1)) {
+
         vector<double> valeurItem1 = recupererValeur(i1);
         double r1 = valeurItem1[0]/valeurItem1[1];
 
@@ -752,6 +754,17 @@ void Operateur::opIFT(Item i1, Item i2) {
     }
 
     else if (i1.obtenirType() == "Expression" || i1.obtenirType() == "Programme") {
+        opEval(i1);
+        Item res = pile.end();
+        pile.pop();
+        vector<double> valeurItemRes = recupererValeur(res);
+        double r2 = valeurItemRes[0]/valeurItemRes[1];
+
+        if (r2)
+            opEval(i2);
+        else
+            pile.drop();
+
 
     }
 }
