@@ -181,9 +181,19 @@ public slots:
         getNextCommande();
     };
 
-    void empile_EVAL() { getNextCommande(); }
+    void empile_EVAL() {
+        commande->setText("EVAL");
+        getNextCommande();
+    }
 
-    void empileVariableProgramme(QString valeur) {
+    void empileProgramme(QString valeur) {
+        valeur.chop(1);
+        valeur.remove(0, 1);
+        commande->setText(valeur);
+        getNextCommande();
+    };
+
+    void empileVariable(QString valeur) {
         commande->setText(valeur);
         getNextCommande();
     };

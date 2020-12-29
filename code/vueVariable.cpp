@@ -18,6 +18,10 @@ vueVariable::vueVariable(QWidget * parent):
     choixSuppression = new QComboBox;
     validerSuppression = new QPushButton("Supprimer");
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> cb4f4c4790baa45009d5c63d3ed3290984b8ebd4
     layoutSaisie->addWidget(entreeAtome);
     layoutSaisie->addWidget(entreeVariable);
     layoutSaisie->addWidget(validerCreation);

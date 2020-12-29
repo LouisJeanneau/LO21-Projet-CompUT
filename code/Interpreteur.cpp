@@ -154,11 +154,18 @@ void Interpreteur::execute(QString operande) {
         }
         Item i1 = pile.end();
         Item i2 = pile.end(1);
+        if(i1.obtenirType() != "Expression"){
+            pile.modifierEtat("L'identifiant n'est pas conforme");
+            return;
+        }
         try {
             QString atome = i1.obtenirLitterale().versString();
             atome.chop(1);
             atome.remove(0,1);
-            persistence.ajouterVariable(atome, i2.obtenirLitterale().versString());
+            if(i2.obtenirType() == "Programme")
+                persistence.ajouterProgramme(atome, i2.obtenirLitterale().versString());
+            else
+                persistence.ajouterVariable(atome, i2.obtenirLitterale().versString());
             pile.pop();
             i1.supprimer();
             pile.pop();
@@ -174,6 +181,17 @@ void Interpreteur::execute(QString operande) {
             QString temp=persistence.getMapVariable().operator[](operande);
             Item resultat = ConstructeurLitterale::distinguerConstruire(temp);
             pile.push(resultat);
+        } catch (ComputerException &ce) {
+            pile.modifierEtat(ce.what());
+            return;
+        }
+    }
+    else if(persistence.getMapProgramme().contains(operande)){
+        try {
+            QString temp=persistence.getMapProgramme().operator[](operande);
+            temp.chop(1);
+            temp.remove(0, 1);
+            interprete(temp);
         } catch (ComputerException &ce) {
             pile.modifierEtat(ce.what());
             return;

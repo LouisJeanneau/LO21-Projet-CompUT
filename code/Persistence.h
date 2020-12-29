@@ -29,7 +29,13 @@ public:
 
     unsigned int getMapVariableSize() { return mapVariable.size(); };
 
+<<<<<<< HEAD
     void ajouterProgramme(QString atome, QString variable) { mapProgramme.insert(atome, variable); };
+=======
+    void ajouterProgramme(QString saisieAtome, QString saisieProgramme);
+
+    void supprimerProgramme(QString atome);
+>>>>>>> cb4f4c4790baa45009d5c63d3ed3290984b8ebd4
 
     QMap<QString, QString> getMapProgramme() { return mapProgramme; };
 
