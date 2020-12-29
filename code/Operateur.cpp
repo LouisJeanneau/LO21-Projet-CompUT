@@ -32,7 +32,7 @@ QMap<QString, function<Item(Item)>> Operateur::inventaireOpArite1 = {
 };
 
 
-bool Operateur::typeValide(Item &i) {
+bool Operateur::typeNumerique(Item &i) {
     QString typeItem = i.obtenirType();
     if (typeItem != "Entier" && typeItem != "Reel" && typeItem != "Rationnel")
         return false;
@@ -74,7 +74,7 @@ Item Operateur::opPlus(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -128,7 +128,7 @@ Item Operateur::opMoins(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -181,7 +181,7 @@ Item Operateur::opMul(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -233,7 +233,7 @@ Item Operateur::opDivision(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -300,7 +300,7 @@ Item Operateur::opDIV(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -337,7 +337,7 @@ Item Operateur::opMOD(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -376,7 +376,7 @@ Item Operateur::opNEG(Item i) {
     QString typeItem = i.obtenirType();
 
     //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeValide(i))
+    if (!typeNumerique(i))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -410,7 +410,7 @@ Item Operateur::opEgal(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -446,7 +446,7 @@ Item Operateur::opDifferent(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -483,7 +483,7 @@ Item Operateur::opInfEgal(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -520,7 +520,7 @@ Item Operateur::opSupEgal(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -556,7 +556,7 @@ Item Operateur::opSup(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -592,7 +592,7 @@ Item Operateur::opInf(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -628,7 +628,7 @@ Item Operateur::opAND(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -665,7 +665,7 @@ Item Operateur::opOR(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i1) || !typeValide(i2))
+    if (!typeNumerique(i1) || !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -701,7 +701,7 @@ Item Operateur::opNOT(Item i) {
     QString typeItem1 = i.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeValide(i))
+    if (!typeNumerique(i))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -740,6 +740,20 @@ void Operateur::opEval(Item i) {
 
 void Operateur::opIFT(Item i1, Item i2) {
 
+    Pile& pile = Pile::obtenirPile();
+    if (typeNumerique(i1)) {
+        vector<double> valeurItem1 = recupererValeur(i1);
+        double r1 = valeurItem1[0]/valeurItem1[1];
+
+        if (r1)
+            opEval(i2);
+        else
+            pile.drop();
+    }
+
+    else if (i1.obtenirType() == "Expression" || i1.obtenirType() == "Programme") {
+
+    }
 }
 
 
