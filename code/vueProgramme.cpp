@@ -32,7 +32,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     tableProgramme->verticalHeader()->setVisible(false);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
+    for (auto it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);

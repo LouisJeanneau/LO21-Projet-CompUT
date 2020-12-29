@@ -171,7 +171,6 @@ Item Operateur::opMoins(Item i1, Item i2) {
         }
 
     }
-
 }
 
 Item Operateur::opMul(Item i1, Item i2) {

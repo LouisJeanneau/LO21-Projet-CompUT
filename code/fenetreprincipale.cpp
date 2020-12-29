@@ -142,12 +142,15 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     tableBoutonVariable->verticalHeader()->setVisible(false);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
+    auto mapVariable = persistence.getMapVariable();
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         creerNouveauBoutonVariable(i,it.key(),it.value());
         i++;
     }
     i = 0;
-    for (it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
+    qDebug() << "test10ter";
+    auto mapProgramme = persistence.getMapProgramme();
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         creerNouveauBoutonProgramme(i,it.key(),it.value());
         i++;
     }
@@ -155,7 +158,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     //=========================6 : Connecter signaux/slots===============
     QObject::connect(&Pile::obtenirPile(), SIGNAL(refresh()),this,SLOT(refresh()));
-    QObject::connect(&persistence, SIGNAL(actualiserAffichage()), vueVariable, SLOT(appelRefreshVariable()));
+    QObject::connect(&Persistence::getPersistence(), SIGNAL(actualiserAffichage()), vueVariable, SLOT(appelRefreshVariable()));
     connect(commande, SIGNAL(returnPressed()),this,SLOT(getNextCommande()));
 
     // CONNECTER LES BOUTONS DU CLAVIER NUMERIQUE
@@ -365,7 +368,8 @@ void fenetrePrincipale::refreshTableVariable(){
         j++;
     }
     j = 0;
-    for (auto it = persistence.getMapProgramme().begin(); it != persistence.getMapProgramme().end(); it++){
+    auto mapProgramme = persistence.getMapProgramme();
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         creerNouveauBoutonProgramme(j,it.key(),it.value());
         j++;
     }

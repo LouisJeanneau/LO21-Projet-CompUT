@@ -18,7 +18,6 @@
 #include <QMap>
 #include <QSignalMapper>
 #include <QComboBox>
-#include <QtXml>
 #include "Pile.h"
 #include "Interpreteur.h"
 #include "Litterale.h"
@@ -28,7 +27,6 @@
 #include "vueVariable.h"
 #include "vueProgramme.h"
 #include "vueParametre.h"
-#include "Sauvegarde.h"
 
 class vueParametre;
 
@@ -43,9 +41,10 @@ Q_OBJECT
     unsigned int nombreItemAAfficher;
     QLineEdit *commande;
     Pile &pile = Pile::obtenirPile();
-    //Controleur *controleur;
-    Sauvegarde *sauvegarde;
     Persistence &persistence = Persistence::getPersistence();
+    //Controleur *controleur;
+    //Sauvegarde *sauvegarde;
+
     Interpreteur *refIntp;
     vueParametre *vueParametre;
     vueVariable *vueVariable;
@@ -85,13 +84,9 @@ Q_OBJECT
     QHBoxLayout *affichageVues;
 
 public:
-    explicit fenetrePrincipale(QWidget *parent = 0);
+    fenetrePrincipale(QWidget *parent = 0);
 
-    ~fenetrePrincipale() {
-        //delete pile;
-        //delete controleur;
-        delete refIntp;
-    }
+    ~fenetrePrincipale() = default;
 
     unsigned int getNombreItemAAfficher() { return nombreItemAAfficher; };
 
@@ -100,8 +95,6 @@ public:
     fenetrePrincipale *getFenetrePrincipale() { return this; };
 
     void refreshMethode();
-
-    void refreshTableVariable();
 
     void creerNouveauBoutonVariable(int i,QString key,QString value);
 
@@ -208,6 +201,8 @@ public slots:
     void ouvertureVueProgramme();
 
     void ouvertureVueParametre();
+
+    void refreshTableVariable();
 };
 
 #endif // FENETREPRINCIPALE_H

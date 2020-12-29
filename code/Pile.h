@@ -24,9 +24,7 @@ public:
     Item(const Item &i);
     Item &operator=(const Item &i);
 
-    ~Item() {
-        cout << "Destruction defaut" << endl;
-    };
+    ~Item() {};
 
     void supprimer();
 
@@ -48,9 +46,7 @@ Q_OBJECT
     QString etat;
     std::vector<Item> listeItems;
     static Pile instance;
-
     Pile() = default;
-
 public:
     static Pile &obtenirPile();
 

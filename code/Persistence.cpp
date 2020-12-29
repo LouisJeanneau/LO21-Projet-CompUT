@@ -22,7 +22,7 @@ void Persistence::ajouterVariable(QString saisieAtome, QString saisieVariable) {
             }
             else{
                 mapVariable.insert(saisieAtome,saisieVariable);
-
+                emit actualiserAffichage();
                 return;
             }
         }
@@ -30,4 +30,8 @@ void Persistence::ajouterVariable(QString saisieAtome, QString saisieVariable) {
     else {
         throw ComputerException("Remplissez tous les champs avant de valider.");
     }
+}
+
+void Persistence::supprimerVariable(QString atome) {
+    mapVariable.remove(atome);
 }

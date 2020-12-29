@@ -163,7 +163,6 @@ void Interpreteur::execute(QString operande) {
             i1.supprimer();
             pile.pop();
             i2.supprimer();
-            
             return;
         } catch (ComputerException &ce) {
             pile.modifierEtat(ce.what());

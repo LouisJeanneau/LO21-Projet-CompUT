@@ -6,17 +6,14 @@
 #include "Pile.h"
 
 Item::Item(Litterale *l, QString t) : litPointeur(l), typeItem(t){
-    cout << "Construction defaut" << endl;
 }
 
 Item::Item(const Item &i) : litPointeur(i.litPointeur), typeItem(i.typeItem) {
-    cout << "Construction recopie" << endl;
 }
 
 Item &Item::operator=(const Item &i) {
     this->litPointeur = i.litPointeur;
     this->typeItem = i.typeItem;
-    cout << "Construction affectation" << endl;
     return *this;
 }
 

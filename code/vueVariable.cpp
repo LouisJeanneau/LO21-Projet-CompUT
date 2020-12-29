@@ -3,6 +3,7 @@
 vueVariable::vueVariable(QWidget * parent):
     QWidget(parent)
 {
+    qDebug() << "test";
     setWindowTitle("Modification des variables");
     texteCreationVariable = new QLabel("Entrez votre nouvelle variable :");
     texteVariableEnregistre = new QLabel("Variables enregistrées :");
@@ -18,6 +19,7 @@ vueVariable::vueVariable(QWidget * parent):
     choixSuppression = new QComboBox;
     validerSuppression = new QPushButton("Supprimer");
 
+    qDebug() << "test";
     layoutSaisie->addWidget(entreeAtome);
     layoutSaisie->addWidget(entreeVariable);
     layoutSaisie->addWidget(validerCreation);
@@ -31,7 +33,9 @@ vueVariable::vueVariable(QWidget * parent):
     tableVariable->verticalHeader()->setVisible(false);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = persistence.getMapVariable().begin(); it != persistence.getMapVariable().end(); it++){
+    qDebug() << "test persistence";
+    auto mapVariable = persistence.getMapVariable();
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableVariable->setCellWidget(i,0,key);
@@ -51,8 +55,8 @@ vueVariable::vueVariable(QWidget * parent):
 }
 
 void vueVariable::recupererKey(){
-    persistence.getMapVariable().remove(choixSuppression->currentText());
-    refreshVariable();
+    persistence.supprimerVariable(choixSuppression->currentText());
+    refreshVariable()
 }
 
 void vueVariable::ajouterVariable(){
@@ -93,6 +97,6 @@ void vueVariable::refreshVariable(){
     fenetrePrincipale->refreshTableVariable();
 };
 
-void vueVariable::supprimerVariable(){
-
+void vueVariable::appelRefreshVariable() {
+    refreshVariable();
 }
