@@ -732,14 +732,8 @@ void Operateur::opEval(Item i) {
         Interpreteur& interpreteur = Interpreteur::obtenirInterpreteur();
         auto &litterale = i.obtenirLitterale();
         QString litteraleString = litterale.versString();
-        if (i.obtenirType() == "Expression")
-            interpreteur.execute(litteraleString.section("'", 1, 1));
-        else if (i.obtenirType() == "Programme")
-            interpreteur.execute(litteraleString.section("[", 1, 1));
-        else
-            throw ComputerException("Évaluation d'un item n'étant ni une expression ni un programme");
-
-
+        litteraleString.chop(1);
+        interpreteur.execute(litteraleString.remove(0,1));
     }
 }
 
