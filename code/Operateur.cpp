@@ -781,7 +781,6 @@ void Operateur::opIFT(Item i1, Item i2) {
         //Si r1 est différent de 0 alors on évalue i2, sinon on ne l'évalue pas
         if (r2)
             opEval(i2);
-
     }
 }
 

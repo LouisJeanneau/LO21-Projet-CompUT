@@ -116,8 +116,8 @@ void Interpreteur::execute(QString operande) {
             pile.modifierEtat("Il manque une ou plusieurs opérandes pour cette opération");
             return;
         }
-        Item i2 = pile.end();
         Item i1 = pile.end(1);
+        Item i2 = pile.end();
         try {
             pile.pop();
             pile.pop();
