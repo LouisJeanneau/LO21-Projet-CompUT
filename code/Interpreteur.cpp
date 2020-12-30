@@ -31,8 +31,7 @@ void Interpreteur::interprete(QString commandeEntree) {
         else if(commandeEntree.at(0) == "["){
             int index = commandeEntree.lastIndexOf("]");
             if(index == -1){
-                //throw ComputerException("Programme non finie");
-                cout << commandeEntree.toStdString() << endl;
+                throw ComputerException("Programme non finie");
             }
 
             unElement = commandeEntree.left(index+1);

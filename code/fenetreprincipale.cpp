@@ -219,7 +219,7 @@ void fenetrePrincipale::getNextCommande(){
     try {
         refIntp->interprete(saisieComplete);
     } catch (ComputerException &ce) {
-
+        message->setText(ce.what());
     }
     commande->clear();
 }
