@@ -67,6 +67,44 @@ std::vector<double> Operateur::recupererValeur(Item &i) {
     return valeur;
 }
 
+bool Operateur::typeVariable(Item& i) {
+
+    //On récupère une ref sur persistence
+    Persistence& persistence=Persistence::getPersistence();
+
+    QString litteraleString = i.obtenirLitterale().versString().remove(0,1);
+    litteraleString.chop(1);
+
+    if (persistence.getMapVariable().contains(litteraleString.toUpper()))
+        return true;
+    else
+        return false;
+
+}
+
+void Operateur::processVariable(Item &i) {
+
+    //On récupère une ref sur la pile
+    Pile& pile = Pile::obtenirPile();
+
+    if (typeVariable(i)) {
+
+        Item i1 = pile.end();
+        Item i2 = pile.end(1);
+        if ( i1 == i )
+            opEval(i);
+        else if ( i2 == i) {
+            pile.pop();
+            opEval(i);
+            pile.push(i1);
+        }
+        else
+            throw ComputerException("Problème survenu");
+    }
+
+}
+
+
 Item Operateur::opPlus(Item i1, Item i2) {
 
     //On récupére les types des items i1 et i2
@@ -74,10 +112,14 @@ Item Operateur::opPlus(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
+
+        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+        processVariable(i1);
+        processVariable(i2);
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -119,7 +161,6 @@ Item Operateur::opPlus(Item i1, Item i2) {
     }
 
 }
-
 
 Item Operateur::opMoins(Item i1, Item i2) {
 

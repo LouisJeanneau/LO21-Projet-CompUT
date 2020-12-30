@@ -17,7 +17,7 @@ using namespace std;
 class Litterale;
 
 class Item {
-    Litterale *litPointeur{};
+    Litterale *litPointeur;
     QString typeItem;
 public:
     explicit Item(Litterale *l, QString t);
@@ -38,6 +38,8 @@ public:
     Litterale &obtenirLitterale() { return *litPointeur; }
 
     QString obtenirType() { return typeItem; }
+
+    bool operator==(const Item& i) { return this == &i;}
 
 };
 
