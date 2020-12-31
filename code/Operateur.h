@@ -15,6 +15,7 @@
 #include "Exception.h"
 #include "Interpreteur.h"
 #include "Persistence.h"
+#include <cmath>
 
 class Operateur {
 
@@ -56,6 +57,20 @@ public:
     static Item opDIV(Item i1, Item i2); //retourne le quotient de la division
     static Item opMOD(Item i1, Item i2); //retourne le reste de la division
     static Item opNEG(Item i); //transforme un nombre positif en négatif
+    //Opérateurs Numériques OPTIONNELS
+    static Item opNUM(Item i);
+    static Item opDEN(Item i);
+    static Item opPOW(Item i1, Item i2);
+    static Item opSQRT(Item i);
+    static Item opEXP(Item i);
+    static Item opLN(Item i);
+    static Item opSIN(Item i);
+    static Item opCOS(Item i);
+    static Item opARCSIN(Item i);
+    static Item opARCCOS(Item i);
+    static Item opTAN(Item i);
+    static Item opARCTAN(Item i);
+
 
     //Operateurs Logiques: retournent la littérale 0 si faux et la littérale 1 si vrai
     static Item opEgal(Item i1, Item i2);
@@ -68,13 +83,14 @@ public:
     static Item opOR(Item i1, Item i2);
     static Item opNOT(Item i);
 
+
     //Operateurs conditionnels et de boucles
     static void opIFT(Item i1, Item i2); //test logique
+    //Operateurs conditionnels OPTIONNELS
+    static void opIFTE(Item i1, Item i2, Item i3);
 
 
 };
-
-
 
 #endif //PROJET_LO21_OPERATEUR_H
 
