@@ -170,10 +170,10 @@ void Interpreteur::execute(QString operande) {
         Item i2 = pile.end();
         try {
             pile.pop();
-            //pile.pop();
+            pile.pop();
             Operateur::opWHILE(i1,i2);
-            //i1.supprimer();
-            //i2.supprimer();
+            i1.supprimer();
+            i2.supprimer();
             return;
         } catch (ComputerException &ce) {
             pile.push(i1);

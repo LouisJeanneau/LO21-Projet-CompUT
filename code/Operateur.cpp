@@ -1349,11 +1349,11 @@ void Operateur::opWHILE(Item i1, Item i2) {
         //On récupère la valeur, et on la traite comme un réel (gère les cas d'entiers, rationnels, et réels)
         vector<double> valeurItem1 = recupererValeur(i1);
         double r1 = valeurItem1[0]/valeurItem1[1];
-        qDebug() << "valeur i1" << r1;
+        qDebug() << "r1 vaut " << r1;
         //Si r1 est différent de 0 alors on évalue i2, sinon évalue i3
         if (r1) {
             opEval(i2);
-            opWHILE(pile.end(), i2);
+            opWHILE(i1, i2);
         }
     }
 
@@ -1378,6 +1378,7 @@ void Operateur::opWHILE(Item i1, Item i2) {
 
         //Il faut liberer la mémoire alloué à la littérale qui était contenue dans l'item res, sinon la mémoire fuite
         res.supprimer();
+
     }
 
 
