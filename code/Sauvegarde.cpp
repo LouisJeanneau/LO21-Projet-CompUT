@@ -113,7 +113,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
-        persistence.setMapProgramme(programme.attribute("id"), programme.attribute("value"));
+        persistence.ajouterProgramme(programme.attribute("id"), programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
 

@@ -112,11 +112,17 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     //4 : Couleur à la barre + empêcher l'édition
     message->setStyleSheet("background-color :#456268; color : #fcf8ec");
     message->setReadOnly(true);
+    commande->setMouseTracking(false);
+    commande->setFocus();
+    // REGLAGES POUR LA LIGNE DE COMMANDE :
     //5 : Bonne apparence vuePile + non modifiable
     vuePile->setStyleSheet("background-color :#d0e8f2; color : #456268");
+
+
     //vuePile->verticalHeader();
     vuePile->horizontalHeader()->setVisible(false);
     vuePile->horizontalHeader()->setStretchLastSection(true);
+    vuePile->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     QStringList labelList;
     for(unsigned int i=1; i<=getNombreItemAAfficher(); i++){
@@ -140,6 +146,10 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     nomColonnesVariableProgramme << "Programmes";
     tableBoutonVariable->setHorizontalHeaderLabels(nomColonnesVariableProgramme);
     tableBoutonVariable->verticalHeader()->setVisible(false);
+    tableBoutonVariable->horizontalHeader()->setStretchLastSection(true);
+    tableBoutonVariable->verticalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    tableBoutonVariable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+
     QMap<QString,QString>::iterator it;
     int i = 0;
     auto mapVariable = persistence.getMapVariable();
@@ -189,10 +199,6 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     QObject::connect(boutonVariable,SIGNAL(clicked()),this,SLOT(ouvertureVueVariable()));
     QObject::connect(boutonProgramme,SIGNAL(clicked()),this,SLOT(ouvertureVueProgramme()));
     QObject::connect(boutonParametre,SIGNAL(clicked()),this,SLOT(ouvertureVueParametre()));
-
-    //==========================================================================
-    //7 : Focus barre de commande
-    commande->setFocus();
 }
 
 // FIN DU CONSTRUCTEUR QCOMPUTER
@@ -212,6 +218,7 @@ void fenetrePrincipale :: refresh() {
     for(auto it=liste.rbegin();it!=liste.rend() && nb <getNombreItemAAfficher(); ++it, ++nb){
         vuePile->item(nb,0)->setText(it->obtenirLitterale().versString());
     }
+    commande->setFocus();
 }
 void fenetrePrincipale::getNextCommande(){
     message->clear();
@@ -221,17 +228,20 @@ void fenetrePrincipale::getNextCommande(){
     } catch (ComputerException &ce) {
         message->setText(ce.what());
     }
-    commande->clear();
+            //Si nous avons un message d'erreur, on ne clear pas le contenu de commande
+    if(pile.obtenirEtat()=="Pop réussi" || pile.obtenirEtat()=="Push d'un item réussi"){ commande->clear();}
 }
 void fenetrePrincipale::affichageClavierVariable(){
     tableBoutonVariable->setVisible(true);
     afficherClavierVariable->setVisible(false);
     cacherClavierVariable->setVisible(true);
+    commande->setFocus();
 }
 void fenetrePrincipale::cacheClavierVariable(){
     tableBoutonVariable->setVisible(false);
     cacherClavierVariable->setVisible(false);
     afficherClavierVariable->setVisible(true);
+    commande->setFocus();
 }
 
 void fenetrePrincipale::affichageClavierCalculateur(){
@@ -253,6 +263,7 @@ void fenetrePrincipale::affichageClavierCalculateur(){
         boutonEVAL->setVisible(true);
         afficherClavierCalculateur->setVisible(false);
         cacherClavierCalculateur->setVisible(true);
+        commande->setFocus();
 }
 
 void fenetrePrincipale::cacheClavierCalculateur(){
@@ -274,18 +285,22 @@ void fenetrePrincipale::cacheClavierCalculateur(){
     boutonEVAL->setVisible(false);
     cacherClavierCalculateur->setVisible(false);
     afficherClavierCalculateur->setVisible(true);
+    commande->setFocus();
 }
 
 void fenetrePrincipale::ouvertureVueVariable(){
     vueVariable->show();
+    commande->setFocus();
 }
 
 void fenetrePrincipale::ouvertureVueProgramme(){
     vueProgramme->show();
+    commande->setFocus();
 }
 
 void fenetrePrincipale::ouvertureVueParametre(){
     vueParametre->show();
+    commande->setFocus();
 }
 
 void fenetrePrincipale :: refreshMethode() {
@@ -361,3 +376,5 @@ void fenetrePrincipale::refreshTableVariable(){
         j++;
     }
 }
+
+

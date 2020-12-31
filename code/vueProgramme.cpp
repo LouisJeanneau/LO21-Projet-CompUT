@@ -4,6 +4,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     QWidget(parent)
 {
     setWindowTitle("Modification des Programmes");
+    setWindowModality(Qt::ApplicationModal);
     texteCreationProgramme = new QLabel("Entrez votre nouveau programme :");
     texteProgrammeEnregistre = new QLabel("Programmes enregistrées :");
     entreeAtomePG = new QLineEdit;
@@ -30,6 +31,8 @@ vueProgramme::vueProgramme(QWidget * parent):
     nomColonnesTableProgramme << "Programmes";
     tableProgramme->setHorizontalHeaderLabels(nomColonnesTableProgramme);
     tableProgramme->verticalHeader()->setVisible(false);
+    tableProgramme->horizontalHeader()->setStretchLastSection(true);
+    tableProgramme->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString,QString>::iterator it;
     int i = 0;
     auto mapProgramme = persistence.getMapProgramme();
@@ -47,9 +50,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     coucheSuppression->addWidget(choixSuppressionPG);
     coucheSuppression->addWidget(validerSuppresionPG);
     listeProgramme->addLayout(coucheSuppression);
-
     setLayout(listeProgramme);
-
     QObject::connect(validerCreationPG,SIGNAL(clicked()),this,SLOT(ajouterProgramme()));
     QObject::connect(validerSuppresionPG,SIGNAL(clicked()),this,SLOT(recupererKey()));
 }
@@ -99,5 +100,6 @@ void vueProgramme::refreshProgramme(){
 void vueProgramme::appelRefreshProgramme() {
     refreshProgramme();
 };
+
 
 

@@ -4,6 +4,7 @@ vueVariable::vueVariable(QWidget * parent):
     QWidget(parent)
 {
     setWindowTitle("Modification des variables");
+    setWindowModality(Qt::ApplicationModal);
     texteCreationVariable = new QLabel("Entrez votre nouvelle variable :");
     texteVariableEnregistre = new QLabel("Variables enregistrées :");
     entreeAtome = new QLineEdit;
@@ -18,18 +19,20 @@ vueVariable::vueVariable(QWidget * parent):
     choixSuppression = new QComboBox;
     validerSuppression = new QPushButton("Supprimer");
 
-
     layoutSaisie->addWidget(entreeAtome);
     layoutSaisie->addWidget(entreeVariable);
     layoutSaisie->addWidget(validerCreation);
     listeVariable->addWidget(texteCreationVariable);
     listeVariable->addLayout(layoutSaisie);
     listeVariable->addWidget(texteVariableEnregistre);
+
     QStringList nomColonnesTableVariable;
     nomColonnesTableVariable << "Atomes";
     nomColonnesTableVariable << "Variable";
     tableVariable->setHorizontalHeaderLabels(nomColonnesTableVariable);
     tableVariable->verticalHeader()->setVisible(false);
+    tableVariable->horizontalHeader()->setStretchLastSection(true);
+    tableVariable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString,QString>::iterator it;
     int i = 0;
     auto mapVariable = persistence.getMapVariable();
