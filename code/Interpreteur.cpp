@@ -81,9 +81,9 @@ void Interpreteur::execute(QString operande) {
         try {
             Item resultat=inventaireOpArite2[operande](i2, i1);
             pile.pop();
-            i1.supprimer();
+            //i1.supprimer();
             pile.pop();
-            i2.supprimer();
+            //i2.supprimer();
             pile.push(resultat);
             return;
         } catch (ComputerException &ce) {

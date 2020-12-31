@@ -41,6 +41,7 @@ QMap<QString, function<Item(Item)>> Operateur::inventaireOpArite1 = {
         {"ARCCOS", opARCCOS},
         {"TAN", opTAN},
         {"ARCTAN", opARCTAN}
+
 };
 
 
@@ -94,43 +95,22 @@ bool Operateur::typeVariable(Item& i) {
 
 }
 
-Item Operateur::processVariable(Item &i) {
+Item Operateur::processVariable(Item& i) {
 
     //On récupère une ref sur la pile
     Pile& pile = Pile::obtenirPile();
 
     //On vérifie bien que l'item est une variable
     if (typeVariable(i)) {
-
-
-        //On vérifie si l'item i est le dernier empilé ou non
-        if ( i == pile.end() ) {
-            //On évalue i
-            opEval(i);
-            //On renvoie le résultat de l'évaluation de i
-            return pile.end();
-        }
-
-        //Si l'item i est l'avant dernier empilé, on l'évalue en faisant attention de garder l'ordre de la pile
-        else if ( i == pile.end(1)) {
-            //On sauvegarde le dernier item de la pile dans un item i1
-            Item i1 = pile.end();
-            //On le retire de la pile temporairement
-            pile.pop();
-            //On évalue i
-            opEval(i);
-            //On récupère le résultat de l'évaluation dans un item i2
-            Item i2 = pile.end();
-            //On push l'item initial i1
-            pile.push(i1);
-            //On renvoit i2
-            return i2;
-        }
-        else
-            throw ComputerException("Problème survenu");
+        //On évalue i
+        opEval(i);
+        Item res = pile.end();
+        pile.pop();
+        //On renvoie le résultat de l'évaluation de i
+        return res;
     }
 
-    //Si l'item n'et pas une variable on renvoie l'item inchangé
+    //Si l'item n'est pas une variable on renvoie l'item inchangé
     return i;
 
 }
@@ -138,20 +118,19 @@ Item Operateur::processVariable(Item &i) {
 
 Item Operateur::opPlus(Item i1, Item i2) {
 
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
     if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
-
-        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
-        i1 = processVariable(i1);
-        i2 = processVariable(i2);
-
-        //On récupére les types des items i1 et i2 après le processVariable
-        QString typeItem1 = i1.obtenirType();
-        QString typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -164,14 +143,15 @@ Item Operateur::opPlus(Item i1, Item i2) {
         valeurItem2 = recupererValeur(i2);
         //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
 
+        i1.supprimer();
+        i2.supprimer();
+
         //Si une des littérales est un réel, le résultat est un réel
         if (typeItem1 == "Reel" || typeItem2 == "Reel") {
 
             double r1 = valeurItem1[0]/valeurItem1[1];
             double r2 = valeurItem2[0]/valeurItem2[1];
-
             return ConstructeurLitterale::distinguerConstruire(QString::number(r1 + r2));
-
         }
 
         //Si une des littérales est un rationnel, le résultat est un rationnel sauf si le denominateur est égal à 1
@@ -186,7 +166,6 @@ Item Operateur::opPlus(Item i1, Item i2) {
         else if (typeItem1 == "Entier" && typeItem2 == "Entier") {
             int resultat = valeurItem1[0] + valeurItem2[0];
             return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
-
         }
 
     }

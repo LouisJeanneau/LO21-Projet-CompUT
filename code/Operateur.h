@@ -54,9 +54,9 @@ public:
     static Item opMoins(Item i1, Item i2);
     static Item opMul(Item i1, Item i2);
     static Item opDivision(Item i1, Item i2);
-    static Item opDIV(Item i1, Item i2); //retourne le quotient de la division
-    static Item opMOD(Item i1, Item i2); //retourne le reste de la division
-    static Item opNEG(Item i); //transforme un nombre positif en négatif
+    static Item opDIV(Item i1, Item i2);
+    static Item opMOD(Item i1, Item i2);
+    static Item opNEG(Item i);
     //Opérateurs Numériques OPTIONNELS
     static Item opNUM(Item i);
     static Item opDEN(Item i);
