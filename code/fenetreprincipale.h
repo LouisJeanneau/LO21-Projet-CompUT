@@ -43,7 +43,7 @@ Q_OBJECT
     Pile &pile = Pile::obtenirPile();
     Persistence &persistence = Persistence::getPersistence();
     //Controleur *controleur;
-    //Sauvegarde *sauvegarde;
+    //Sauvegarde *<<<<<<<<<sauvegarde;
 
     Interpreteur *refIntp;
     vueParametre *vueParametre;
