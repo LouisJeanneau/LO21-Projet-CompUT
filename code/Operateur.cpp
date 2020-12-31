@@ -179,6 +179,7 @@ Item Operateur::opPlus(Item i1, Item i2) {
 
     }
 
+    throw ComputerException("Problème avec l'opérateur +");
 }
 
 Item Operateur::opMoins(Item i1, Item i2) {
@@ -235,6 +236,9 @@ Item Operateur::opMoins(Item i1, Item i2) {
         }
 
     }
+
+    throw ComputerException("Problème avec l'opérateur -");
+
 }
 
 Item Operateur::opMul(Item i1, Item i2) {
@@ -291,6 +295,8 @@ Item Operateur::opMul(Item i1, Item i2) {
         }
 
     }
+
+    throw ComputerException("Problème avec l'opérateur *");
 }
 
 Item Operateur::opDivision(Item i1, Item i2) {
@@ -362,6 +368,8 @@ Item Operateur::opDivision(Item i1, Item i2) {
         }
 
     }
+
+    throw ComputerException("Problème avec l'opérateur /");
 }
 
 Item Operateur::opDIV(Item i1, Item i2) {
@@ -472,6 +480,9 @@ Item Operateur::opNEG(Item i) {
         }
 
     }
+
+    throw ComputerException("Problème avec l'opérateur NEG");
+
 }
 
 Item Operateur::opEgal(Item i1, Item i2) {
