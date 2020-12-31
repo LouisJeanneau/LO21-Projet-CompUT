@@ -5,6 +5,7 @@
 #ifndef PROJET_LO21_OPERATEUR_H
 #define PROJET_LO21_OPERATEUR_H
 
+#include <QDebug>
 #include <iostream>
 #include <QtCore/QString>
 #include <QMap>
@@ -13,6 +14,7 @@
 #include "Pile.h"
 #include "Exception.h"
 #include "Interpreteur.h"
+#include "Persistence.h"
 
 class Operateur {
 
@@ -23,7 +25,10 @@ private:
     Operateur(const Operateur&) = delete;
     Operateur& operator=(const Operateur &) = delete;
     static bool typeNumerique(Item& i);
+    static bool typeVariable(Item& i);
     static std::vector<double> recupererValeur(Item& i);
+    static Item processVariable(Item& i);
+
 
 
 public:

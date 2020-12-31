@@ -62,22 +62,84 @@ std::vector<double> Operateur::recupererValeur(Item &i) {
         valeur[1] = litterale1.obtenirDenominateur();
     }
     else
-        throw ComputerException("Type non valide pour l'item 1");
+        throw ComputerException("Type non valide pour l'item");
 
     return valeur;
 }
 
+bool Operateur::typeVariable(Item& i) {
+
+    //On récupère une ref sur persistence
+    Persistence& persistence=Persistence::getPersistence();
+
+    QString litteraleString = i.obtenirLitterale().versString().remove(0,1);
+    litteraleString.chop(1);
+
+    if (persistence.getMapVariable().contains(litteraleString.toUpper()))
+        return true;
+    else
+        return false;
+
+}
+
+Item Operateur::processVariable(Item &i) {
+
+    //On récupère une ref sur la pile
+    Pile& pile = Pile::obtenirPile();
+
+    //On vérifie bien que l'item est une variable
+    if (typeVariable(i)) {
+
+
+        //On vérifie si l'item i est le dernier empilé ou non
+        if ( i == pile.end() ) {
+            //On évalue i
+            opEval(i);
+            //On renvoie le résultat de l'évaluation de i
+            return pile.end();
+        }
+
+        //Si l'item i est l'avant dernier empilé, on l'évalue en faisant attention de garder l'ordre de la pile
+        else if ( i == pile.end(1)) {
+            //On sauvegarde le dernier item de la pile dans un item i1
+            Item i1 = pile.end();
+            //On le retire de la pile temporairement
+            pile.pop();
+            //On évalue i
+            opEval(i);
+            //On récupère le résultat de l'évaluation dans un item i2
+            Item i2 = pile.end();
+            //On push l'item initial i1
+            pile.push(i1);
+            //On renvoit i2
+            return i2;
+        }
+        else
+            throw ComputerException("Problème survenu");
+    }
+
+    //Si l'item n'et pas une variable on renvoie l'item inchangé
+    return i;
+
+}
+
+
 Item Operateur::opPlus(Item i1, Item i2) {
 
-    //On récupére les types des items i1 et i2
-    QString typeItem1 = i1.obtenirType();
-    QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
+
+        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+        i1 = processVariable(i1);
+        i2 = processVariable(i2);
+
+        //On récupére les types des items i1 et i2 après le processVariable
+        QString typeItem1 = i1.obtenirType();
+        QString typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -85,10 +147,9 @@ Item Operateur::opPlus(Item i1, Item i2) {
 
         //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
-
         //On  récupére la valeur du 2ème item
-        valeurItem2 = recupererValeur(i2);
 
+        valeurItem2 = recupererValeur(i2);
         //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
 
         //Si une des littérales est un réel, le résultat est un réel
@@ -107,33 +168,35 @@ Item Operateur::opPlus(Item i1, Item i2) {
             Rationnel r3(valeurItem1[0] * valeurItem2[1] + valeurItem2[0] * valeurItem1[1], valeurItem1[1] * valeurItem2[1]);
             QString resultatString = QString::number(r3.obtenirNumerateur()) + "/" + QString::number(r3.obtenirDenominateur());
             return ConstructeurLitterale::distinguerConstruire(resultatString);
-
         }
 
         //Si les deux littérales sont des entiers, le résultat est donc un entier
         else if (typeItem1 == "Entier" && typeItem2 == "Entier") {
             int resultat = valeurItem1[0] + valeurItem2[0];
             return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
+
         }
 
     }
 
-    throw ComputerException("Un problème est survenu");
-
+    throw ComputerException("Problème avec l'opérateur +");
 }
-
 
 Item Operateur::opMoins(Item i1, Item i2) {
 
-    //On récupére les types des items i1 et i2
-    QString typeItem1 = i1.obtenirType();
-    QString typeItem2 = i2.obtenirType();
-
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
+
+        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+        i1 = processVariable(i1);
+        i2 = processVariable(i2);
+
+        //On récupére les types des items i1 et i2 après le processVariable
+        QString typeItem1 = i1.obtenirType();
+        QString typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -174,21 +237,25 @@ Item Operateur::opMoins(Item i1, Item i2) {
 
     }
 
-    throw ComputerException("Un problème est survenu");
+    throw ComputerException("Problème avec l'opérateur -");
 
 }
 
 Item Operateur::opMul(Item i1, Item i2) {
 
-    //On récupére les types des items i1 et i2
-    QString typeItem1 = i1.obtenirType();
-    QString typeItem2 = i2.obtenirType();
-
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
+
+        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+        i1 = processVariable(i1);
+        i2 = processVariable(i2);
+
+        //On récupére les types des items i1 et i2 après le processVariable
+        QString typeItem1 = i1.obtenirType();
+        QString typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -229,21 +296,24 @@ Item Operateur::opMul(Item i1, Item i2) {
 
     }
 
-    throw ComputerException("Un problème est survenu");
-
+    throw ComputerException("Problème avec l'opérateur *");
 }
 
 Item Operateur::opDivision(Item i1, Item i2) {
 
-    //On récupére les types des items i1 et i2
-    QString typeItem1 = i1.obtenirType();
-    QString typeItem2 = i2.obtenirType();
-
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
+
+        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+        i1 = processVariable(i1);
+        i2 = processVariable(i2);
+
+        //On récupére les types des items i1 et i2 après le processVariable
+        QString typeItem1 = i1.obtenirType();
+        QString typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -299,8 +369,7 @@ Item Operateur::opDivision(Item i1, Item i2) {
 
     }
 
-    throw ComputerException("Un problème est survenu");
-
+    throw ComputerException("Problème avec l'opérateur /");
 }
 
 Item Operateur::opDIV(Item i1, Item i2) {
@@ -412,7 +481,7 @@ Item Operateur::opNEG(Item i) {
 
     }
 
-    throw ComputerException("Un problème est survenu");
+    throw ComputerException("Problème avec l'opérateur NEG");
 
 }
 
@@ -794,6 +863,9 @@ void Operateur::opIFT(Item i1, Item i2) {
         //Si r1 est différent de 0 alors on évalue i2, sinon on ne l'évalue pas
         if (r2)
             opEval(i2);
+
+        //Il faut liberer la mémoire alloué à la littérale qui était contenue dans l'item res, sinon la mémoire fuite
+        res.supprimer();
     }
 }
 
