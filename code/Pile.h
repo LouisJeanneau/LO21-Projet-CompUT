@@ -39,7 +39,7 @@ public:
 
     QString obtenirType() { return typeItem; }
 
-    bool operator==(const Item& i) { return this == &i;}
+    bool operator==(const Item& i) { return this->litPointeur == i.litPointeur;}
 
 };
 

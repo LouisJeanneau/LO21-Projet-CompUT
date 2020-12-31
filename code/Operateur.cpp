@@ -62,7 +62,7 @@ std::vector<double> Operateur::recupererValeur(Item &i) {
         valeur[1] = litterale1.obtenirDenominateur();
     }
     else
-        throw ComputerException("Type non valide pour l'item 1");
+        throw ComputerException("Type non valide pour l'item");
 
     return valeur;
 }
@@ -82,7 +82,7 @@ bool Operateur::typeVariable(Item& i) {
 
 }
 
-void Operateur::processVariable(Item &i) {
+Item Operateur::processVariable(Item &i) {
 
     //On récupère une ref sur la pile
     Pile& pile = Pile::obtenirPile();
@@ -91,16 +91,22 @@ void Operateur::processVariable(Item &i) {
 
         Item i1 = pile.end();
         Item i2 = pile.end(1);
-        if ( i1 == i )
+        if ( i1 == i ) {
             opEval(i);
+            return pile.end();
+        }
         else if ( i2 == i) {
             pile.pop();
             opEval(i);
+            i2 = pile.end();
             pile.push(i1);
+            return i2;
         }
         else
             throw ComputerException("Problème survenu");
     }
+
+    return i;
 
 }
 
@@ -118,8 +124,11 @@ Item Operateur::opPlus(Item i1, Item i2) {
     else {
 
         //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
-        processVariable(i1);
-        processVariable(i2);
+        i1 = processVariable(i1);
+        i2 = processVariable(i2);
+
+        typeItem1 = i1.obtenirType();
+        typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -127,10 +136,9 @@ Item Operateur::opPlus(Item i1, Item i2) {
 
         //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
-
         //On  récupére la valeur du 2ème item
-        valeurItem2 = recupererValeur(i2);
 
+        valeurItem2 = recupererValeur(i2);
         //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
 
         //Si une des littérales est un réel, le résultat est un réel
@@ -149,13 +157,14 @@ Item Operateur::opPlus(Item i1, Item i2) {
             Rationnel r3(valeurItem1[0] * valeurItem2[1] + valeurItem2[0] * valeurItem1[1], valeurItem1[1] * valeurItem2[1]);
             QString resultatString = QString::number(r3.obtenirNumerateur()) + "/" + QString::number(r3.obtenirDenominateur());
             return ConstructeurLitterale::distinguerConstruire(resultatString);
-
         }
 
         //Si les deux littérales sont des entiers, le résultat est donc un entier
         else if (typeItem1 == "Entier" && typeItem2 == "Entier") {
             int resultat = valeurItem1[0] + valeurItem2[0];
             return ConstructeurLitterale::distinguerConstruire(QString::number(resultat));
+
+
         }
 
     }
