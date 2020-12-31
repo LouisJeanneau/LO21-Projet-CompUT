@@ -88,6 +88,7 @@ public:
     static void opIFT(Item i1, Item i2); //test logique
     //Operateurs conditionnels OPTIONNELS
     static void opIFTE(Item i1, Item i2, Item i3);
+    static void opWHILE(Item i1, Item i2);
 
 
 };

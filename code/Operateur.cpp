@@ -497,6 +497,418 @@ Item Operateur::opNEG(Item i) {
 
 }
 
+Item Operateur::opNUM(Item i) {
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i) && !typeVariable(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+        i = processVariable(i);
+
+        //On récupére le type de i
+        QString typeItem = i.obtenirType();
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item
+        valeurItem = recupererValeur(i);
+
+        if (typeItem == "Reel")
+            throw ComputerException("Erreur: item réel");
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(valeurItem[0]));
+
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur NUM");
+}
+
+Item Operateur::opDEN(Item i) {
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i) && !typeVariable(i) )
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+        i = processVariable(i);
+
+        //On récupére le type de i
+        QString typeItem = i.obtenirType();
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item
+        valeurItem = recupererValeur(i);
+
+        if (typeItem == "Reel")
+            throw ComputerException("Erreur: item réel");
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(valeurItem[1]));
+
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur DEN");
+}
+
+Item Operateur::opPOW(Item i1, Item i2) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupére le type de i1 et i2
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i1) && !typeNumerique(i2))
+        throw ComputerException("Types des opérandes non valides");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem1(2);
+        vector<double> valeurItem2(2);
+
+
+        //On récupére la valeur de l'item i1 et i2
+        valeurItem1 = recupererValeur(i1);
+        valeurItem2 = recupererValeur(i2);
+
+        double base = valeurItem1[0]/valeurItem1[1];
+        double puissance = valeurItem2[0]/valeurItem2[1];
+
+        return ConstructeurLitterale::distinguerConstruire(QString::number(pow(base, puissance)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur POW");
+}
+
+Item Operateur::opSQRT(Item i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0] / valeurItem[1];
+
+        //Si la valeur n'est pas strictement positive on renvoit une erreur
+        if (res <= 0)
+            throw ComputerException("Opérande négative");
+
+        else {
+            //Si l'item n'est pas un rationnel on renvoit un réel
+            if (typeItem != "Rationnel")
+                return ConstructeurLitterale::distinguerConstruire(QString::number(sqrt(res)));
+
+            //Si l'item est un rationnel, on vérifie que la racine carrée de son numérateur et de son dénominateur sont des entiers
+            else {
+
+                double num = sqrt(valeurItem[0]);
+
+                //Si la racine carrée du numérateur n'est pas un entier, on renvoit un réel
+                if (QString::number(num).contains("."))
+                    return ConstructeurLitterale::distinguerConstruire(QString::number(sqrt(res)));
+                else {
+
+                    double den = sqrt(valeurItem[1]);
+
+                    //Si la racine carrée du dénominateur n'est pas un entier on renvoie un réel
+                    if (QString::number(den).contains("."))
+                        return ConstructeurLitterale::distinguerConstruire(QString::number(sqrt(res)));
+
+                    //À ce stade le numérateur et le dénominateur sont des entiers, on renvoit donc un rationnel
+                    Rationnel r(num, den);
+                    QString resultatString = QString::number(r.obtenirNumerateur()) + "/" + QString::number(r.obtenirDenominateur());
+                    return ConstructeurLitterale::distinguerConstruire(resultatString);
+
+                }
+
+            }
+        }
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur SQRT");
+}
+
+Item Operateur::opEXP(Item i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0]/valeurItem[1];
+
+
+        return ConstructeurLitterale::distinguerConstruire(QString::number(exp(res)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur EXP");
+}
+
+Item Operateur::opLN(Item i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0]/valeurItem[1];
+
+        //Si la valeur de la littérale est négative, on renvoit une erreur
+        if (res <= 0)
+            throw ComputerException("Opérande négative");
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(log(res)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur LN");
+}
+
+Item Operateur::opSIN(Item i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0]/valeurItem[1];
+
+        return ConstructeurLitterale::distinguerConstruire(QString::number(sin(res)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur SIN");
+}
+
+Item Operateur::opCOS(Item i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0]/valeurItem[1];
+
+        return ConstructeurLitterale::distinguerConstruire(QString::number(cos(res)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur COS");
+}
+
+Item Operateur::opARCSIN(Item i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0]/valeurItem[1];
+
+        if (res < -1 || res > 1)
+            throw ComputerException("L'opérande n'est pas dans le domaine de définition de la fonction");
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(asin(res)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur ARCSIN");
+}
+
+Item Operateur::opARCCOS(Item i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0]/valeurItem[1];
+
+        if (res < -1 || res > 1)
+            throw ComputerException("L'opérande n'est pas dans le domaine de définition de la fonction");
+        else
+            return ConstructeurLitterale::distinguerConstruire(QString::number(acos(res)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur ARCCOS");
+}
+
+Item Operateur::opTAN(Item i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0]/valeurItem[1];
+
+        return ConstructeurLitterale::distinguerConstruire(QString::number(tan(res)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur TAN");
+}
+
+Item Operateur::opARCTAN(Item i) {
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupére le type de i
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur un type valide
+    if (!typeNumerique(i))
+        throw ComputerException("Type de l'opérande non valide");
+
+    else {
+
+        //On récupére les valeurs stockées dans les items
+        vector<double> valeurItem(2);
+
+        //On récupére la valeur de l'item i
+        valeurItem = recupererValeur(i);
+
+        //On réalise le calcul de la valeur de littérale stockée dans i
+        double res = valeurItem[0]/valeurItem[1];
+
+        return ConstructeurLitterale::distinguerConstruire(QString::number(atan(res)));
+
+    }
+
+    throw ComputerException("Problème avec l'opérateur ARCTAN");
+}
+
+
+
 Item Operateur::opEgal(Item i1, Item i2) {
 
     //On récupére les types des items i1 et i2
@@ -881,386 +1293,93 @@ void Operateur::opIFT(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opNUM(Item i) {
+void Operateur::opIFTE(Item i1, Item i2, Item i3) {
 
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i) && !typeVariable(i))
-        throw ComputerException("Type de l'opérande non valide");
+    //On récupère une ref sur la pile
+    Pile& pile = Pile::obtenirPile();
 
-    else {
+    //Si le premier item contient une littérale numérique, on réalise le test directement sur la valeur de la littérale
+    if (typeNumerique(i1)) {
 
-        //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-        i = processVariable(i);
+        //On récupère la valeur, et on la traite comme un réel (gère les cas d'entiers, rationnels, et réels)
+        vector<double> valeurItem1 = recupererValeur(i1);
+        double r1 = valeurItem1[0]/valeurItem1[1];
 
-        //On récupére le type de i
-        QString typeItem = i.obtenirType();
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item
-        valeurItem = recupererValeur(i);
-
-        if (typeItem == "Reel")
-            throw ComputerException("Erreur: item réel");
+        //Si r1 est différent de 0 alors on évalue i2, sinon évalue i3
+        if (r1)
+            opEval(i2);
         else
-            return ConstructeurLitterale::distinguerConstruire(QString::number(valeurItem[0]));
-
+            opEval(i3);
 
     }
 
-    throw ComputerException("Problème avec l'opérateur NUM");
-}
+    else if (i1.obtenirType() == "Expression" || i1.obtenirType() == "Programme") {
 
-Item Operateur::opDEN(Item i) {
+        //On évalue le premier item
+        opEval(i1);
 
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i) && !typeVariable(i) )
-        throw ComputerException("Type de l'opérande non valide");
+        //On récupère l'item le plus haut de la pile suite à l'évaluation en le retirant de la pile
+        Item res = pile.end();
+        pile.pop();
 
-    else {
+        //On récupère la valeur, et on la traite comme un réel (gère les cas d'entiers, rationnels, et réels)
+        vector<double> valeurItemRes = recupererValeur(res);
+        double r2 = valeurItemRes[0]/valeurItemRes[1];
 
-        //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-        i = processVariable(i);
-
-        //On récupére le type de i
-        QString typeItem = i.obtenirType();
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item
-        valeurItem = recupererValeur(i);
-
-        if (typeItem == "Reel")
-            throw ComputerException("Erreur: item réel");
+        //Si r1 est différent de 0 alors on évalue i2, sinon on évalue i3
+        if (r2)
+            opEval(i2);
         else
-            return ConstructeurLitterale::distinguerConstruire(QString::number(valeurItem[1]));
+            opEval(i3);
 
-
+        //Il faut liberer la mémoire alloué à la littérale qui était contenue dans l'item res, sinon la mémoire fuite
+        res.supprimer();
     }
 
-    throw ComputerException("Problème avec l'opérateur DEN");
 }
 
-Item Operateur::opPOW(Item i1, Item i2) {
+void Operateur::opWHILE(Item i1, Item i2) {
 
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i1 = processVariable(i1);
-    i2 = processVariable(i2);
+    //On récupère une ref sur la pile
+    Pile& pile = Pile::obtenirPile();
 
-    //On récupére le type de i1 et i2
-    QString typeItem1 = i1.obtenirType();
-    QString typeItem2 = i2.obtenirType();
+    //Si le premier item contient une littérale numérique, on réalise le test directement sur la valeur de la littérale
+    if (typeNumerique(i1)) {
 
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i1) && !typeNumerique(i2))
-        throw ComputerException("Types des opérandes non valides");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem1(2);
-        vector<double> valeurItem2(2);
-
-
-        //On récupére la valeur de l'item i1 et i2
-        valeurItem1 = recupererValeur(i1);
-        valeurItem2 = recupererValeur(i2);
-
-        double base = valeurItem1[0]/valeurItem1[1];
-        double puissance = valeurItem2[0]/valeurItem2[1];
-
-        return ConstructeurLitterale::distinguerConstruire(QString::number(pow(base, puissance)));
-
+        //On récupère la valeur, et on la traite comme un réel (gère les cas d'entiers, rationnels, et réels)
+        vector<double> valeurItem1 = recupererValeur(i1);
+        double r1 = valeurItem1[0]/valeurItem1[1];
+        qDebug() << "valeur i1" << r1;
+        //Si r1 est différent de 0 alors on évalue i2, sinon évalue i3
+        if (r1) {
+            opEval(i2);
+            opWHILE(pile.end(), i2);
+        }
     }
 
-    throw ComputerException("Problème avec l'opérateur POW");
-}
+    else if (i1.obtenirType() == "Expression" || i1.obtenirType() == "Programme") {
 
-Item Operateur::opSQRT(Item i) {
+        //On évalue le premier item
+        opEval(i1);
 
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
+        //On récupère l'item le plus haut de la pile suite à l'évaluation en le retirant de la pile
+        Item res = pile.end();
+        pile.pop();
 
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
+        //On récupère la valeur, et on la traite comme un réel (gère les cas d'entiers, rationnels, et réels)
+        vector<double> valeurItemRes = recupererValeur(res);
+        double r2 = valeurItemRes[0]/valeurItemRes[1];
 
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
+        //Si r1 est différent de 0 alors on évalue i2, sinon on évalue i3
+        if (r2) {
+            opEval(i2);
+            opWHILE(i1,i2);
+        }
 
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-        //Si la valeur n'est pas strictement positive on renvoit une erreur
-        if (res <= 0)
-            throw ComputerException("Opérande négative");
-        else
-            return ConstructeurLitterale::distinguerConstruire(QString::number(sqrt(res)));
-
+        //Il faut liberer la mémoire alloué à la littérale qui était contenue dans l'item res, sinon la mémoire fuite
+        res.supprimer();
     }
 
-    throw ComputerException("Problème avec l'opérateur SQRT");
+
 }
-
-Item Operateur::opEXP(Item i) {
-
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
-
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
-
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-
-        return ConstructeurLitterale::distinguerConstruire(QString::number(exp(res)));
-
-    }
-
-    throw ComputerException("Problème avec l'opérateur EXP");
-}
-
-Item Operateur::opLN(Item i) {
-
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
-
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
-
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-        //Si la valeur de la littérale est négative, on renvoit une erreur
-        if (res <= 0)
-            throw ComputerException("Opérande négative");
-        else
-            return ConstructeurLitterale::distinguerConstruire(QString::number(log(res)));
-
-    }
-
-    throw ComputerException("Problème avec l'opérateur LN");
-}
-
-Item Operateur::opSIN(Item i) {
-
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
-
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
-
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-        return ConstructeurLitterale::distinguerConstruire(QString::number(sin(res)));
-
-    }
-
-    throw ComputerException("Problème avec l'opérateur SIN");
-}
-
-Item Operateur::opCOS(Item i) {
-
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
-
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
-
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-        return ConstructeurLitterale::distinguerConstruire(QString::number(cos(res)));
-
-    }
-
-    throw ComputerException("Problème avec l'opérateur COS");
-}
-
-Item Operateur::opARCSIN(Item i) {
-
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
-
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
-
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-        if (res < -1 || res > 1)
-            throw ComputerException("L'opérande n'est pas dans le domaine de définition de la fonction");
-        else
-            return ConstructeurLitterale::distinguerConstruire(QString::number(asin(res)));
-
-    }
-
-    throw ComputerException("Problème avec l'opérateur ARCSIN");
-}
-
-Item Operateur::opARCCOS(Item i) {
-
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
-
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
-
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-        if (res < -1 || res > 1)
-            throw ComputerException("L'opérande n'est pas dans le domaine de définition de la fonction");
-        else
-            return ConstructeurLitterale::distinguerConstruire(QString::number(acos(res)));
-
-    }
-
-    throw ComputerException("Problème avec l'opérateur ARCCOS");
-}
-
-Item Operateur::opTAN(Item i) {
-
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
-
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
-
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-        return ConstructeurLitterale::distinguerConstruire(QString::number(tan(res)));
-
-    }
-
-    throw ComputerException("Problème avec l'opérateur TAN");
-}
-
-Item Operateur::opARCTAN(Item i) {
-    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
-    i = processVariable(i);
-
-    //On récupére le type de i
-    QString typeItem = i.obtenirType();
-
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
-
-    else {
-
-        //On récupére les valeurs stockées dans les items
-        vector<double> valeurItem(2);
-
-        //On récupére la valeur de l'item i
-        valeurItem = recupererValeur(i);
-
-        //On réalise le calcul de la valeur de littérale stockée dans i
-        double res = valeurItem[0]/valeurItem[1];
-
-        return ConstructeurLitterale::distinguerConstruire(QString::number(atan(res)));
-
-    }
-
-    throw ComputerException("Problème avec l'opérateur ARCTAN");
-}
-
-
 

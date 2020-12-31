@@ -132,6 +132,58 @@ void Interpreteur::execute(QString operande) {
         }
 
     }
+
+    else if(operande == "IFTE"){
+        if(pile.taille()<3){
+            pile.modifierEtat("Il manque une ou plusieurs opérandes pour cette opération");
+            return;
+        }
+        Item i1 = pile.end(2);
+        Item i2 = pile.end(1);
+        Item i3 = pile.end();
+        try {
+            pile.pop();
+            pile.pop();
+            pile.pop();
+            Operateur::opIFTE(i1,i2,i3);
+            i1.supprimer();
+            i2.supprimer();
+            i3.supprimer();
+            return;
+        } catch (ComputerException &ce) {
+            pile.push(i1);
+            pile.push(i2);
+            pile.push(i3);
+            pile.modifierEtat(ce.what());
+            return;
+        }
+
+    }
+
+    else if(operande == "WHILE"){
+
+        if(pile.taille()<2){
+            pile.modifierEtat("Il manque une ou plusieurs opérandes pour cette opération");
+            return;
+        }
+        Item i1 = pile.end(1);
+        Item i2 = pile.end();
+        try {
+            pile.pop();
+            //pile.pop();
+            Operateur::opWHILE(i1,i2);
+            //i1.supprimer();
+            //i2.supprimer();
+            return;
+        } catch (ComputerException &ce) {
+            pile.push(i1);
+            pile.push(i2);
+            pile.modifierEtat(ce.what());
+            return;
+        }
+
+    }
+
     else if(operande == "CLEAR"){
         pile.clear();
         return;
