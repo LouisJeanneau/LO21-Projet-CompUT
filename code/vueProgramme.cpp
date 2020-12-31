@@ -4,6 +4,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     QWidget(parent)
 {
     setWindowTitle("Modification des Programmes");
+    setWindowModality(Qt::ApplicationModal);
     texteCreationProgramme = new QLabel("Entrez votre nouveau programme :");
     texteProgrammeEnregistre = new QLabel("Programmes enregistrées :");
     entreeAtomePG = new QLineEdit;
@@ -30,14 +31,12 @@ vueProgramme::vueProgramme(QWidget * parent):
     nomColonnesTableProgramme << "Programmes";
     tableProgramme->setHorizontalHeaderLabels(nomColonnesTableProgramme);
     tableProgramme->verticalHeader()->setVisible(false);
+    tableProgramme->horizontalHeader()->setStretchLastSection(true);
+    tableProgramme->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString,QString>::iterator it;
     int i = 0;
     auto mapProgramme = persistence.getMapProgramme();
-<<<<<<< HEAD
-    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
-=======
     for(auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
->>>>>>> cb4f4c4790baa45009d5c63d3ed3290984b8ebd4
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);
@@ -102,10 +101,5 @@ void vueProgramme::appelRefreshProgramme() {
     refreshProgramme();
 };
 
-<<<<<<< HEAD
-void vueProgramme::appelRefreshProgramme() {
-    refreshProgramme();
-}
-=======
 
->>>>>>> cb4f4c4790baa45009d5c63d3ed3290984b8ebd4
+

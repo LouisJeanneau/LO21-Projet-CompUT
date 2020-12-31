@@ -25,6 +25,7 @@ explicit vueVariable(QWidget *parent = 0);
     void setFenetrePrincipale(class fenetrePrincipale* fenetrePrincipaleCopie){fenetrePrincipale = fenetrePrincipaleCopie;}
     class fenetrePrincipale *getFenetrePrincipale(){return fenetrePrincipale;}
     void refreshVariable();
+
 public slots:
 void ajouterVariable();
 void recupererKey();

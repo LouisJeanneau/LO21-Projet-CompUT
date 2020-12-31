@@ -100,6 +100,10 @@ public:
 
     void creerNouveauBoutonProgramme(int i,QString key,QString value);
 
+    QLineEdit *obtenirCommande() {return commande;};
+
+    void focusCommande(){commande->setFocus();}
+
 public slots:
 
     void refresh();
@@ -213,6 +217,9 @@ public slots:
     void ouvertureVueParametre();
 
     void refreshTableVariable();
+
+    void slotFocusCommande(){commande->setFocus();}
+
 };
 
 #endif // FENETREPRINCIPALE_H
