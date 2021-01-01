@@ -6,6 +6,7 @@ class fenetrePrincipale;
 
 class vueProgramme : public QWidget {
 Q_OBJECT
+    Persistence &persistence = Persistence::getPersistence();
     QLineEdit *entreeAtomePG;
     QLineEdit *entreeProgramme;
     QPushButton *validerCreationPG;
@@ -26,8 +27,7 @@ explicit vueProgramme(QWidget *parent = 0);
     void refreshProgramme();
 public slots:
 void ajouterProgramme();
-void supprimerProgramme();
 void recupererKey();
+void appelRefreshProgramme();
 };
-
 #endif // VUEPROGRAMME_H

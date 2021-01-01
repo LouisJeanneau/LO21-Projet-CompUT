@@ -1,0 +1,112 @@
+@startuml
+skinparam sequenceParticipant underline
+
+actor Utilisateur
+participant "c : Controleur" as C
+participant "i : Interpreteur" as I
+participant "cl : ConsructeurLitterale" as CL
+participant "e : Entier" as E
+participant "p : Pile" as P
+
+
+Utilisateur -> C: commande(1 6 *)
+activate C
+
+C -> I: interprete(1 6 *)
+activate I
+
+I -> I: execute(1)
+
+I -> CL : distinguerConstruire(1)
+activate CL
+
+CL -> E : Entier(1)
+activate E
+
+E -> I : lit
+
+I -> P : push(lit)
+activate P
+
+deactivate P
+deactivate E
+deactivate CL
+
+I -> I: execute(6)
+
+I -> CL : distinguerConstruire(6)
+activate CL
+
+CL -> E : Entier(6)
+activate E
+
+E -> I : lit
+
+I -> P : push(lit)
+activate P
+
+deactivate P
+deactivate E
+deactivate CL
+
+I -> I: execute(*)
+
+participant "o : Operateur" as O
+
+I -> O : inventaireOpArite2.contains(*)
+activate O
+
+O -> I : True
+deactivate O
+
+I -> P : end()
+activate P
+
+P -> I : i1
+
+I -> P : end(1)
+
+P -> I : i2
+deactivate P
+
+I -> O : inventaireOpArite2[*](i2, i1)
+activate O
+
+O -> O : OpMul(i2, i1)
+
+O -> CL : distinguerConstruire(18)
+deactivate O
+activate CL
+
+CL -> E : Entier(6)
+activate E
+
+E -> I : resultat
+deactivate E
+deactivate CL
+
+I -> P : pop()
+activate P
+deactivate P
+participant "it : Item" as IT
+
+I -> IT : i1.supprimer()
+activate IT
+deactivate IT
+
+I -> P : pop()
+activate P
+deactivate P
+
+I -> IT : i2.supprimer()
+activate IT
+deactivate IT
+
+I -> P : push(resultat)
+activate P
+deactivate P
+
+deactivate I
+deactivate C
+
+@enduml

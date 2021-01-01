@@ -1,4 +1,7 @@
-QT       += core gui
+QT       += \
+    core gui \
+    xml \
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,6 +19,7 @@ SOURCES += \
     Operateur.cpp \
     Persistence.cpp \
     Pile.cpp \
+    Sauvegarde.cpp \
     main.cpp \
     fenetreprincipale.cpp \
     vueParametre.cpp \
@@ -31,6 +35,7 @@ HEADERS += \
     Operateur.h \
     Persistence.h \
     Pile.h \
+    Sauvegarde.h \
     fenetreprincipale.h \
     vueParametre.h \
     vueProgramme.h \

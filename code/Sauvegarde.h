@@ -5,16 +5,19 @@
 #ifndef PROJET_LO21_SAUVEGARDE_H
 #define PROJET_LO21_SAUVEGARDE_H
 
-#include <QtXml>
-#include <QWidget>
 #include "Computer.h"
+#include <QWidget>
+#include "Persistence.h"
+#include <QtXml>
 
 class Sauvegarde : public QWidget
 {
+    Q_OBJECT
     Pile& refPile;
+    Persistence &persistence = Persistence::getPersistence();
 public:
-	Sauvegarde(Pile& p) : refPile(p) {}
-	~Sauvegarde();
+    Sauvegarde(Pile& p) : refPile(p) {};
+	~Sauvegarde() = default;
     void sauvegardeEtat();
     void recupereEtat();
 };

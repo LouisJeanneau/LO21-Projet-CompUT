@@ -37,21 +37,21 @@ void Sauvegarde::sauvegardeEtat(){
     //Variables
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
-    for(auto v : Persistence::mapVariable.keys()){
-        QDomElement variable = doc.createElement("variable");
+    for(auto v : persistence.getMapVariable().keys()){
+        QDomElement variable = d.createElement("variable");
         variables.appendChild(variable);
         variable.setAttribute("id", v);
-        variable.setAttribute("value", Persistence::mapVariable.value(v));
+        variable.setAttribute("value", persistence.getMapVariable().value(v));
     }  
 
     //Programmes
-    QDomElement programmes = doc.createElement("programmes");
-    claculatrice.appendChild(programmes);
-    for(auto p : Persistence::mapProgramme.keys()){
-        QDomElement programme = doc.createElement("programme");
+    QDomElement programmes = d.createElement("programmes");
+    calculatrice.appendChild(programmes);
+    for(auto p : persistence.getMapProgramme().keys()){
+        QDomElement programme = d.createElement("programme");
         programmes.appendChild(programme);
         programme.setAttribute("id", p);
-        programme.setAttribute("value", Persistence::mapProgramme.value(p));
+        programme.setAttribute("value", persistence.getMapProgramme().value(p));
     } 
 
 
@@ -86,7 +86,7 @@ void Sauvegarde::recupereEtat(){
     }
 
     //Pile
-    QDomNode balise = d.firstChild();
+    QDomNode balise = d->firstChild();
     QDomElement element = balise.lastChildElement();
     while(!element.isNull()){
         //Construire une nouvelle litérale avec le texte récupéré
@@ -102,7 +102,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
-        Persistence::setMapVariable(variable.attribute("id"), variable.attribute("value"));
+        persistence.ajouterVariable(variable.attribute("id"), variable.attribute("value"));
         variable = variable.nextSiblingElement();
     }
 
@@ -113,7 +113,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
-        Persistence::setMapProgramme(programme.attribute("id"), programme.attribute("value"));
+        persistence.ajouterProgramme(programme.attribute("id"), programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
 

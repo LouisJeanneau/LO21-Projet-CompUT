@@ -4,6 +4,7 @@ vueVariable::vueVariable(QWidget * parent):
     QWidget(parent)
 {
     setWindowTitle("Modification des variables");
+    setWindowModality(Qt::ApplicationModal);
     texteCreationVariable = new QLabel("Entrez votre nouvelle variable :");
     texteVariableEnregistre = new QLabel("Variables enregistrées :");
     entreeAtome = new QLineEdit;
@@ -11,7 +12,7 @@ vueVariable::vueVariable(QWidget * parent):
     entreeVariable = new QLineEdit;
     entreeVariable->setPlaceholderText("ex: 3.1415");
     validerCreation = new QPushButton("Valider");
-    tableVariable = new QTableWidget(Persistence::mapVariable.size(),2);
+    tableVariable = new QTableWidget(persistence.getMapVariableSize(),2);
     listeVariable = new QVBoxLayout;
     layoutSaisie = new QHBoxLayout;
     texteSuppression = new QLabel("Choisir l'élément à supprimer :");
@@ -24,14 +25,18 @@ vueVariable::vueVariable(QWidget * parent):
     listeVariable->addWidget(texteCreationVariable);
     listeVariable->addLayout(layoutSaisie);
     listeVariable->addWidget(texteVariableEnregistre);
+
     QStringList nomColonnesTableVariable;
     nomColonnesTableVariable << "Atomes";
     nomColonnesTableVariable << "Variable";
     tableVariable->setHorizontalHeaderLabels(nomColonnesTableVariable);
     tableVariable->verticalHeader()->setVisible(false);
+    tableVariable->horizontalHeader()->setStretchLastSection(true);
+    tableVariable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
+    auto mapVariable = persistence.getMapVariable();
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableVariable->setCellWidget(i,0,key);
@@ -51,45 +56,38 @@ vueVariable::vueVariable(QWidget * parent):
 }
 
 void vueVariable::recupererKey(){
-    Persistence::mapVariable.remove(choixSuppression->currentText());
+    persistence.supprimerVariable(choixSuppression->currentText());
     refreshVariable();
 }
 
 void vueVariable::ajouterVariable(){
     QString saisieAtome = entreeAtome->text();
+    saisieAtome = saisieAtome.toUpper();
     QString saisieVariable = entreeVariable->text();
-    if(saisieAtome!=NULL && saisieVariable!=NULL){
-        entreeAtome->clear();
-        entreeVariable->clear();
-        QMap<QString,QString>::iterator it;
-        int i = 0;
-        for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
-            if(saisieAtome == it.key()){
-                it.value()=saisieVariable;
-                i = 1;
-            }
-        }
-        if(i == 0){
-            Persistence::mapVariable.insert(saisieAtome,saisieVariable);
-        }
-        refreshVariable();
-    } else {
-        QMessageBox::critical(this,"Erreur","Remplissez tous les champs avant de valider.");
+    try {
+        persistence.ajouterVariable(saisieAtome, saisieVariable);
+    } catch (ComputerException &ce) {
+        QMessageBox::critical(this,"Erreur",ce.what());
     }
+    entreeAtome->clear();
+    entreeVariable->clear();
+    refreshVariable();
 }
 
 void vueVariable::refreshVariable(){
-    tableVariable->setRowCount(Persistence::mapVariable.size());
-    QMap<QString,QString>::iterator it;
+    std::cout << "Salut moi c'est refreshVariable" << std::endl;
+    tableVariable->setRowCount(persistence.getMapVariableSize());
     int i = 0;
-    for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
+    auto mapVariable = persistence.getMapVariable();
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         tableVariable->setCellWidget(i,0,new QLabel(""));
         tableVariable->setCellWidget(i,1,new QLabel(""));
         i++;
     }
     choixSuppression->clear();
     i = 0;
-    for (it = Persistence::mapVariable.begin(); it != Persistence::mapVariable.end(); it++){
+
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableVariable->setCellWidget(i,0,key);
@@ -100,6 +98,6 @@ void vueVariable::refreshVariable(){
     fenetrePrincipale->refreshTableVariable();
 };
 
-void vueVariable::supprimerVariable(){
-
+void vueVariable::appelRefreshVariable() {
+    refreshVariable();
 }

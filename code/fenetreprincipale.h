@@ -41,7 +41,11 @@ Q_OBJECT
     unsigned int nombreItemAAfficher;
     QLineEdit *commande;
     Pile &pile = Pile::obtenirPile();
-    Controleur *controleur;
+    Persistence &persistence = Persistence::getPersistence();
+    //Controleur *controleur;
+    //Sauvegarde *<<<<<<<<<sauvegarde;
+
+    Interpreteur *refIntp;
     vueParametre *vueParametre;
     vueVariable *vueVariable;
     vueProgramme *vueProgramme;
@@ -80,12 +84,9 @@ Q_OBJECT
     QHBoxLayout *affichageVues;
 
 public:
-    explicit fenetrePrincipale(QWidget *parent = 0);
+    fenetrePrincipale(QWidget *parent = 0);
 
-    ~fenetrePrincipale() {
-        //delete pile;
-        delete controleur;
-    }
+    ~fenetrePrincipale() = default;
 
     unsigned int getNombreItemAAfficher() { return nombreItemAAfficher; };
 
@@ -95,15 +96,17 @@ public:
 
     void refreshMethode();
 
-    void refreshTableVariable();
+    void creerNouveauBoutonVariable(int i, QString key, QString value);
 
-    void creerNouveauBoutonVariable(int i,QString key,QString value);
+    void creerNouveauBoutonProgramme(int i, QString key, QString value);
 
-    void creerNouveauBoutonProgramme(int i,QString key,QString value);
+    QLineEdit *obtenirCommande() { return commande; };
+
+    void focusCommande() { commande->setFocus(); }
 
 public slots:
 
-    void refresh(QString etat);
+    void refresh();
 
     void getNextCommande();
 
@@ -178,14 +181,23 @@ public slots:
     };
 
     void empile_CLEAR() {
-        commande->clear();
-        pile.listeItems.clear();
-        refreshMethode();
+        commande->setText("CLEAR");
+        getNextCommande();
     };
 
-    void empile_EVAL() { getNextCommande(); }
+    void empile_EVAL() {
+        commande->setText("EVAL");
+        getNextCommande();
+    }
 
-    void empileVariableProgramme(QString valeur) {
+    void empileProgramme(QString valeur) {
+        valeur.chop(1);
+        valeur.remove(0, 1);
+        commande->setText(valeur);
+        getNextCommande();
+    };
+
+    void empileVariable(QString valeur) {
         commande->setText(valeur);
         getNextCommande();
     };
@@ -203,6 +215,11 @@ public slots:
     void ouvertureVueProgramme();
 
     void ouvertureVueParametre();
+
+    void refreshTableVariable();
+
+    void slotFocusCommande() { commande->setFocus(); }
+
 };
 
 #endif // FENETREPRINCIPALE_H

@@ -8,57 +8,80 @@
 #include <vector>
 #include <QObject>
 #include <string>
+#include <functional>
+#include <QMap>
 #include "Litterale.h"
 
 using namespace std;
 
 class Litterale;
 
-class Item{
-    Litterale* litPointeur;
+class Item {
+    Litterale *litPointeur;
     QString typeItem;
 public:
-    explicit Item(Litterale* l, QString t): litPointeur(l), typeItem(t){
-        cout << "Construction défaut" << endl;
-    }
-    Item(const Item& i): litPointeur(i.litPointeur), typeItem(i.typeItem){
-        cout << "Construction recopie" << endl;
-    }
-    Item& operator=(const Item& i){ this->litPointeur=i.litPointeur;
-    this->typeItem = i.typeItem;
-    cout << "Construction affectation" << endl;
-    return *this;}
-    ~Item(){
-        cout << "Déstruction défaut" << endl;
-    };
-    void supprimer(){  }
-    bool estVide(){
-        if(litPointeur == nullptr){
+    explicit Item(Litterale *l, QString t);
+    Item(const Item &i);
+    Item &operator=(const Item &i);
+
+    ~Item() {};
+
+    void supprimer();
+
+    bool estVide() {
+        if (litPointeur == nullptr) {
             return true;
         }
         return false;
     }
-    Litterale& obtenirLitterale(){return *litPointeur;}
-    QString obtenirType() {return typeItem;}
+
+    Litterale &obtenirLitterale() { return *litPointeur; }
+
+    QString obtenirType() { return typeItem; }
+
+    bool operator==(const Item& i) { return this->litPointeur == i.litPointeur;}
 
 };
 
-class Pile : public QObject{
+class Pile : public QObject {
 Q_OBJECT
+    QString etat;
+    std::vector<Item> listeItems;
     static Pile instance;
     Pile() = default;
-    friend class vuePrincipale;
 public:
-    static Pile& obtenirPile();
+    static Pile &obtenirPile();
+
     void pop();
-    Item end(int n=0);
+
+    Item end(int n = 0);
+
     void push(Item item);
+
     bool estVide();
+
     unsigned int taille();
+
     void debug();
-    std::vector<Item> listeItems;
+
+    QString obtenirEtat();
+
+    void modifierEtat(QString e);
+
+    std::vector<Item> copierListeItems();
+
+    void swap();
+
+    void clear();
+
+    void drop();
+
+    void dup();
+
 signals:
-    void modificationEtat(QString etat);
+
+    void refresh();
+
 };
 
 #endif //LO21_PROJET_PILE_H

@@ -19,13 +19,14 @@ class Controleur {
     Persistence& refPers;
     QString message;
 public:
-	Controleur(Interpreteur& intp, Pile& p, Persistance& pers):refIntp(intp), refPile(p), refPers(pers){}
-    void commande(const QString& c) {refIntp.interprete(c);}
-    void setMessage(const QString& m) {message = m;}
-    QString getMessage() const { return message; }
-    void sauvegardeEtat();
-    void recupereEtat();
+	Controleur(Interpreteur& intp, Pile& p):refIntp(intp), refPile(p){}
+    //void commande(const QString& c){refIntp.interprete(c);}
+    //void setMessage(const QString& m) {message = m;}
+    //QString getMessage() const { return message; }
 
 };
+
+bool estUnOperateur(const QString s);
+bool estUnNombre(const QString s);
 
 #endif //PROJET_LO21_COMPUTER_H

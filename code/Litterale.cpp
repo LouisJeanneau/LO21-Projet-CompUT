@@ -1,6 +1,6 @@
-#include"code/Litterale.h"
+#include"Litterale.h"
 #include <QString>
-#include "code/Pile.h"
+#include "Pile.h"
 
 QString Entier::versString() const {
     return QString::number(entier);
@@ -17,12 +17,8 @@ QString Programme::versString() const {
     return "["+programme+"]";
 }
 QString Expression::versString() const {
-    return """+this->atome->versString()+""";
+    return expression;
 }
-QString Atome::versString() const {
-    return atome;
-}
-
 
 Rationnel Rationnel::operator+(const Rationnel &r) const {
     return Rationnel(numerateur*r.denominateur + r.numerateur*denominateur, denominateur*r.denominateur);
@@ -60,7 +56,7 @@ void Rationnel::setRationnel(int n, int d) {
 
 Item ConstructeurLitterale::distinguerConstruire(QString s) {
     int flag1=s.startsWith("[");//programme
-    int flag2=s.startsWith("""");//expression
+    int flag2=s.startsWith("'");//expression
     int flag3=s.contains(".");//reel
     int flag4=s.contains("/");//rationnel
     int l=s.length();
@@ -85,18 +81,30 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
 
     if(flag6||(s[0]<='9'&&s[0]>='0'))//numerique
     {
-        if(flag3==1)//reel
+        if(flag3)//reel
         {
             Litterale* temp = new Reel(s.toDouble());
             return Item(temp, "Reel");
             // return re;
         }
-        else if(flag4==1)//rationnel
+        else if(flag4)//rationnel
         {
             QString n1=s.section("/",0,0);
             QString d1=s.section("/",1,1);
             int n=n1.toInt();
             int d=d1.toInt();
+
+            /* utilisation de l’algorithme d’Euclide pour trouver le Plus Grand Commun
+            Denominateur (PGCD) entre le numerateur et le denominateur */
+            int a=n, b=d;
+            // on ne travaille qu’avec des valeurs positives...
+            if (a<0) a=-a; if (b<0) b=-b;
+            while(a!=b){ if (a>b) a=a-b; else b=b-a; }
+            // on divise le numerateur et le denominateur par le PGCD=a
+            n/=a; d/=a;
+            // si le denominateur est négatif, on fait passer le signe - au denominateur
+            if (d<0) { d=-d; n=-n; }
+
             if (d != 1) {
                 Litterale *temp = new Rationnel(n, d);
                 return Item(temp, "Rationnel");
@@ -114,23 +122,23 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
 
         }
     }
-
-    else if(s[0]>='A'&&s[0]<='Z')//Atome
-    {
-        Litterale* temp = new Atome(s);
-        return Item(temp, "Entier");
-
-    }
-    else if (flag1==1) //programme
+    else if (flag1) //programme
     {
         Litterale* temp = new Programme(s.mid(1,l-2));
         return Item(temp, "Programme");
     }
-    else if(flag2==1)//expression
+    else if(flag2 && !flag1 && !flag3 && !flag4)//expression
     {
-        Atome ae=Atome(s.mid(1,l-2));
-        Litterale* temp = new Expression(&ae);
-        return Item(temp, "Atome");
+        Litterale* temp = new Expression(s);
+        return Item(temp, "Expression");
     }
-    return Item(nullptr, "Vide");
+    else if(s[0]>='A'&&s[0]<='Z' && !flag1 && !flag3 && !flag4)//Atome non lié
+    {
+        s.insert(0, QString("'"));
+        s.append("'");
+        Litterale* temp = new Expression(s);
+        return Item(temp, "Expression");
+
+    }
+    throw ComputerException("Erreur : Aucun type d'item trouvé");
 }

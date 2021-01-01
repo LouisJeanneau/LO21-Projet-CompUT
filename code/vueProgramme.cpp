@@ -4,6 +4,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     QWidget(parent)
 {
     setWindowTitle("Modification des Programmes");
+    setWindowModality(Qt::ApplicationModal);
     texteCreationProgramme = new QLabel("Entrez votre nouveau programme :");
     texteProgrammeEnregistre = new QLabel("Programmes enregistrées :");
     entreeAtomePG = new QLineEdit;
@@ -11,7 +12,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     entreeProgramme = new QLineEdit;
     entreeProgramme->setPlaceholderText("ex: [ DUP 0 < [NEG] IFT ]");
     validerCreationPG = new QPushButton("Valider");
-    tableProgramme = new QTableWidget(Persistence::mapProgramme.size(),2);
+    tableProgramme = new QTableWidget(persistence.getMapProgrammeSize(),2);
     listeProgramme = new QVBoxLayout;
     layoutSaisiePG = new QHBoxLayout;
     texteSuppressionPG = new QLabel("Choisir l'élément à supprimer :");
@@ -30,9 +31,12 @@ vueProgramme::vueProgramme(QWidget * parent):
     nomColonnesTableProgramme << "Programmes";
     tableProgramme->setHorizontalHeaderLabels(nomColonnesTableProgramme);
     tableProgramme->verticalHeader()->setVisible(false);
+    tableProgramme->horizontalHeader()->setStretchLastSection(true);
+    tableProgramme->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+    auto mapProgramme = persistence.getMapProgramme();
+    for(auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);
@@ -46,53 +50,43 @@ vueProgramme::vueProgramme(QWidget * parent):
     coucheSuppression->addWidget(choixSuppressionPG);
     coucheSuppression->addWidget(validerSuppresionPG);
     listeProgramme->addLayout(coucheSuppression);
-
     setLayout(listeProgramme);
-
     QObject::connect(validerCreationPG,SIGNAL(clicked()),this,SLOT(ajouterProgramme()));
     QObject::connect(validerSuppresionPG,SIGNAL(clicked()),this,SLOT(recupererKey()));
 }
 
 void vueProgramme::recupererKey(){
-    Persistence::mapProgramme.remove(choixSuppressionPG->currentText());
+    persistence.supprimerProgramme(choixSuppressionPG->currentText());
     refreshProgramme();
 }
 
-void vueProgramme::ajouterProgramme(){
+void vueProgramme::ajouterProgramme() {
     QString saisieAtomePG = entreeAtomePG->text();
+    saisieAtomePG = saisieAtomePG.toUpper();
     QString saisieProgramme = entreeProgramme->text();
-    if(saisieAtomePG!=NULL && saisieProgramme!=NULL){
-        entreeAtomePG->clear();
-        entreeProgramme->clear();
-        QMap<QString,QString>::iterator it;
-        int i = 0;
-        for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
-            if(saisieAtomePG == it.key()){
-                it.value()=saisieProgramme;
-                i = 1;
-            }
-        }
-        if(i == 0){
-            Persistence::mapProgramme.insert(saisieAtomePG,saisieProgramme);
-        }
-        refreshProgramme();
-    } else {
-        QMessageBox::critical(this,"Erreur","Remplissez tous les champs avant de valider.");
+    try {
+        persistence.ajouterProgramme(saisieAtomePG, saisieProgramme);
+    } catch (ComputerException &ce) {
+        QMessageBox::critical(this,"Erreur",ce.what());
     }
+    entreeAtomePG->clear();
+    entreeProgramme->clear();
+    refreshProgramme();
 }
 
 void vueProgramme::refreshProgramme(){
-    tableProgramme->setRowCount(Persistence::mapProgramme.size());
-    QMap<QString,QString>::iterator it;
+    std::cout << "Salut moi c'est refreshProgramme" << std::endl;
+    tableProgramme->setRowCount(persistence.getMapProgrammeSize());
     int i = 0;
-    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+    auto mapProgramme = persistence.getMapProgramme();
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         tableProgramme->setCellWidget(i,0,new QLabel(""));
         tableProgramme->setCellWidget(i,1,new QLabel(""));
         i++;
     }
     choixSuppressionPG->clear();
     i = 0;
-    for (it = Persistence::mapProgramme.begin(); it != Persistence::mapProgramme.end(); it++){
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
         tableProgramme->setCellWidget(i,0,key);
@@ -101,8 +95,11 @@ void vueProgramme::refreshProgramme(){
         i++;
     }
     fenetrePrincipale->refreshTableVariable();
+}
+
+void vueProgramme::appelRefreshProgramme() {
+    refreshProgramme();
 };
 
-void vueProgramme::supprimerProgramme(){
 
-}
+
