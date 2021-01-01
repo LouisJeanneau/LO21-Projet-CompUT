@@ -6,7 +6,7 @@
 #include <cmath>
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
-QMap<QString, function<Item(Item, Item)>> Operateur::inventaireOpArite2 = {
+QMap<QString, function<Item(Item&, Item&)>> Operateur::inventaireOpArite2 = {
 
         {"+", opPlus},
         {"-", opMoins},
@@ -27,7 +27,7 @@ QMap<QString, function<Item(Item, Item)>> Operateur::inventaireOpArite2 = {
 };
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 1
-QMap<QString, function<Item(Item)>> Operateur::inventaireOpArite1 = {
+QMap<QString, function<Item(Item&)>> Operateur::inventaireOpArite1 = {
         {"NEG", opNEG},
         {"NOT", opNOT},
         {"NUM", opNUM},
@@ -104,7 +104,9 @@ Item Operateur::processVariable(Item& i) {
     if (typeVariable(i)) {
         //On évalue i
         opEval(i);
+        //On sauvegarde l'item résultant de l'évaluation de i
         Item res = pile.end();
+        //On pop l'item résultant de l'évaluation de i
         pile.pop();
         //On renvoie le résultat de l'évaluation de i
         return res;
@@ -116,7 +118,7 @@ Item Operateur::processVariable(Item& i) {
 }
 
 
-Item Operateur::opPlus(Item i1, Item i2) {
+Item Operateur::opPlus(Item& i1, Item& i2) {
 
     //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
     i1 = processVariable(i1);
@@ -127,7 +129,7 @@ Item Operateur::opPlus(Item i1, Item i2) {
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -139,13 +141,9 @@ Item Operateur::opPlus(Item i1, Item i2) {
         //On récupére la valeur du premier item
         valeurItem1 = recupererValeur(i1);
         //On  récupére la valeur du 2ème item
-
         valeurItem2 = recupererValeur(i2);
+
         //On réalise le calcul correspondant, on construit le type de littérale correspondant et on le retourne
-
-        i1.supprimer();
-        i2.supprimer();
-
         //Si une des littérales est un réel, le résultat est un réel
         if (typeItem1 == "Reel" || typeItem2 == "Reel") {
 
@@ -173,21 +171,20 @@ Item Operateur::opPlus(Item i1, Item i2) {
     throw ComputerException("Problème avec l'opérateur +");
 }
 
-Item Operateur::opMoins(Item i1, Item i2) {
+Item Operateur::opMoins(Item& i1, Item& i2) {
+
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
-
     else {
-
-        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
-        i1 = processVariable(i1);
-        i2 = processVariable(i2);
-
-        //On récupére les types des items i1 et i2 après le processVariable
-        QString typeItem1 = i1.obtenirType();
-        QString typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -232,21 +229,20 @@ Item Operateur::opMoins(Item i1, Item i2) {
 
 }
 
-Item Operateur::opMul(Item i1, Item i2) {
+Item Operateur::opMul(Item& i1, Item& i2) {
+
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
-
     else {
-
-        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
-        i1 = processVariable(i1);
-        i2 = processVariable(i2);
-
-        //On récupére les types des items i1 et i2 après le processVariable
-        QString typeItem1 = i1.obtenirType();
-        QString typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -290,21 +286,20 @@ Item Operateur::opMul(Item i1, Item i2) {
     throw ComputerException("Problème avec l'opérateur *");
 }
 
-Item Operateur::opDivision(Item i1, Item i2) {
+Item Operateur::opDivision(Item& i1, Item& i2) {
+
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
+    QString typeItem1 = i1.obtenirType();
+    QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) && !typeNumerique(i2) && !typeVariable(i1) && !typeVariable(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
-
     else {
-
-        //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
-        i1 = processVariable(i1);
-        i2 = processVariable(i2);
-
-        //On récupére les types des items i1 et i2 après le processVariable
-        QString typeItem1 = i1.obtenirType();
-        QString typeItem2 = i2.obtenirType();
 
         //On récupére les valeurs stockées dans les items
         vector<double> valeurItem1(2);
@@ -363,16 +358,19 @@ Item Operateur::opDivision(Item i1, Item i2) {
     throw ComputerException("Problème avec l'opérateur /");
 }
 
-Item Operateur::opDIV(Item i1, Item i2) {
+Item Operateur::opDIV(Item& i1, Item& i2) {
 
-    //On récupére les types des items i1 et i2
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
-
     else {
 
         //On récupére les valeurs stockées dans les items
@@ -400,16 +398,19 @@ Item Operateur::opDIV(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opMOD(Item i1, Item i2) {
+Item Operateur::opMOD(Item& i1, Item& i2) {
 
-    //On récupére les types des items i1 et i2
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
-
     else {
 
         //On récupére les valeurs stockées dans les items
@@ -440,14 +441,17 @@ Item Operateur::opMOD(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opNEG(Item i) {
+Item Operateur::opNEG(Item& i) {
 
-    //On récupére le type de l'item
+    //Si l'items est une expression correspondante à une variable; on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupère le type de i après processVariable
     QString typeItem = i.obtenirType();
 
-    //On vérifie que l'opération est réalisée sur un type valide
+    //On vérifie que l'opération est réalisée sur des types valides
     if (!typeNumerique(i))
-        throw ComputerException("Type de l'opérande non valide");
+        throw ComputerException("Types de l'opérande non valide");
 
     else {
 
@@ -476,11 +480,17 @@ Item Operateur::opNEG(Item i) {
 
 }
 
-Item Operateur::opNUM(Item i) {
+Item Operateur::opNUM(Item& i) {
 
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i) && !typeVariable(i))
-        throw ComputerException("Type de l'opérande non valide");
+    //Si l'items est une expression correspondante à une variable; on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupère le type de i après processVariable
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeNumerique(i))
+        throw ComputerException("Types de l'opérande non valide");
 
     else {
 
@@ -507,11 +517,17 @@ Item Operateur::opNUM(Item i) {
     throw ComputerException("Problème avec l'opérateur NUM");
 }
 
-Item Operateur::opDEN(Item i) {
+Item Operateur::opDEN(Item& i) {
 
-    //On vérifie que l'opération est réalisée sur un type valide
-    if (!typeNumerique(i) && !typeVariable(i) )
-        throw ComputerException("Type de l'opérande non valide");
+    //Si l'items est une expression correspondante à une variable; on remplace la variable par sa valeur stockée
+    i = processVariable(i);
+
+    //On récupère le type de i après processVariable
+    QString typeItem = i.obtenirType();
+
+    //On vérifie que l'opération est réalisée sur des types valides
+    if (!typeNumerique(i))
+        throw ComputerException("Types de l'opérande non valide");
 
     else {
 
@@ -538,7 +554,7 @@ Item Operateur::opDEN(Item i) {
     throw ComputerException("Problème avec l'opérateur DEN");
 }
 
-Item Operateur::opPOW(Item i1, Item i2) {
+Item Operateur::opPOW(Item& i1, Item& i2) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i1 = processVariable(i1);
@@ -573,7 +589,7 @@ Item Operateur::opPOW(Item i1, Item i2) {
     throw ComputerException("Problème avec l'opérateur POW");
 }
 
-Item Operateur::opSQRT(Item i) {
+Item Operateur::opSQRT(Item& i) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
@@ -636,7 +652,7 @@ Item Operateur::opSQRT(Item i) {
     throw ComputerException("Problème avec l'opérateur SQRT");
 }
 
-Item Operateur::opEXP(Item i) {
+Item Operateur::opEXP(Item& i) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
@@ -667,7 +683,7 @@ Item Operateur::opEXP(Item i) {
     throw ComputerException("Problème avec l'opérateur EXP");
 }
 
-Item Operateur::opLN(Item i) {
+Item Operateur::opLN(Item& i) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
@@ -701,7 +717,7 @@ Item Operateur::opLN(Item i) {
     throw ComputerException("Problème avec l'opérateur LN");
 }
 
-Item Operateur::opSIN(Item i) {
+Item Operateur::opSIN(Item& i) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
@@ -731,7 +747,7 @@ Item Operateur::opSIN(Item i) {
     throw ComputerException("Problème avec l'opérateur SIN");
 }
 
-Item Operateur::opCOS(Item i) {
+Item Operateur::opCOS(Item& i) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
@@ -761,7 +777,7 @@ Item Operateur::opCOS(Item i) {
     throw ComputerException("Problème avec l'opérateur COS");
 }
 
-Item Operateur::opARCSIN(Item i) {
+Item Operateur::opARCSIN(Item& i) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
@@ -794,7 +810,7 @@ Item Operateur::opARCSIN(Item i) {
     throw ComputerException("Problème avec l'opérateur ARCSIN");
 }
 
-Item Operateur::opARCCOS(Item i) {
+Item Operateur::opARCCOS(Item& i) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
@@ -827,7 +843,7 @@ Item Operateur::opARCCOS(Item i) {
     throw ComputerException("Problème avec l'opérateur ARCCOS");
 }
 
-Item Operateur::opTAN(Item i) {
+Item Operateur::opTAN(Item& i) {
 
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
@@ -857,7 +873,7 @@ Item Operateur::opTAN(Item i) {
     throw ComputerException("Problème avec l'opérateur TAN");
 }
 
-Item Operateur::opARCTAN(Item i) {
+Item Operateur::opARCTAN(Item& i) {
     //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
     i = processVariable(i);
 
@@ -888,14 +904,18 @@ Item Operateur::opARCTAN(Item i) {
 
 
 
-Item Operateur::opEgal(Item i1, Item i2) {
+Item Operateur::opEgal(Item& i1, Item& i2) {
 
-    //On récupére les types des items i1 et i2
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -925,15 +945,19 @@ Item Operateur::opEgal(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opDifferent(Item i1, Item i2) {
-    //On récupére les types des items i1 et i2
+Item Operateur::opDifferent(Item& i1, Item& i2) {
+
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
-
     else {
 
         //On récupére les valeurs stockées dans les items
@@ -961,14 +985,18 @@ Item Operateur::opDifferent(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opInfEgal(Item i1, Item i2) {
+Item Operateur::opInfEgal(Item& i1, Item& i2) {
 
-    //On récupére les types des items i1 et i2
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -998,14 +1026,18 @@ Item Operateur::opInfEgal(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opSupEgal(Item i1, Item i2) {
+Item Operateur::opSupEgal(Item& i1, Item& i2) {
 
-    //On récupére les types des items i1 et i2
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -1035,13 +1067,18 @@ Item Operateur::opSupEgal(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opSup(Item i1, Item i2) {
-    //On récupére les types des items i1 et i2
+Item Operateur::opSup(Item& i1, Item& i2) {
+
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
+    //On récupère les types des items i1 et i2 après le processVariable
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
 
     //On vérifie que l'opération est réalisée sur des types valides
-    if (!typeNumerique(i1) || !typeNumerique(i2))
+    if (!typeNumerique(i1) && !typeNumerique(i2))
         throw ComputerException("Types des opérandes non valides");
 
     else {
@@ -1071,7 +1108,12 @@ Item Operateur::opSup(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opInf(Item i1, Item i2) {
+Item Operateur::opInf(Item& i1, Item& i2) {
+
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
     //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
@@ -1107,7 +1149,12 @@ Item Operateur::opInf(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opAND(Item i1, Item i2) {
+Item Operateur::opAND(Item& i1, Item& i2) {
+
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
+
     //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
     QString typeItem2 = i2.obtenirType();
@@ -1143,7 +1190,11 @@ Item Operateur::opAND(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opOR(Item i1, Item i2) {
+Item Operateur::opOR(Item& i1, Item& i2) {
+
+    //Si les items sont des expressions correspondantes à des variables, on remplace la variable par sa valeur stockée
+    i1 = processVariable(i1);
+    i2 = processVariable(i2);
 
     //On récupére les types des items i1 et i2
     QString typeItem1 = i1.obtenirType();
@@ -1180,7 +1231,10 @@ Item Operateur::opOR(Item i1, Item i2) {
     }
 }
 
-Item Operateur::opNOT(Item i) {
+Item Operateur::opNOT(Item& i) {
+
+    //Si l'item est une expression correspondante à une variable, on remplace la variable par sa valeur stockée
+    i = processVariable(i);
 
     //On récupére les types des items i1 et i2
     QString typeItem1 = i.obtenirType();
@@ -1210,7 +1264,7 @@ Item Operateur::opNOT(Item i) {
 
     }}
 
-void Operateur::opEval(Item i) {
+void Operateur::opEval(Item& i) {
 
     //On n'évalue qu'une expression ou un programme pour pas générer de problèmes
     if (i.obtenirType() != "Expression" && i.obtenirType() != "Programme")
@@ -1232,7 +1286,7 @@ void Operateur::opEval(Item i) {
     }
 }
 
-void Operateur::opIFT(Item i1, Item i2) {
+void Operateur::opIFT(Item& i1, Item& i2) {
 
     //On récupère une ref sur la pile
     Pile& pile = Pile::obtenirPile();
@@ -1272,7 +1326,7 @@ void Operateur::opIFT(Item i1, Item i2) {
     }
 }
 
-void Operateur::opIFTE(Item i1, Item i2, Item i3) {
+void Operateur::opIFTE(Item& i1, Item& i2, Item& i3) {
 
     //On récupère une ref sur la pile
     Pile& pile = Pile::obtenirPile();
@@ -1317,7 +1371,7 @@ void Operateur::opIFTE(Item i1, Item i2, Item i3) {
 
 }
 
-void Operateur::opWHILE(Item i1, Item i2) {
+void Operateur::opWHILE(Item& i1, Item& i2) {
 
     //On récupère une ref sur la pile
     Pile& pile = Pile::obtenirPile();

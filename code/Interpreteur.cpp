@@ -52,8 +52,8 @@ void Interpreteur::interprete(QString commandeEntree) {
 void Interpreteur::execute(QString operande) {
     //Test de chaque operateur
 
-    QMap<QString, std::function<Item(Item, Item)>> inventaireOpArite2=Operateur::inventaireOpArite2;
-    QMap<QString, std::function<Item(Item)>> inventaireOpArite1=Operateur::inventaireOpArite1;
+    QMap<QString, std::function<Item(Item&, Item&)>> inventaireOpArite2=Operateur::inventaireOpArite2;
+    QMap<QString, std::function<Item(Item&)>> inventaireOpArite1=Operateur::inventaireOpArite1;
 
     if(inventaireOpArite1.contains(operande)){
         if(pile.estVide()){
@@ -81,9 +81,9 @@ void Interpreteur::execute(QString operande) {
         try {
             Item resultat=inventaireOpArite2[operande](i2, i1);
             pile.pop();
-            //i1.supprimer();
+            i1.supprimer();
             pile.pop();
-            //i2.supprimer();
+            i2.supprimer();
             pile.push(resultat);
             return;
         } catch (ComputerException &ce) {
