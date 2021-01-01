@@ -26,12 +26,12 @@ void Sauvegarde::sauvegardeEtat(){
     QDomElement pile = d.createElement("pile");
     calculatrice.appendChild(pile);
     for(unsigned int i = 0; i < refPile.taille(); i++){
-        QDomElement element = doc.createElement("element");
+        QDomElement element = d.createElement("element");
         pile.appendChild(element);
         QString s = refPile.end().obtenirLitterale().versString();
         refPile.pop();
-        QDomText valeurElement = doc.createTextNode(s);
-        litterale.appendChild(valeurElement);
+        QDomText valeurElement = d.createTextNode(s);
+        element.appendChild(valeurElement);
     }
 
     //Variables
@@ -118,6 +118,6 @@ void Sauvegarde::recupereEtat(){
     }
 
 
-    d.close();
+    calculatrice.close();
 
 }
