@@ -253,8 +253,13 @@ void Interpreteur::execute(QString operande) {
         }
     }
     else {
-        Item resultat = ConstructeurLitterale::distinguerConstruire(operande);
-        pile.push(resultat);
+        try {
+            Item resultat = ConstructeurLitterale::distinguerConstruire(operande);
+            pile.push(resultat);
+        } catch (ComputerException &ce) {
+            pile.modifierEtat(ce.what());
+            return;
+        }
     }
 }
 

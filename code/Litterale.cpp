@@ -81,13 +81,13 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
 
     if(flag6||(s[0]<='9'&&s[0]>='0'))//numerique
     {
-        if(flag3==1)//reel
+        if(flag3)//reel
         {
             Litterale* temp = new Reel(s.toDouble());
             return Item(temp, "Reel");
             // return re;
         }
-        else if(flag4==1)//rationnel
+        else if(flag4)//rationnel
         {
             QString n1=s.section("/",0,0);
             QString d1=s.section("/",1,1);
@@ -122,17 +122,17 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
 
         }
     }
-    else if (flag1==1) //programme
+    else if (flag1) //programme
     {
         Litterale* temp = new Programme(s.mid(1,l-2));
         return Item(temp, "Programme");
     }
-    else if(flag2==1)//expression
+    else if(flag2 && !flag1 && !flag3 && !flag4)//expression
     {
         Litterale* temp = new Expression(s);
         return Item(temp, "Expression");
     }
-    else if(s[0]>='A'&&s[0]<='Z')//Atome non lié
+    else if(s[0]>='A'&&s[0]<='Z' && !flag1 && !flag3 && !flag4)//Atome non lié
     {
         s.insert(0, QString("'"));
         s.append("'");
@@ -140,5 +140,5 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
         return Item(temp, "Expression");
 
     }
-    throw ComputerException("Aucun type d'item trouvé");
+    throw ComputerException("Erreur : Aucun type d'item trouvé");
 }
