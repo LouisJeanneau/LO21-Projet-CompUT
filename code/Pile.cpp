@@ -22,7 +22,6 @@ void Pile::pop() {
     if(estVide())
         throw ComputerException("Erreur du pop, Pile vide");
     listeItems.pop_back();
-    modifierEtat("Pop réussi");
 }
 
 Item Pile::end(int n) {
@@ -74,8 +73,7 @@ void Pile::clear() {
             it->supprimer();
         listeItems.clear();
     } catch (ComputerException &ce) {
-        modifierEtat("Erreur lors du clear de la pile");
-        throw ComputerException();
+        throw ComputerException("Erreur lors du CLEAR de la pile");
     }
 }
 
@@ -88,22 +86,20 @@ void Pile::swap() {
         listeItems.push_back(itemTop);
         listeItems.push_back(itemSecond);
     } catch (ComputerException &ce) {
-        modifierEtat("Erreur lors du swap de la pile");
-        throw ComputerException();
+        throw ComputerException("Erreur lors du SWAP de la pile");
     }
 }
 
 void Pile::drop() {
     try{
         if(estVide()){
-            modifierEtat("Erreur lors du drop");
-            throw ComputerException();
+            throw ComputerException("Erreur lors du DROP");
         }
         listeItems.back().supprimer();
         listeItems.pop_back();
     } catch (ComputerException &ce) {
-        modifierEtat("Erreur lors du drop");
-        throw ComputerException();
+        throw ComputerException("Erreur lors du DROP");
+
     }
 }
 
@@ -113,8 +109,7 @@ void Pile::dup() {
         Item itemTemp = ConstructeurLitterale::distinguerConstruire(stringTemp);
         listeItems.push_back(itemTemp);
     } catch (ComputerException &ce) {
-        modifierEtat("Erreur lors du dup");
-        throw ComputerException();
+        throw ComputerException("Erreur lors du DUP");
     }
 }
 

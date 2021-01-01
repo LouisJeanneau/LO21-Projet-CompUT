@@ -13,12 +13,10 @@ using namespace std;
 
 class ComputerException : public exception{
     string info;
-    string resteCommande;
 public:
-    explicit ComputerException(string  i="", string  r="") noexcept :info(std::move(i)), resteCommande(std::move(r)){}
+    explicit ComputerException(string  i="") noexcept :info(std::move(i)){}
     virtual ~ComputerException() noexcept {}
     const char* what() const noexcept { return info.c_str(); }
-    const char* reste() const noexcept { return resteCommande.c_str(); }
 };
 
 #endif //PROJET_LO21_EXCEPTION_H
