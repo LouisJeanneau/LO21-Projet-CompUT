@@ -57,7 +57,6 @@ vueVariable::vueVariable(QWidget * parent):
 
 void vueVariable::recupererKey(){
     persistence.supprimerVariable(choixSuppression->currentText());
-    refreshVariable();
 }
 
 void vueVariable::ajouterVariable(){

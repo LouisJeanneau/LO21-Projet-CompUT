@@ -57,7 +57,6 @@ vueProgramme::vueProgramme(QWidget * parent):
 
 void vueProgramme::recupererKey(){
     persistence.supprimerProgramme(choixSuppressionPG->currentText());
-    refreshProgramme();
 }
 
 void vueProgramme::ajouterProgramme() {

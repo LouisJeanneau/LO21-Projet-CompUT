@@ -36,6 +36,7 @@ void Persistence::ajouterVariable(QString saisieAtome, QString saisieVariable) {
 
 void Persistence::supprimerVariable(QString atome) {
     mapVariable.remove(atome);
+    emit actualiserAffichage();
 }
 
 void Persistence::ajouterProgramme(QString saisieAtome, QString saisieProgramme) {
@@ -63,4 +64,5 @@ void Persistence::ajouterProgramme(QString saisieAtome, QString saisieProgramme)
 
 void Persistence::supprimerProgramme(QString atome) {
     mapProgramme.remove(atome);
+    emit actualiserAffichage();
 }
