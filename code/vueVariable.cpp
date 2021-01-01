@@ -95,7 +95,7 @@ void vueVariable::refreshVariable(){
         choixSuppression->insertItem(i,it.key());
         i++;
     }
-    fenetrePrincipale->refreshTableVariable();
+    fenetrePrincipale->refreshTableVariableProgramme();
 };
 
 void vueVariable::appelRefreshVariable() {

@@ -27,6 +27,7 @@
 #include "vueVariable.h"
 #include "vueProgramme.h"
 #include "vueParametre.h"
+#include "Sauvegarde.h"
 
 class vueParametre;
 
@@ -43,7 +44,7 @@ Q_OBJECT
     Pile &pile = Pile::obtenirPile();
     Persistence &persistence = Persistence::getPersistence();
     //Controleur *controleur;
-    //Sauvegarde *sauvegarde;
+    Sauvegarde *sauvegarde;
 
     Interpreteur *refIntp;
     vueParametre *vueParametre;
@@ -74,8 +75,9 @@ Q_OBJECT
     QPushButton *boutonMOINS;
     QPushButton *boutonFOIS;
     QPushButton *boutonDIVISER;
+    QPushButton *boutonTestSauvegarde;
     //Clavier Variable :
-    QTableWidget *tableBoutonVariable;
+    QTableWidget *tableBoutonVariableProgramme;
     //Pour l'affichage :
     QVBoxLayout *couche;
     QHBoxLayout *affichageClaviers;
@@ -216,7 +218,7 @@ public slots:
 
     void ouvertureVueParametre();
 
-    void refreshTableVariable();
+    void refreshTableVariableProgramme();
 
     void slotFocusCommande(){commande->setFocus();}
 

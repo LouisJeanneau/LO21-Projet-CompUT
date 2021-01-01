@@ -94,7 +94,7 @@ void vueProgramme::refreshProgramme(){
         choixSuppressionPG->insertItem(i,it.key());
         i++;
     }
-    fenetrePrincipale->refreshTableVariable();
+    fenetrePrincipale->refreshTableVariableProgramme();
 }
 
 void vueProgramme::appelRefreshProgramme() {

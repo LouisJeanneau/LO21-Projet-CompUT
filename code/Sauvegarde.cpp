@@ -15,17 +15,17 @@ using namespace std;
 
 void Sauvegarde::sauvegardeEtat(){
     
-    QDomDocument d;
+    QDomDocument d("Sauvegarde");
 
-    //QDomProcessingInstruction instruction=doc.createProcessingInstruction("xml","version=\"1.0\" encoding=\"ISO-8859-1\"");
-    //d.appendChild(instruction);
+    QDomProcessingInstruction instruction=d.createProcessingInstruction("xml","version=\"1.0\" encoding=\"ISO-8859-1\"");
+    d.appendChild(instruction);
     QDomElement calculatrice = d.createElement("calculatrice");
     d.appendChild(calculatrice);
 
     //Pile
     QDomElement pile = d.createElement("pile");
     calculatrice.appendChild(pile);
-    for(unsigned int i = 0; i < refPile.taille(); i++){
+    while(!refPile.estVide()){
         QDomElement element = d.createElement("element");
         pile.appendChild(element);
         QString s = refPile.end().obtenirLitterale().versString();
@@ -60,14 +60,14 @@ void Sauvegarde::sauvegardeEtat(){
     {
         fichier.close();
         QMessageBox::critical(this,"Erreur","Impossible d'écrire dans le document XML");
-        return;
+        exit(EXIT_FAILURE);
     }
-
     QTextStream stream(&fichier);
     stream << d.toString();
     //d.save(stream, 4);
 
     fichier.close();
+    std::cout << "Fonction sauvegarde fin" << std::endl;
 }
 
 void Sauvegarde::recupereEtat(){
@@ -75,7 +75,7 @@ void Sauvegarde::recupereEtat(){
     QFile calculatrice("calculatrice.xml");
     if(!calculatrice.open(QIODevice::ReadOnly))
     {
-        QMessageBox::warning(this,"Erreur à l'ouverture du document XML","Le document XML n'a pas pu être ouvert.");
+        QMessageBox::warning(this,"Erreur à l'ouverture du document XML","Le document XML n'a pas pu être ouvert. Si il était inexistant, il sera crée à la première sauvegarde.");
         return;
     }
     if (!d->setContent(&calculatrice))
@@ -87,6 +87,8 @@ void Sauvegarde::recupereEtat(){
 
     //Pile
     QDomNode balise = d->firstChild();
+    balise = balise.nextSibling();
+    balise = balise.firstChild();
     QDomElement element = balise.lastChildElement();
     while(!element.isNull()){
         //Construire une nouvelle litérale avec le texte récupéré
@@ -102,7 +104,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
-        persistence.ajouterVariable(variable.attribute("id"), variable.attribute("value"));
+        persistence.ajouterVariable((QString)variable.attribute("id"),(QString)variable.attribute("value"));
         variable = variable.nextSiblingElement();
     }
 
@@ -113,7 +115,7 @@ void Sauvegarde::recupereEtat(){
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
-        persistence.ajouterProgramme(programme.attribute("id"), programme.attribute("value"));
+        persistence.ajouterProgramme((QString)programme.attribute("id"),(QString)programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
 
