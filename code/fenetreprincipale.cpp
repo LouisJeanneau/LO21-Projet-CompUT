@@ -225,13 +225,11 @@ void fenetrePrincipale::getNextCommande(){
     QString saisieComplete = commande->text().toUpper();
     try {
         refIntp->interprete(saisieComplete);
-    } catch (ComputerException &ce) {
-        message->setText(ce.what());
-    }
-            //Si nous avons un message d'erreur, on ne clear pas le contenu de commande
-    if(!pile.obtenirEtat().contains("Erreur")){
         commande->clear();
+    } catch (ComputerException &ce) {
+        commande->setText(ce.what());
     }
+    refresh();
 }
 void fenetrePrincipale::affichageClavierVariable(){
     tableBoutonVariable->setVisible(true);

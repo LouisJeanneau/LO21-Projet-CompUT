@@ -34,7 +34,6 @@ Item Pile::end(int n) {
 
 void Pile::push(Item item) {
     listeItems.push_back(item);
-    modifierEtat("Push d'un item réussi");
 }
 
 bool Pile::estVide() {
@@ -59,7 +58,6 @@ void Pile::debug() {
 
 void Pile::modifierEtat(QString e) {
     etat=e;
-    emit refresh();
 }
 
 QString Pile::obtenirEtat() {
@@ -75,9 +73,9 @@ void Pile::clear() {
         for(auto it = listeItems.begin(); it != listeItems.end(); ++it)
             it->supprimer();
         listeItems.clear();
-        modifierEtat("Pile vidée");
     } catch (ComputerException &ce) {
         modifierEtat("Erreur lors du clear de la pile");
+        throw ComputerException();
     }
 }
 
@@ -89,9 +87,9 @@ void Pile::swap() {
         listeItems.pop_back();
         listeItems.push_back(itemTop);
         listeItems.push_back(itemSecond);
-        modifierEtat("Swap réussi");
     } catch (ComputerException &ce) {
         modifierEtat("Erreur lors du swap de la pile");
+        throw ComputerException();
     }
 }
 
@@ -99,13 +97,13 @@ void Pile::drop() {
     try{
         if(estVide()){
             modifierEtat("Erreur lors du drop");
-            return;
+            throw ComputerException();
         }
         listeItems.back().supprimer();
         listeItems.pop_back();
-        modifierEtat("Drop réussi");
     } catch (ComputerException &ce) {
         modifierEtat("Erreur lors du drop");
+        throw ComputerException();
     }
 }
 
@@ -114,9 +112,9 @@ void Pile::dup() {
         QString stringTemp = end().obtenirLitterale().versString();
         Item itemTemp = ConstructeurLitterale::distinguerConstruire(stringTemp);
         listeItems.push_back(itemTemp);
-        modifierEtat("Dup réussi");
     } catch (ComputerException &ce) {
         modifierEtat("Erreur lors du dup");
+        throw ComputerException();
     }
 }
 
