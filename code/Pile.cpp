@@ -20,14 +20,14 @@ Item &Item::operator=(const Item &i) {
 
 void Pile::pop() {
     if(estVide())
-        throw ComputerException("Echec du pop, Pile vide");
+        throw ComputerException("Erreur du pop, Pile vide");
     listeItems.pop_back();
     modifierEtat("Pop réussi");
 }
 
 Item Pile::end(int n) {
     if(estVide())
-        throw ComputerException("Echec du end, Pile vide");
+        throw ComputerException("Erreur du end, Pile vide");
     Item i=listeItems.at(listeItems.size()-n-1);
     return i;
 }
@@ -72,7 +72,7 @@ std::vector<Item> Pile::copierListeItems() {
 
 void Pile::clear() {
     try {
-        for (auto it = listeItems.begin(); it != listeItems.end(); ++it)
+        for(auto it = listeItems.begin(); it != listeItems.end(); ++it)
             it->supprimer();
         listeItems.clear();
         modifierEtat("Pile vidée");

@@ -96,13 +96,13 @@ public:
 
     void refreshMethode();
 
-    void creerNouveauBoutonVariable(int i,QString key,QString value);
+    void creerNouveauBoutonVariable(int i, QString key, QString value);
 
-    void creerNouveauBoutonProgramme(int i,QString key,QString value);
+    void creerNouveauBoutonProgramme(int i, QString key, QString value);
 
-    QLineEdit *obtenirCommande() {return commande;};
+    QLineEdit *obtenirCommande() { return commande; };
 
-    void focusCommande(){commande->setFocus();}
+    void focusCommande() { commande->setFocus(); }
 
 public slots:
 
@@ -218,7 +218,7 @@ public slots:
 
     void refreshTableVariable();
 
-    void slotFocusCommande(){commande->setFocus();}
+    void slotFocusCommande() { commande->setFocus(); }
 
 };
 

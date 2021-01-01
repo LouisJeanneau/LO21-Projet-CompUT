@@ -20,18 +20,20 @@ void Interpreteur::interprete(QString commandeEntree) {
             commandeEntree.remove(0,1);
         }
         else if(commandeEntree.at(0) == "'"){
-            cout << "axiome" << endl;
+            cout << "atome" << endl;
             int index = commandeEntree.indexOf('\'', 1);
             if(index == -1)
-                throw ComputerException(commandeEntree.toStdString());
+                throw ComputerException("Erreur : atome non fini");
             unElement = commandeEntree.left(index+1);
+            if(unElement.contains(' '))
+                throw ComputerException("Erreur : l'expression contient un espace");
             commandeEntree.remove(0, index+1);
             execute(unElement);
         }
         else if(commandeEntree.at(0) == "["){
             int index = commandeEntree.lastIndexOf("]");
             if(index == -1){
-                throw ComputerException("Programme non finie");
+                throw ComputerException("Erreur : Programme non finie");
             }
 
             unElement = commandeEntree.left(index+1);

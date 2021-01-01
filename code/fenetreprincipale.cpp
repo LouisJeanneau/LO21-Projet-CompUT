@@ -229,7 +229,9 @@ void fenetrePrincipale::getNextCommande(){
         message->setText(ce.what());
     }
             //Si nous avons un message d'erreur, on ne clear pas le contenu de commande
-    if(pile.obtenirEtat()=="Pop réussi" || pile.obtenirEtat()=="Push d'un item réussi"){ commande->clear();}
+    if(!pile.obtenirEtat().contains("Erreur")){
+        commande->clear();
+    }
 }
 void fenetrePrincipale::affichageClavierVariable(){
     tableBoutonVariable->setVisible(true);
