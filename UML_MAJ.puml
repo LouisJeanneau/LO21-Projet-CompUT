@@ -1,0 +1,260 @@
+@startuml
+
+package "GroupeLitterale" {
+
+
+    Class ConstructeurLitterale{
+    {static} distinguerConstruire(s : QString) : Item
+    }
+
+    Class Litterale {
+         +virtual ~Litterale() 
+        +virtual versString() : QString
+    }
+
+
+
+    Class Entier{
+        +entier : int
+        +Entier(i : int)
+        +obtenirEntier() const : int
+        +versString() const : QString
+    }
+
+    Class Reel{
+        -reel : double
+        +Reel(d: double)
+        +obtenirReel() const : double
+        +versString() const : QString
+        }
+
+    Class Rationel{
+        -numerateur : int
+        -denominateur : int
+        +Rationnel(n : int, d : int)
+        +obtenirNumerateur() const : int
+        +obtenirDenominateur() const : int
+        +versString() const : QString
+        }
+
+    Class Expression{
+        -expression : QString
+        +Expression(e : QString)
+        +versString() const : QString
+    }
+
+    Class Numerique{
+
+        }
+
+    Class Programme{
+        -programme : QString
+        +Programme(s : QString)
+        +versString() const : QString
+    }
+
+}
+
+Class Item{
+    -litPointeur : Litterale*
+    +Item(l : Litteral*)
+    +supprimer()
+    +obtenirLitterale() : Litterale&
+}
+
+package "GroupeOperateur" {
+
+Class Operateur{
+    +{static} inventaireOpArite2: QMap<QString, std::function<Litterale&(Item, Item)>>
+    +{static} inventaireOpArite1: QMap<QString, std::function<Litterale&(Item)>>
+    +{static} inventaireOpArite0: QMap<QString, std::function<Litterale&()>>
+    +{static}opEVAL(Item & i): void
+}
+
+Class OperateurNumerique {
+    +{static}opPLUS(Item& i1, Item& i2) : Litterale&
+    +{static}opMOINS(Item& i1, Item& i2) : Litterale&
+    +{static}opMUL(Item& i1, Item& i2) : Litterale&
+    +{static}opDIVISION(Item& i1, Item& i2) : Litterale&
+    +{static}opDIV(Item& i1, Item& i2) : Litterale&
+    +{static}opMOD(Item& i1, Item& i2) : Litterale&
+    +{static}opNEG(Item& i) : Litterale&
+}
+
+Class OperateurLogique {
+    +{static}opEGAL(Item& i1, Item& i2) : Litterale&
+    +{static}opDIFFERENT(Item& i1, Item& i2) : Litterale&
+    +{static}opINFEGAL(Item& i1, Item& i2) : Litterale&
+    +{static}opSUPEGAL(Item& i1, Item& i2) : Litterale&
+    +{static}opSUP(Item& i1, Item& i2) : Litterale&
+    +{static}opINF(Item& i1, Item& i2) : Litterale&
+    +{static}opAND(Item& i1, Item& i2) : Litterale&
+    +{static}opOR(Item& i1, Item& i2) : Litterale&
+    +{static}opNOT(Item& i) : Litterale&
+
+
+}
+
+Class OperateurPile {
+    +{static}opDUP(Item &) : Litterale&
+    +{static}opDROP(Item &) : void
+    +{static}opSWAP(Item &i1, Item &i2) : void
+    +{static}opCLEAR() : void
+}
+
+Class OperateurConditionnel {
+    +{static}opIFT(Item &i1, Item &i2) : void
+}
+
+
+
+}
+
+
+Class Pile{
+    -listeItems : vector<Item>
+    -{static} instance : Pile
+    +pop() : Item
+    +push(item : Item) : void
+    +estVide() : bool
+    +taille() : unsigned int
+
+
+
+}
+
+Class Interpreteur{
+    -pile : Pile&
+    -{static} instance: Interpreteur
+    +interpreter(commandeEntree : QString)
+    +executer(operande : QString)
+    +{static} obtenirInterpreteur : Interpreteur&
+}
+
+Class Controleur{
+    -refIntp : Interpreteur&
+    -refPile : Pile&
+    -message : QString
+    +Controleur(intp : Interpreteur&, p : Pile&)
+    +commande(c : const QString&)
+    +setMessage(m : const QString&)
+    +getMessage() : QString const
+}
+
+Class Persistance{
+    -mapVariable : QMap<QString, QString>
+    -mapProgramme : QMap<QString, QString>
+}
+
+package "groupeAffichage" {
+
+    Class fenetrePrincipale{
+        -barreMessage : QLineEdit *
+        -vuePile : QTableWidget *
+        -NbItemAAfficher : unsigned int 
+	    -barreEntree : QLineEdit *
+	    -pile : Pile *
+	    -controleur : Controleur *
+        -vue_variable : vueVariable *
+        -vue_programme : vueProgramme *
+        -vue_parametre : vueParametre *
+        -persistance : Persistance *
+        -afficherClavierCalculateur
+        -afficherClavierVariable
+        -bouton : QPushButton *
+        -couche : QVBoxLayout *
+	    +Qcomputer(QWidget * parent = 0)
+	    +~QComputer()
+        +getNombreItemAAfficher() : unsigned int
+        +setNombreItemAAfficher(i : unsigned int) : void
+        +getComputer() : QComputer *
+        +rafraichirMethode() : void
+        +refresh() : void
+	    +getNextCommande() : void
+        +empile_bouton() : void
+        +affichageClavierCalculateur() : void
+        +ouverture_vue_variable() : void
+        +ouverture_vue_programme() : void
+        +ouverture_vue_parametre() : void
+    }
+
+    Class vueVariable{
+        -texteCreationVariable : QLabel *
+        -entreeAtome : QLineEdit *
+        -entreeVariable : QLineEdit *
+        -validerCreation : QPushButton *
+        -texteVariableEnregistre : QLabel *
+        -layoutSaisie : QHBoxLayout *
+        -listeVariable : QVBoxLayout *
+        -fenetrePrincipale : QComputer *
+        +vueVariable(QWidget *parent = 0)
+        +~vueVariable()
+        +setFenetrePrincipale(fenetrePrincipaleCopie : QComputer *) : void
+        +getFenetrePrincipale() : QComputer*
+        +rafraichirVariable() : void
+        +ajouterVariable(): void
+    }
+    Class vueProgramme{
+        -texteCreationProgramme : QLabel *
+        -entreeAtomePG : QLineEdit *
+        -entreeProgramme : QLineEdit *
+        -validerCreationPG : QPushButton *
+        -texteProgrammeEnregistre : QLabel *
+        -layoutSaisiePG : QHBoxLayout *
+        -listeProgramme : QVBoxLayout *
+        -fenetrePrincipale : QComputer *
+        +vueProgramme(QWidget *parent = 0)
+        +~vueProgramme()
+        +setFenetrePrincipale(fenetrePrincipaleCopie : QComputer *) : void
+        +getFenetrePrincipale() : QComputer*
+        +ajouterProgramme(): void
+    }
+    Class vueParametre{
+        -messageParametre : QLabel *
+        -choixNb : QSpinBox *
+        -layoutParametre : QHBoxLayout *
+        -fenetrePrincipale : QComputer *
+        +vueParametre(QWidget * parent = 0)
+        +~vueParametre
+        +setFenetrePrincipale(fenetrePrincipaleCopie : QComputer *) : void
+        +getFenetrePrincipale() : QComputer *
+        +changerNbAfficherPile() : void
+
+    }
+
+}
+
+Class Sauvegarde {
+
+}
+
+
+Litterale <|-- Numerique
+Numerique <|-- Reel
+Numerique <|-- Rationel
+Numerique <|-- Entier
+Litterale <|-- Expression
+Litterale <|-- Programme
+
+
+Operateur <|-- OperateurNumerique
+Operateur <|-- OperateurLogique
+Operateur <|-- OperateurPile
+Operateur <|-- OperateurConditionnel 
+
+ConstructeurLitterale *-- Litterale
+Interpreteur *-- Operateur
+Interpreteur *-- ConstructeurLitterale
+Item *-- Litterale
+Pile o-- Item
+Pile <--> Interpreteur
+fenetrePrincipale --> Persistance
+Controleur *--> Interpreteur
+Controleur *--> Pile
+Controleur <-- Persistance
+Controleur *--> fenetrePrincipale
+fenetrePrincipale --> vueVariable
+fenetrePrincipale --> vueProgramme
+fenetrePrincipale --> vueParametre
+
+@enduml
