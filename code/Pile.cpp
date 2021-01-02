@@ -61,7 +61,7 @@ void Pile::modifierEtat(QString e) {
     etat = e;
 }
 
-QString Pile::obtenirEtat() {
+QString Pile::obtenirEtat() const {
     return etat;
 }
 
