@@ -61,7 +61,7 @@ public:
 
     void debug();
 
-    QString obtenirEtat();
+    QString obtenirEtat() const;
 
     void modifierEtat(QString e);
 
@@ -74,10 +74,6 @@ public:
     void drop();
 
     void dup();
-
-signals:
-
-    void refresh();
 
 };
 
