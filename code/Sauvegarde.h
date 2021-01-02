@@ -13,13 +13,15 @@
 class Sauvegarde : public QWidget
 {
     Q_OBJECT
-    Pile& refPile;
+    Pile &refPile = Pile::obtenirPile();
     Persistence &persistence = Persistence::getPersistence();
 public:
-    Sauvegarde(Pile& p) : refPile(p) {};
+    Sauvegarde() = default;
 	~Sauvegarde() = default;
     void sauvegardeEtat();
     void recupereEtat();
+public slots:
+    void commencerSauvegarde(){sauvegardeEtat();}
 };
 
 #endif //PROJET_LO21_SAUVEGARDE_H

@@ -53,6 +53,9 @@ vueProgramme::vueProgramme(QWidget * parent):
     setLayout(listeProgramme);
     QObject::connect(validerCreationPG,SIGNAL(clicked()),this,SLOT(ajouterProgramme()));
     QObject::connect(validerSuppresionPG,SIGNAL(clicked()),this,SLOT(recupererKey()));
+    //Shortcut
+    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
+    QObject::connect(shortcut, SIGNAL(activated()),validerCreationPG, SLOT(click()));
 }
 
 void vueProgramme::recupererKey(){
@@ -70,6 +73,7 @@ void vueProgramme::ajouterProgramme() {
     }
     entreeAtomePG->clear();
     entreeProgramme->clear();
+    entreeAtomePG->setFocus();
     refreshProgramme();
 }
 
@@ -93,7 +97,7 @@ void vueProgramme::refreshProgramme(){
         choixSuppressionPG->insertItem(i,it.key());
         i++;
     }
-    fenetrePrincipale->refreshTableVariable();
+    fenetrePrincipale->refreshTableVariableProgramme();
 }
 
 void vueProgramme::appelRefreshProgramme() {

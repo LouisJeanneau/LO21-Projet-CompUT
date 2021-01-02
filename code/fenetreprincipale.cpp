@@ -5,8 +5,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     : QWidget(parent) // Appel au constructeur de la classe de base
 {
 
-    //sauvegarde = new Sauvegarde(pile);
-    //sauvegarde->recupereEtat();
+    sauvegarde = new Sauvegarde();
     //Créer les différents Objets
     nombreItemAAfficher = 5;
     message = new QLineEdit;
@@ -50,10 +49,11 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     boutonMOINS = new QPushButton("-");
     boutonFOIS = new QPushButton("*");
     boutonDIVISER = new QPushButton("/");
+
     if(persistence.getMapVariableSize()>persistence.getMapProgrammeSize()){
-        tableBoutonVariable = new QTableWidget(persistence.getMapVariableSize(),2);
+        tableBoutonVariableProgramme = new QTableWidget(persistence.getMapVariableSize(),2);
     }else {
-        tableBoutonVariable = new QTableWidget(persistence.getMapProgrammeSize(),2);
+        tableBoutonVariableProgramme = new QTableWidget(persistence.getMapProgrammeSize(),2);
     }
 
     //CREATION LAYOUT DE L'APPLICATION + DES CLAVIERS
@@ -94,7 +94,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     //Layout Horizontal des deux claviers
     placeClaviers->addLayout(clavierNumerique);
-    placeClaviers->addWidget(tableBoutonVariable);
+    placeClaviers->addWidget(tableBoutonVariableProgramme);
 
     //LAYOUT Positionner les objets sur la fenêtre
     couche->addLayout(affichageVues);
@@ -144,11 +144,11 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     QStringList nomColonnesVariableProgramme;
     nomColonnesVariableProgramme << "Variables";
     nomColonnesVariableProgramme << "Programmes";
-    tableBoutonVariable->setHorizontalHeaderLabels(nomColonnesVariableProgramme);
-    tableBoutonVariable->verticalHeader()->setVisible(false);
-    tableBoutonVariable->horizontalHeader()->setStretchLastSection(true);
-    tableBoutonVariable->verticalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    tableBoutonVariable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    tableBoutonVariableProgramme->setHorizontalHeaderLabels(nomColonnesVariableProgramme);
+    tableBoutonVariableProgramme->verticalHeader()->setVisible(false);
+    tableBoutonVariableProgramme->horizontalHeader()->setStretchLastSection(true);
+    tableBoutonVariableProgramme->verticalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    tableBoutonVariableProgramme->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 
     QMap<QString,QString>::iterator it;
     int i = 0;
@@ -198,6 +198,9 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     QObject::connect(boutonVariable,SIGNAL(clicked()),this,SLOT(ouvertureVueVariable()));
     QObject::connect(boutonProgramme,SIGNAL(clicked()),this,SLOT(ouvertureVueProgramme()));
     QObject::connect(boutonParametre,SIGNAL(clicked()),this,SLOT(ouvertureVueParametre()));
+
+    //ACTIVER LA SAUVEGARDE
+    sauvegarde->recupereEtat();
 }
 
 // FIN DU CONSTRUCTEUR QCOMPUTER
@@ -231,13 +234,13 @@ void fenetrePrincipale::getNextCommande(){
     refresh();
 }
 void fenetrePrincipale::affichageClavierVariable(){
-    tableBoutonVariable->setVisible(true);
+    tableBoutonVariableProgramme->setVisible(true);
     afficherClavierVariable->setVisible(false);
     cacherClavierVariable->setVisible(true);
     commande->setFocus();
 }
 void fenetrePrincipale::cacheClavierVariable(){
-    tableBoutonVariable->setVisible(false);
+    tableBoutonVariableProgramme->setVisible(false);
     cacherClavierVariable->setVisible(false);
     afficherClavierVariable->setVisible(true);
     commande->setFocus();
@@ -334,7 +337,7 @@ void fenetrePrincipale::creerNouveauBoutonVariable(int i,QString key,QString val
     mapper->setMapping(nouvelleVariable, valeur);
     QObject::connect(nouvelleVariable,SIGNAL(clicked()),mapper,SLOT(map()));
 
-    tableBoutonVariable->setCellWidget(i,0,nouvelleVariable);
+    tableBoutonVariableProgramme->setCellWidget(i,0,nouvelleVariable);
 }
 
 void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString valeur){
@@ -343,23 +346,16 @@ void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString 
     QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(empileProgramme(QString)));
     mapper->setMapping(nouveauProgramme, valeur);
     QObject::connect(nouveauProgramme,SIGNAL(clicked()),mapper,SLOT(map()));
-    tableBoutonVariable->setCellWidget(i,1,nouveauProgramme);
+    tableBoutonVariableProgramme->setCellWidget(i,1,nouveauProgramme);
 }
 
-void fenetrePrincipale::refreshTableVariable(){
-    std::cout << "Salut moi c'est refreshTableVariable" << std::endl;
+void fenetrePrincipale::refreshTableVariableProgramme(){
+    std::cout << "Salut moi c'est refreshTableVariableProgramme" << std::endl;
+    tableBoutonVariableProgramme->clearContents();
     if(persistence.getMapVariableSize()>persistence.getMapProgrammeSize()){
-        for(unsigned int i = 0; i<persistence.getMapVariableSize();i++){
-            tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
-            tableBoutonVariable->setItem(i,1,new QTableWidgetItem(""));
-        }
-        tableBoutonVariable->setRowCount(persistence.getMapVariableSize());
+        tableBoutonVariableProgramme->setRowCount(persistence.getMapVariableSize());
     }else {
-        for(unsigned int i = 0; i<persistence.getMapProgrammeSize();i++){
-            tableBoutonVariable->setItem(i,0,new QTableWidgetItem(""));
-            tableBoutonVariable->setItem(i,1,new QTableWidgetItem(""));
-        }
-        tableBoutonVariable->setRowCount(persistence.getMapProgrammeSize());
+        tableBoutonVariableProgramme->setRowCount(persistence.getMapProgrammeSize());
     };
     QMap<QString,QString>::iterator it;
     int j = 0;
@@ -376,4 +372,6 @@ void fenetrePrincipale::refreshTableVariable(){
     }
 }
 
-
+void fenetrePrincipale::fermetureDerniereFenetre(){
+    sauvegarde->sauvegardeEtat();
+}
