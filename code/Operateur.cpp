@@ -1272,6 +1272,12 @@ void Operateur::opEval(Item &i) {
         litteraleString.chop(1);
         litteraleString.remove(0, 1);
 
+        //Si c'est une expression de programme, nous n'avons retirer que les '' de l'expression, il faut retirer les [] du programme
+        if (litteraleString.contains("[") && litteraleString.contains("]")) {
+            litteraleString.chop(1);
+            litteraleString.remove(0, 1);
+        }
+
         //On envoie la chaîne de caractère à l'interpreteur
         interpreteur.interpreter(litteraleString);
     }
