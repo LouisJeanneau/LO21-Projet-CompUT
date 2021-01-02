@@ -21,7 +21,9 @@ class Item {
     QString typeItem;
 public:
     explicit Item(Litterale *l, QString t);
+
     Item(const Item &i);
+
     Item &operator=(const Item &i);
 
     ~Item() {};
@@ -39,7 +41,7 @@ public:
 
     QString obtenirType() { return typeItem; }
 
-    bool operator==(const Item& i) { return this->litPointeur == i.litPointeur;}
+    bool operator==(const Item &i);
 
 };
 
@@ -48,7 +50,9 @@ Q_OBJECT
     QString etat;
     std::vector<Item> listeItems;
     static Pile instance;
+
     Pile() = default;
+
 public:
     static Pile &obtenirPile();
 
