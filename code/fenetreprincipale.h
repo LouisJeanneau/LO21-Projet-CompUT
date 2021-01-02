@@ -43,7 +43,7 @@ Q_OBJECT
     unsigned int nombreItemAAfficher;
     QLineEdit *commande;
     Pile &pile = Pile::obtenirPile();
-    Persistence &persistence = Persistence::getPersistence();
+    Persistence &persistence = Persistence::obtenirPersistence();
     //Controleur *controleur;
     Sauvegarde *sauvegarde;
 
@@ -98,13 +98,13 @@ public:
 
     void refreshMethode();
 
-    void creerNouveauBoutonVariable(int i,QString key,QString value);
+    void creerNouveauBoutonVariable(int i, QString key, QString value);
 
-    void creerNouveauBoutonProgramme(int i,QString key,QString value);
+    void creerNouveauBoutonProgramme(int i, QString key, QString value);
 
-    QLineEdit *obtenirCommande() {return commande;};
+    QLineEdit *obtenirCommande() { return commande; };
 
-    void focusCommande(){commande->setFocus();}
+    void focusCommande() { commande->setFocus(); }
 
 public slots:
 
@@ -165,37 +165,31 @@ public slots:
     void empile_PLUS() {
         commande->setText("+");
         getNextCommande();
-        commande->clear();
     };
 
     void empile_MOINS() {
         commande->setText("-");
         getNextCommande();
-        commande->clear();
     };
 
     void empile_FOIS() {
         commande->setText("*");
         getNextCommande();
-        commande->clear();
     };
 
     void empile_DIV() {
         commande->setText("/");
         getNextCommande();
-        commande->clear();
     };
 
     void empile_CLEAR() {
         commande->setText("CLEAR");
         getNextCommande();
-        commande->clear();
     };
 
     void empile_EVAL() {
         commande->setText("EVAL");
         getNextCommande();
-        commande->clear();
     }
 
     void empileProgramme(QString valeur) {
@@ -226,7 +220,7 @@ public slots:
 
     void refreshTableVariableProgramme();
 
-    void slotFocusCommande(){commande->setFocus();}
+    void slotFocusCommande() { commande->setFocus(); }
 
     void fermetureDerniereFenetre();
 
