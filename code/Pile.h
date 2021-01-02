@@ -30,13 +30,6 @@ public:
 
     void supprimer();
 
-    bool estVide() {
-        if (litPointeur == nullptr) {
-            return true;
-        }
-        return false;
-    }
-
     Litterale &obtenirLitterale() { return *litPointeur; }
 
     QString obtenirType() { return typeItem; }

@@ -57,9 +57,12 @@ package "GroupeLitterale" {
 
 Class Item{
     -litPointeur : Litterale*
-    +Item(l : Litteral*)
+    -typeItem : QString
+    +Item(l : Litteral*, t : QString)
     +supprimer()
     +obtenirLitterale() : Litterale&
+    +obtenirType() : QString
+    +operator==(i : const Item &) : bool
 }
 
 package "GroupeOperateur" {
@@ -110,10 +113,20 @@ Class OperateurConditionnel {
 
 }
 
+Class Interpreteur{
+    -pile : Pile&
+    -{static} instance: Interpreteur
+    +interpreter(commandeEntree : QString)
+    +executer(operande : QString)
+    +{static} obtenirInterpreteur : Interpreteur&
+}
+
 
 Class Pile{
+    -etat : QString
     -listeItems : vector<Item>
     -{static} instance : Pile
+    -Pile();
     +pop() : Item
     +push(item : Item) : void
     +estVide() : bool
@@ -123,13 +136,7 @@ Class Pile{
 
 }
 
-Class Interpreteur{
-    -pile : Pile&
-    -{static} instance: Interpreteur
-    +interpreter(commandeEntree : QString)
-    +executer(operande : QString)
-    +{static} obtenirInterpreteur : Interpreteur&
-}
+
 
 Class Controleur{
     -refIntp : Interpreteur&
