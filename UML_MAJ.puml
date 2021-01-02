@@ -65,8 +65,6 @@ Class Item{
     +operator==(i : const Item &) : bool
 }
 
-
-
 package "GroupeOperateur" {
 
 Class Operateur{
@@ -115,24 +113,6 @@ Class OperateurConditionnel {
 
 }
 
-Class Persistance{
-    -mapVariable : QMap<QString, QString>
-    -mapProgramme : QMap<QString, QString>
-    -{static} instance : Persistance
-    -Persistance()
-    +{static} obtenirPersistance() : Persistance&
-    +obtenirMapVariable() : QMap<QString, QString>
-    +obtenirMapProgramme() : QMap<QString, QString>
-    +obtenirTaileMapVariable() : unsigned int
-    +obtenirTaileMapProgramme() : unsigned int
-    +ajouterVariable(atome : QString, variable : QString)
-    +ajouterProgramme(atome : QString, variable : QString)
-    +supprimerVariable(atome : QString)
-    +supprimerProgramme(atome : QString)
-    .. signals : ..
-    +actualiserAffichage()
-}
-
 Class Interpreteur{
     -pile : Pile&
     -{static} instance: Interpreteur
@@ -146,26 +126,32 @@ Class Pile{
     -etat : QString
     -listeItems : vector<Item>
     -{static} instance : Pile
-    __
     -Pile();
-    +{static} obtenirPile() : Pile&
-    +pop() : void
-    +end(n : int) : Item
+    +pop() : Item
     +push(item : Item) : void
     +estVide() : bool
     +taille() : unsigned int
-    +obtenirEtat() : QString
-    +modifierEtat(e : QString)
-    +copierListeItems() : vector<Item>
-    .. Opérateur ..
-    +swap()
-    +clear()
-    +drop()
-    +dup()
+
+
+
 }
 
 
 
+Class Controleur{
+    -refIntp : Interpreteur&
+    -refPile : Pile&
+    -message : QString
+    +Controleur(intp : Interpreteur&, p : Pile&)
+    +commande(c : const QString&)
+    +setMessage(m : const QString&)
+    +getMessage() : QString const
+}
+
+Class Persistance{
+    -mapVariable : QMap<QString, QString>
+    -mapProgramme : QMap<QString, QString>
+}
 
 package "groupeAffichage" {
 
@@ -175,6 +161,7 @@ package "groupeAffichage" {
         -NbItemAAfficher : unsigned int 
 	    -barreEntree : QLineEdit *
 	    -pile : Pile *
+	    -controleur : Controleur *
         -vue_variable : vueVariable *
         -vue_programme : vueProgramme *
         -vue_parametre : vueParametre *
@@ -245,11 +232,7 @@ package "groupeAffichage" {
 }
 
 Class Sauvegarde {
-    -refPile : Pile&
-    -persistance : Persistance&
-    -refFenetrePrincipale : fenetrePrincipale&
-    +sauvegardeEtat()
-    +recupereEtat()
+
 }
 
 
@@ -267,12 +250,16 @@ Operateur <|-- OperateurPile
 Operateur <|-- OperateurConditionnel 
 
 ConstructeurLitterale *-- Litterale
-Interpreteur -- Operateur
-Interpreteur -- ConstructeurLitterale
+Interpreteur *-- Operateur
+Interpreteur *-- ConstructeurLitterale
 Item *-- Litterale
 Pile o-- Item
 Pile <--> Interpreteur
 fenetrePrincipale --> Persistance
+Controleur *--> Interpreteur
+Controleur *--> Pile
+Controleur <-- Persistance
+Controleur *--> fenetrePrincipale
 fenetrePrincipale --> vueVariable
 fenetrePrincipale --> vueProgramme
 fenetrePrincipale --> vueParametre
