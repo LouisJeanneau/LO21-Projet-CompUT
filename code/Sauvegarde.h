@@ -15,7 +15,7 @@ class Sauvegarde : public QWidget {
 Q_OBJECT
     Pile &refPile = Pile::obtenirPile();
     Persistence &persistence = Persistence::obtenirPersistence();
-    fenetrePrincipale &refFenetrePrincipale = fenetrePrincipale::getFenetrePrincipale();
+    fenetrePrincipale *refFenetrePrincipale;
 public:
     Sauvegarde() = default;
 
@@ -24,6 +24,10 @@ public:
     void sauvegardeEtat();
 
     void recupereEtat();
+
+    void setFenetrePrincipale(class fenetrePrincipale *fenetrePrincipaleCopie) { refFenetrePrincipale = fenetrePrincipaleCopie; }
+
+    class fenetrePrincipale *getFenetrePrincipale() { return refFenetrePrincipale; }
 
 public slots:
 

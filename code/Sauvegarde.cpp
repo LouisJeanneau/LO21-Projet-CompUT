@@ -17,8 +17,7 @@ void Sauvegarde::sauvegardeEtat() {
 
     QDomDocument d("Sauvegarde");
 
-    QDomProcessingInstruction instruction = d.createProcessingInstruction("xml",
-                                                                          "version=\"1.0\" encoding=\"ISO-8859-1\"");
+    QDomProcessingInstruction instruction = d.createProcessingInstruction("xml","version=\"1.0\" encoding=\"ISO-8859-1\"");
     d.appendChild(instruction);
     QDomElement calculatrice = d.createElement("calculatrice");
     d.appendChild(calculatrice);
@@ -60,7 +59,7 @@ void Sauvegarde::sauvegardeEtat() {
     calculatrice.appendChild(parametres);
     QDomElement nbItem = d.createElement("nbItemAAfficherPile");
     parametres.appendChild(nbItem);
-    nbItem.setAttribute("value", refFenetrePrincipale.getNombreItemAAfficher());
+    nbItem.setAttribute("value", refFenetrePrincipale->getNombreItemAAfficher());
 
 
     QFile fichier("calculatrice.xml");
@@ -125,12 +124,10 @@ void Sauvegarde::recupereEtat() {
         persistence.ajouterProgramme((QString) programme.attribute("id"), (QString) programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
-
     //Paramètres
     balise = balise.nextSibling();
     QDomElement nbItem = balise.firstChildElement();
-    refFenetrePrincipale.setNombreItemAAfficher(nbItem.attribute("value"));
-
+    refFenetrePrincipale->setNombreItemAAfficher(nbItem.attribute("value").toInt());
 
     calculatrice.close();
 

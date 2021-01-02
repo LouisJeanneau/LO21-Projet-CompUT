@@ -2,7 +2,7 @@
 
 vueProgramme::vueProgramme(QWidget *parent) :
         QWidget(parent) {
-    setWindowTitle("Modification des Programmes");
+    setWindowTitle("Programmes");
     setWindowModality(Qt::ApplicationModal);
     texteCreationProgramme = new QLabel("Entrez votre nouveau programme :");
     texteProgrammeEnregistre = new QLabel("Programmes enregistrées :");

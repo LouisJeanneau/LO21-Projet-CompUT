@@ -2,7 +2,7 @@
 
 vueVariable::vueVariable(QWidget *parent) :
         QWidget(parent) {
-    setWindowTitle("Modification des variables");
+    setWindowTitle("Variables");
     setWindowModality(Qt::ApplicationModal);
     texteCreationVariable = new QLabel("Entrez votre nouvelle variable :");
     texteVariableEnregistre = new QLabel("Variables enregistrées :");

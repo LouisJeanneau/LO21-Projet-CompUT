@@ -5,13 +5,12 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
         : QWidget(parent) // Appel au constructeur de la classe de base
 {
 
-    sauvegarde = new Sauvegarde();
-    //Créer les différents Objets
-    nombreItemAAfficher = 5;
+    //Créer les différents Objet
+
+    //
     message = new QLineEdit;
     vuePile = new QTableWidget(getNombreItemAAfficher(), 1);
     commande = new QLineEdit;
-    refIntp = new Interpreteur(Interpreteur::obtenirInterpreteur());
     vueParametre = new class vueParametre();
     vueVariable = new class vueVariable();
     vueProgramme = new class vueProgramme();
@@ -19,8 +18,12 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     vueVariable->setFenetrePrincipale(this);
     vueProgramme->setFenetrePrincipale(this);
 
+    nombreItemAAfficher = 5;
+    refIntp = new Interpreteur(Interpreteur::obtenirInterpreteur());
+    sauvegarde = new class Sauvegarde();
+    sauvegarde->setFenetrePrincipale(this);
 
-    // Boutons pour le clavier
+    // Boutons pour les claviers
     afficherClavierCalculateur = new QPushButton("Afficher Clavier Calculateur");
     afficherClavierVariable = new QPushButton("Afficher Clavier Variable");
     afficherClavierCalculateur->setToolTip("Cliquez pour afficher/cacher le clavier");
@@ -125,17 +128,17 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     vuePile->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     QStringList labelList;
-    for (unsigned int i = 1; i <= getNombreItemAAfficher(); i++) {
+    for (int i = 1; i <= getNombreItemAAfficher(); i++) {
         QString str = QString::number(i);
         str += " : ";
         labelList << str;
     }
     vuePile->setVerticalHeaderLabels(labelList);
 
-    for (unsigned int i = 0; i < getNombreItemAAfficher(); i++) {
+    for (int i = 0; i < getNombreItemAAfficher(); i++) {
         vuePile->setItem(i, 0, new QTableWidgetItem(""));
     }
-    unsigned int nb = 0;
+    int nb = 0;
     for (auto it = pile.copierListeItems().begin();
          it != pile.copierListeItems().end() && nb < getNombreItemAAfficher(); ++it, ++nb) {
         vuePile->item(nb, 0)->setText(it->obtenirLitterale().versString());
@@ -214,12 +217,13 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 void fenetrePrincipale::refresh() {
     message->setText(pile.obtenirEtat());
     //On efface tout
-    for (unsigned int i = 0; i < getNombreItemAAfficher(); i++) {
-        vuePile->item(i, 0)->setText("");
+    vuePile->setRowCount(getNombreItemAAfficher());
+    for (int i = 0; i < getNombreItemAAfficher(); i++) {
+        vuePile->setItem(i, 0, new QTableWidgetItem(""));
     }
 
     //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
-    unsigned int nb = 0;
+    int nb = 0;
     vector<Item> liste = pile.copierListeItems();
     for (auto it = liste.rbegin(); it != liste.rend() && nb < getNombreItemAAfficher(); ++it, ++nb) {
         vuePile->item(nb, 0)->setText(it->obtenirLitterale().versString());
@@ -308,6 +312,7 @@ void fenetrePrincipale::ouvertureVueProgramme() {
 }
 
 void fenetrePrincipale::ouvertureVueParametre() {
+    vueParametre->setNombre(getNombreItemAAfficher());
     vueParametre->show();
     commande->setFocus();
 }
@@ -315,7 +320,7 @@ void fenetrePrincipale::ouvertureVueParametre() {
 void fenetrePrincipale::refreshMethode() {
     vuePile->setRowCount(getNombreItemAAfficher());
     QStringList labelList;
-    for (unsigned int i = 1; i <= getNombreItemAAfficher(); i++) {
+    for (int i = 1; i <= getNombreItemAAfficher(); i++) {
         QString str = QString::number(i);
         str += " : ";
         labelList << str;
@@ -324,12 +329,12 @@ void fenetrePrincipale::refreshMethode() {
     //message-> setText(pile->getMessage());
 
     //On efface tout
-    for (unsigned int i = 0; i < getNombreItemAAfficher(); i++) {
+    for (int i = 0; i < getNombreItemAAfficher(); i++) {
         vuePile->setItem(i, 0, new QTableWidgetItem(""));
     }
 
     //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
-    unsigned int nb = 0;
+    int nb = 0;
     vector<Item> liste = pile.copierListeItems();
     for (auto it = liste.rbegin(); it != liste.rend() && nb < getNombreItemAAfficher(); ++it, ++nb) {
         vuePile->item(nb, 0)->setText(it->obtenirLitterale().versString());

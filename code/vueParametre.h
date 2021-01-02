@@ -18,6 +18,8 @@ public:
             class fenetrePrincipale *fenetrePrincipaleCopie) { fenetrePrincipale = fenetrePrincipaleCopie; };
 
     class fenetrePrincipale *getFenetrePrincipale() { return fenetrePrincipale; };
+
+    void setNombre(int i){choixNb->setValue(i);}
 public slots:
 
     void changerNbAfficherPile();

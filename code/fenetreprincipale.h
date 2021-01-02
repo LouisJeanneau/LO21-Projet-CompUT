@@ -36,11 +36,13 @@ class vueProgramme;
 
 class vueVariable;
 
+class Sauvegarde;
+
 class fenetrePrincipale : public QWidget {
 Q_OBJECT
     QLineEdit *message;
     QTableWidget *vuePile;
-    unsigned int nombreItemAAfficher;
+    int nombreItemAAfficher;
     QLineEdit *commande;
     Pile &pile = Pile::obtenirPile();
     Persistence &persistence = Persistence::obtenirPersistence();
@@ -90,9 +92,9 @@ public:
 
     ~fenetrePrincipale() = default;
 
-    unsigned int getNombreItemAAfficher() { return nombreItemAAfficher; };
+    int getNombreItemAAfficher() { return nombreItemAAfficher; };
 
-    void setNombreItemAAfficher(unsigned int i) { nombreItemAAfficher = i; };
+    void setNombreItemAAfficher(int i) { nombreItemAAfficher = i; };
 
     fenetrePrincipale *getFenetrePrincipale() { return this; };
 
