@@ -103,8 +103,6 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     couche->addWidget(commande);
     couche->addLayout(affichageClaviers);
     couche->addLayout(placeClaviers);
-    boutonTestSauvegarde = new QPushButton("TEST");
-    couche->addWidget(boutonTestSauvegarde);
 
     //setLayout(couche); //On rattache le layout à la fenêtre (this)
     setLayout(couche);
@@ -203,7 +201,6 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     QObject::connect(boutonParametre,SIGNAL(clicked()),this,SLOT(ouvertureVueParametre()));
 
     //ACTIVER LA SAUVEGARDE
-    QObject::connect(boutonTestSauvegarde,SIGNAL(clicked()),sauvegarde,SLOT(commencerSauvegarde()));
     sauvegarde->recupereEtat();
 }
 
@@ -378,4 +375,6 @@ void fenetrePrincipale::refreshTableVariableProgramme(){
     }
 }
 
-
+void fenetrePrincipale::fermetureDerniereFenetre(){
+    sauvegarde->sauvegardeEtat();
+}

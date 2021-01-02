@@ -75,7 +75,6 @@ Q_OBJECT
     QPushButton *boutonMOINS;
     QPushButton *boutonFOIS;
     QPushButton *boutonDIVISER;
-    QPushButton *boutonTestSauvegarde;
     //Clavier Variable :
     QTableWidget *tableBoutonVariableProgramme;
     //Pour l'affichage :
@@ -221,6 +220,8 @@ public slots:
     void refreshTableVariableProgramme();
 
     void slotFocusCommande(){commande->setFocus();}
+
+    void fermetureDerniereFenetre();
 
 };
 
