@@ -1,59 +1,60 @@
 @startuml
+
 skinparam sequenceParticipant underline
 
 actor Utilisateur
-participant "c : Controleur" as C
+participant "fp : fenetreprincipale" as FP
 participant "i : Interpreteur" as I
 participant "cl : ConsructeurLitterale" as CL
-participant "e : Entier" as E
+participant "e1 : Entier" as E1
+participant "e2 : Entier" as E2
+participant "e3 : Entier" as E3
 participant "p : Pile" as P
 
 
-Utilisateur -> C: commande(1 6 *)
-activate C
+Utilisateur -> FP : getNextCommande()
+activate FP
 
-C -> I: interpreter(1 6 *)
+FP -> I: interpreter("3 6 *")
 activate I
 
-I -> I: execute(1)
+I -> I: execute("3")
 
-I -> CL : distinguerConstruire(1)
+I -> CL : distinguerConstruire("3")
 activate CL
 
-CL -> E : Entier(1)
-activate E
+CL -> E1 : Entier("3")
+activate E1
 
-E -> I : lit
+E1 -> I : lit
 
 I -> P : push(lit)
 activate P
 
 deactivate P
-deactivate E
 deactivate CL
 
-I -> I: execute(6)
+I -> I: execute("6")
 
-I -> CL : distinguerConstruire(6)
+I -> CL : distinguerConstruire("6")
 activate CL
 
-CL -> E : Entier(6)
-activate E
+CL -> E2 : Entier("6")
+activate E2
 
-E -> I : lit
+E2 -> I : lit
 
 I -> P : push(lit)
 activate P
 
 deactivate P
-deactivate E
 deactivate CL
 
-I -> I: executer(*)
+I -> I: executer("*")
 
 participant "o : Operateur" as O
 
-I -> O : inventaireOpArite2.contains(*)
+I -> O : inventaireOpArite2.contains("*")
 activate O
 
 O -> I : True
@@ -74,19 +75,19 @@ activate O
 
 O -> O : OpMul(i2, i1)
 
-O -> CL : distinguerConstruire(18)
+O -> CL : distinguerConstruire("18")
 deactivate O
 activate CL
 
-CL -> E : Entier(6)
-activate E
+CL -> E3 : Entier("18")
+activate E3
 
-E -> I : resultat
-deactivate E
+E3 -> I : resultat
 deactivate CL
 
 I -> P : pop()
 activate P
+deactivate E1
 deactivate P
 participant "it : Item" as IT
 
@@ -96,6 +97,7 @@ deactivate IT
 
 I -> P : pop()
 activate P
+deactivate E2
 deactivate P
 
 I -> IT : i2.supprimer()
@@ -107,6 +109,7 @@ activate P
 deactivate P
 
 deactivate I
-deactivate C
+deactivate E3
+deactivate FP
 
 @enduml
