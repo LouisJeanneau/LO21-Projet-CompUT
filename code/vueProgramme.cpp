@@ -1,5 +1,7 @@
 #include "vueProgramme.h"
 
+
+// =======================================   CONSTRUCTEUR   ======================================= //
 vueProgramme::vueProgramme(QWidget *parent) :
         QWidget(parent) {
     setWindowTitle("Programmes");
@@ -56,25 +58,11 @@ vueProgramme::vueProgramme(QWidget *parent) :
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
     QObject::connect(shortcut, SIGNAL(activated()), validerCreationPG, SLOT(click()));
 }
+// =======================================   FIN DU CONSTRUCTEUR    ======================================= //
 
-void vueProgramme::recupererKey() {
-    persistence.supprimerProgramme(choixSuppressionPG->currentText());
-}
 
-void vueProgramme::ajouterProgramme() {
-    QString saisieAtomePG = entreeAtomePG->text();
-    saisieAtomePG = saisieAtomePG.toUpper();
-    QString saisieProgramme = entreeProgramme->text();
-    try {
-        persistence.ajouterProgramme(saisieAtomePG, saisieProgramme);
-    } catch (ComputerException &ce) {
-        QMessageBox::critical(this, "Erreur", ce.what());
-    }
-    entreeAtomePG->clear();
-    entreeProgramme->clear();
-    entreeAtomePG->setFocus();
-    refreshProgramme();
-}
+
+// =======================================   METHODE    ======================================= //
 
 void vueProgramme::refreshProgramme() {
     std::cout << "Salut moi c'est refreshProgramme" << std::endl;
@@ -98,10 +86,34 @@ void vueProgramme::refreshProgramme() {
     }
     fenetrePrincipale->refreshTableVariableProgramme();
 }
+// =======================================   FIN DES METHODES   ======================================= //
+
+
+
+// =======================================   SLOTS    ======================================= //
+
+void vueProgramme::recupererKey() {
+    persistence.supprimerProgramme(choixSuppressionPG->currentText());
+}
+
+void vueProgramme::ajouterProgramme() {
+    QString saisieAtomePG = entreeAtomePG->text();
+    saisieAtomePG = saisieAtomePG.toUpper();
+    QString saisieProgramme = entreeProgramme->text();
+    try {
+        persistence.ajouterProgramme(saisieAtomePG, saisieProgramme);
+    } catch (ComputerException &ce) {
+        QMessageBox::critical(this, "Erreur", ce.what());
+    }
+    entreeAtomePG->clear();
+    entreeProgramme->clear();
+    entreeAtomePG->setFocus();
+    refreshProgramme();
+}
 
 void vueProgramme::appelRefreshProgramme() {
     refreshProgramme();
 };
-
+// =======================================   FIN DES SLOTS    ======================================= //
 
 

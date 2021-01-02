@@ -1,16 +1,19 @@
 #include "fenetreprincipale.h"
 #include "Pile.h"
 
+
+// =======================================   CONSTRUCTEUR   ======================================= //
 fenetrePrincipale::fenetrePrincipale(QWidget *parent)
-        : QWidget(parent) // Appel au constructeur de la classe de base
+        : QWidget(parent)
 {
 
-    //Créer les différents Objet
-
-    //
+    // ===== CREATION DES OBJETS =====
     message = new QLineEdit;
     vuePile = new QTableWidget(getNombreItemAAfficher(), 1);
     commande = new QLineEdit;
+    nombreItemAAfficher = 5;
+
+    // ===== CREATION DES VUES =====
     vueParametre = new class vueParametre();
     vueVariable = new class vueVariable();
     vueProgramme = new class vueProgramme();
@@ -18,12 +21,17 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     vueVariable->setFenetrePrincipale(this);
     vueProgramme->setFenetrePrincipale(this);
 
-    nombreItemAAfficher = 5;
+    // ===== BOUTON POUR L'AFFICHAGE DES VUES =====
+    boutonVariable = new QPushButton("Variable");
+    boutonProgramme = new QPushButton("Programme");
+    boutonParametre = new QPushButton("Paramètre");
+
+    // ===== LIEN AVEC L'INTERPRETEUR ET LA SAUVEGARDE =====
     refIntp = new Interpreteur(Interpreteur::obtenirInterpreteur());
     sauvegarde = new class Sauvegarde();
     sauvegarde->setFenetrePrincipale(this);
 
-    // Boutons pour les claviers
+    // ===== BOUTON POUR L'AFFICHAGE DES CLAVIERS =====
     afficherClavierCalculateur = new QPushButton("Afficher Clavier Calculateur");
     afficherClavierVariable = new QPushButton("Afficher Clavier Variable");
     afficherClavierCalculateur->setToolTip("Cliquez pour afficher/cacher le clavier");
@@ -32,10 +40,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     afficherClavierCalculateur->setVisible(false);
     afficherClavierVariable->setVisible(false);
 
-    boutonVariable = new QPushButton("Variable");
-    boutonProgramme = new QPushButton("Programme");
-    boutonParametre = new QPushButton("Paramètre");
-
+    // CREATION DE L'AFFICHAGE CLAVIER NUMERIQUE
     bouton0 = new QPushButton("0");
     bouton1 = new QPushButton("1");
     bouton2 = new QPushButton("2");
@@ -53,13 +58,14 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     boutonFOIS = new QPushButton("*");
     boutonDIVISER = new QPushButton("/");
 
+    // CREATION DE L'AFFICHAGE CLAVIER VARIABLE PROGRAMME
     if (persistence.obtenirTailleMapVariable() > persistence.obtenirTailleMapProgramme()) {
         tableBoutonVariableProgramme = new QTableWidget(persistence.obtenirTailleMapVariable(), 2);
     } else {
         tableBoutonVariableProgramme = new QTableWidget(persistence.obtenirTailleMapProgramme(), 2);
     }
 
-    //CREATION LAYOUT DE L'APPLICATION + DES CLAVIERS
+    // ===== CREATIONS DES LAYOUT =====
     couche = new QVBoxLayout;
     clavierNumerique = new QGridLayout;
     affichageClaviers = new QHBoxLayout;
@@ -110,23 +116,25 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     //setLayout(couche); //On rattache le layout à la fenêtre (this)
     setLayout(couche);
 
-    //3 : Mettre un titre à la fenêtre
+    // ===== PARAMETRAGE DES DIFFERENTS WIDGETS =====
+
+    // Mettre un titre à la fenêtre
     setWindowTitle("Comp'UT");
-    //4 : Couleur à la barre + empêcher l'édition
+
+    // Couleur à la barre + empêcher l'édition
     message->setStyleSheet("background-color :#456268; color : #fcf8ec");
     message->setReadOnly(true);
-    commande->setMouseTracking(false);
+
+    // Focus automatique sur la commande
     commande->setFocus();
-    // REGLAGES POUR LA LIGNE DE COMMANDE :
-    //5 : Bonne apparence vuePile + non modifiable
+
+    // Bonne apparence vuePile + non modifiable
     vuePile->setStyleSheet("background-color :#d0e8f2; color : #456268");
-
-
-    //vuePile->verticalHeader();
     vuePile->horizontalHeader()->setVisible(false);
     vuePile->horizontalHeader()->setStretchLastSection(true);
     vuePile->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    // Initialisation des headers de la pile
     QStringList labelList;
     for (int i = 1; i <= getNombreItemAAfficher(); i++) {
         QString str = QString::number(i);
@@ -135,16 +143,19 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     }
     vuePile->setVerticalHeaderLabels(labelList);
 
+    // Vidage de la pile à l'ouverture
     for (int i = 0; i < getNombreItemAAfficher(); i++) {
         vuePile->setItem(i, 0, new QTableWidgetItem(""));
     }
+
+    // Remplissage de la pile
     int nb = 0;
     for (auto it = pile.copierListeItems().begin();
          it != pile.copierListeItems().end() && nb < getNombreItemAAfficher(); ++it, ++nb) {
         vuePile->item(nb, 0)->setText(it->obtenirLitterale().versString());
     }
 
-    //=====TEST BOUTON VARIABLE=====//
+    // ===== TEST BOUTON VARIABLE =====
     QStringList nomColonnesVariableProgramme;
     nomColonnesVariableProgramme << "Variables";
     nomColonnesVariableProgramme << "Programmes";
@@ -169,11 +180,9 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     }
 
 
-    //=========================6 : Connecter signaux/slots===============
-    QObject::connect(&Persistence::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueVariable,
-                     SLOT(appelRefreshVariable()));
-    QObject::connect(&Persistence::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueProgramme,
-                     SLOT(appelRefreshProgramme()));
+    // ===== Connecter signaux/slots =====
+    QObject::connect(&Persistence::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueVariable,SLOT(appelRefreshVariable()));
+    QObject::connect(&Persistence::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueProgramme,SLOT(appelRefreshProgramme()));
     connect(commande, SIGNAL(returnPressed()), this, SLOT(getNextCommande()));
 
     // CONNECTER LES BOUTONS DU CLAVIER NUMERIQUE
@@ -205,14 +214,63 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     QObject::connect(boutonProgramme, SIGNAL(clicked()), this, SLOT(ouvertureVueProgramme()));
     QObject::connect(boutonParametre, SIGNAL(clicked()), this, SLOT(ouvertureVueParametre()));
 
-    //ACTIVER LA SAUVEGARDE
+    // ===== LANCER LA RECUPERATION SAUVEGARDE =====
     sauvegarde->recupereEtat();
     refresh();
+} // ======================================= FIN DU CONSTRUCTEUR QCOMPUTER ======================================= //
+
+
+
+// ======================================= METHODES ======================================= //
+void fenetrePrincipale::refreshMethode() {
+    vuePile->setRowCount(getNombreItemAAfficher());
+    QStringList labelList;
+    for (int i = 1; i <= getNombreItemAAfficher(); i++) {
+        QString str = QString::number(i);
+        str += " : ";
+        labelList << str;
+    }
+    vuePile->setVerticalHeaderLabels(labelList);
+    //message-> setText(pile->getMessage());
+
+    //On efface tout
+    for (int i = 0; i < getNombreItemAAfficher(); i++) {
+        vuePile->setItem(i, 0, new QTableWidgetItem(""));
+    }
+
+    //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
+    int nb = 0;
+    vector<Item> liste = pile.copierListeItems();
+    for (auto it = liste.rbegin(); it != liste.rend() && nb < getNombreItemAAfficher(); ++it, ++nb) {
+        vuePile->item(nb, 0)->setText(it->obtenirLitterale().versString());
+    }
 }
 
-// FIN DU CONSTRUCTEUR QCOMPUTER
+void fenetrePrincipale::creerNouveauBoutonVariable(int i, QString key, QString valeur) {
+    QPushButton *nouvelleVariable = new QPushButton(key);
+    QSignalMapper *mapper = new QSignalMapper(this);
+    QObject::connect(mapper, SIGNAL(mapped(QString)), this, SLOT(empileVariable(QString)));
 
-//===================SLOTS QCOMPUTER
+    mapper->setMapping(nouvelleVariable, valeur);
+    QObject::connect(nouvelleVariable, SIGNAL(clicked()), mapper, SLOT(map()));
+
+    tableBoutonVariableProgramme->setCellWidget(i, 0, nouvelleVariable);
+}
+
+void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString valeur) {
+    QPushButton *nouveauProgramme = new QPushButton(key);
+    QSignalMapper *mapper = new QSignalMapper(this);
+    QObject::connect(mapper, SIGNAL(mapped(QString)), this, SLOT(empileProgramme(QString)));
+    mapper->setMapping(nouveauProgramme, valeur);
+    QObject::connect(nouveauProgramme, SIGNAL(clicked()), mapper, SLOT(map()));
+    tableBoutonVariableProgramme->setCellWidget(i, 1, nouveauProgramme);
+}
+// =======================================   FIN DES METHODES   ======================================= //
+
+
+
+
+// =======================================   SLOTS QCOMPUTER   ======================================= //
 
 void fenetrePrincipale::refresh() {
     message->setText(pile.obtenirEtat());
@@ -317,50 +375,6 @@ void fenetrePrincipale::ouvertureVueParametre() {
     commande->setFocus();
 }
 
-void fenetrePrincipale::refreshMethode() {
-    vuePile->setRowCount(getNombreItemAAfficher());
-    QStringList labelList;
-    for (int i = 1; i <= getNombreItemAAfficher(); i++) {
-        QString str = QString::number(i);
-        str += " : ";
-        labelList << str;
-    }
-    vuePile->setVerticalHeaderLabels(labelList);
-    //message-> setText(pile->getMessage());
-
-    //On efface tout
-    for (int i = 0; i < getNombreItemAAfficher(); i++) {
-        vuePile->setItem(i, 0, new QTableWidgetItem(""));
-    }
-
-    //On parcourt le contenu de la pile et on affiche les éléments dans vuePile
-    int nb = 0;
-    vector<Item> liste = pile.copierListeItems();
-    for (auto it = liste.rbegin(); it != liste.rend() && nb < getNombreItemAAfficher(); ++it, ++nb) {
-        vuePile->item(nb, 0)->setText(it->obtenirLitterale().versString());
-    }
-}
-
-void fenetrePrincipale::creerNouveauBoutonVariable(int i, QString key, QString valeur) {
-    QPushButton *nouvelleVariable = new QPushButton(key);
-    QSignalMapper *mapper = new QSignalMapper(this);
-    QObject::connect(mapper, SIGNAL(mapped(QString)), this, SLOT(empileVariable(QString)));
-
-    mapper->setMapping(nouvelleVariable, valeur);
-    QObject::connect(nouvelleVariable, SIGNAL(clicked()), mapper, SLOT(map()));
-
-    tableBoutonVariableProgramme->setCellWidget(i, 0, nouvelleVariable);
-}
-
-void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString valeur) {
-    QPushButton *nouveauProgramme = new QPushButton(key);
-    QSignalMapper *mapper = new QSignalMapper(this);
-    QObject::connect(mapper, SIGNAL(mapped(QString)), this, SLOT(empileProgramme(QString)));
-    mapper->setMapping(nouveauProgramme, valeur);
-    QObject::connect(nouveauProgramme, SIGNAL(clicked()), mapper, SLOT(map()));
-    tableBoutonVariableProgramme->setCellWidget(i, 1, nouveauProgramme);
-}
-
 void fenetrePrincipale::refreshTableVariableProgramme() {
     std::cout << "Salut moi c'est refreshTableVariableProgramme" << std::endl;
     tableBoutonVariableProgramme->clearContents();
@@ -387,4 +401,4 @@ void fenetrePrincipale::refreshTableVariableProgramme() {
 void fenetrePrincipale::fermetureDerniereFenetre() {
     sauvegarde->sauvegardeEtat();
 }
-
+// =======================================   FIN DEFINITIONS SLOTS   ======================================= //

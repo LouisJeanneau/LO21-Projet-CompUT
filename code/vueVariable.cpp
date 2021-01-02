@@ -1,5 +1,7 @@
 #include "vueVariable.h"
 
+
+// =======================================   CONSTRUCTEUR   ======================================= //
 vueVariable::vueVariable(QWidget *parent) :
         QWidget(parent) {
     setWindowTitle("Variables");
@@ -53,29 +55,15 @@ vueVariable::vueVariable(QWidget *parent) :
     QObject::connect(validerCreation, SIGNAL(clicked()), this, SLOT(ajouterVariable()));
     QObject::connect(validerSuppression, SIGNAL(clicked()), this, SLOT(recupererKey()));
 
-    //Shortcut
+    //Shortcut pour valider la création avec entrée
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
     QObject::connect(shortcut, SIGNAL(activated()), validerCreation, SLOT(click()));
 }
+// =======================================   FIN DU CONSTRUCTEUR   ======================================= //
 
-void vueVariable::recupererKey() {
-    persistence.supprimerVariable(choixSuppression->currentText());
-}
 
-void vueVariable::ajouterVariable() {
-    QString saisieAtome = entreeAtome->text();
-    saisieAtome = saisieAtome.toUpper();
-    QString saisieVariable = entreeVariable->text();
-    try {
-        persistence.ajouterVariable(saisieAtome, saisieVariable);
-    } catch (ComputerException &ce) {
-        QMessageBox::critical(this, "Erreur", ce.what());
-    }
-    entreeAtome->clear();
-    entreeVariable->clear();
-    entreeAtome->setFocus();
-    refreshVariable();
-}
+
+// =======================================   METHODES    ======================================= //
 
 void vueVariable::refreshVariable() {
     std::cout << "Salut moi c'est refreshVariable" << std::endl;
@@ -101,6 +89,32 @@ void vueVariable::refreshVariable() {
     fenetrePrincipale->refreshTableVariableProgramme();
 };
 
+// =======================================   FIN METHODES    ======================================= //
+
+
+
+// =======================================   SLOTS    ======================================= //
+
+void vueVariable::recupererKey() {
+    persistence.supprimerVariable(choixSuppression->currentText());
+}
+
+void vueVariable::ajouterVariable() {
+    QString saisieAtome = entreeAtome->text();
+    saisieAtome = saisieAtome.toUpper();
+    QString saisieVariable = entreeVariable->text();
+    try {
+        persistence.ajouterVariable(saisieAtome, saisieVariable);
+    } catch (ComputerException &ce) {
+        QMessageBox::critical(this, "Erreur", ce.what());
+    }
+    entreeAtome->clear();
+    entreeVariable->clear();
+    entreeAtome->setFocus();
+    refreshVariable();
+}
+
 void vueVariable::appelRefreshVariable() {
     refreshVariable();
 }
+// =======================================   FIN DES SLOTS    ======================================= //
