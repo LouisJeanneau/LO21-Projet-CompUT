@@ -35,8 +35,6 @@ public:
 
     double obtenirReel() const { return reel; }
 
-    void negative() { reel = -reel; };
-
     QString versString() const;
 
     ~Reel() {
@@ -47,17 +45,12 @@ public:
 class Rationnel : public Numerique {
     int numerateur;
     int denominateur;
-
-    void simplification();
-
 public:
+    Rationnel(int n, int d);
+
     int obtenirNumerateur() const { return numerateur; }
 
     int obtenirDenominateur() const { return denominateur; }
-
-    void setRationnel(int n, int d);
-
-    Rationnel(int n, int d) { setRationnel(n, d); }
 
     QString versString() const;
 
@@ -87,9 +80,7 @@ class Programme : public Litterale {
 public:
     Programme(QString s) : programme(std::move(s)) {}
 
-    ~Programme() {
-        cout << "Programme detruit" << endl;
-    }
+    ~Programme() {}
 
     QString versString() const;
 };
@@ -98,9 +89,6 @@ class Expression : public Litterale {
     QString expression;
 public:
     Expression(QString e) : expression(e) {};
-
-    ~Expression() {
-    }
 
     QString versString() const;
 };
