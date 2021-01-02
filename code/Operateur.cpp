@@ -3,7 +3,6 @@
 //
 
 #include "Operateur.h"
-#include <cmath>
 
 //Initialisation de la map contenant les pointeurs des fonctions associés aux opérateurs d'arité 2
 QMap<QString, function<Item(Item &, Item &)>> Operateur::inventaireOpArite2 = {
@@ -18,7 +17,7 @@ QMap<QString, function<Item(Item &, Item &)>> Operateur::inventaireOpArite2 = {
         {"!=",  opDifferent},
         {">=",  opSupEgal},
         {">",   opSup},
-        {"<=",  opInfEgal},
+        {"=<",  opInfEgal},
         {"<",   opInf},
         {"AND", opAND},
         {"OR",  opOR},
@@ -76,7 +75,10 @@ std::vector<double> Operateur::recupererValeur(Item &i) {
     return valeur;
 }
 
-bool Operateur::typeVariable(Item &i) {
+Item Operateur::processVariable(Item &i) {
+
+    //On récupère une ref sur la pile
+    Pile &pile = Pile::obtenirPile();
 
     //On récupère une ref sur persistence
     Persistence &persistence = Persistence::obtenirPersistence();
@@ -84,20 +86,8 @@ bool Operateur::typeVariable(Item &i) {
     QString litteraleString = i.obtenirLitterale().versString().remove(0, 1);
     litteraleString.chop(1);
 
-    if (persistence.obtenirMapVariable().contains(litteraleString.toUpper()))
-        return true;
-    else
-        return false;
-
-}
-
-Item Operateur::processVariable(Item &i) {
-
-    //On récupère une ref sur la pile
-    Pile &pile = Pile::obtenirPile();
-
     //On vérifie bien que l'item est une variable
-    if (typeVariable(i)) {
+    if (persistence.obtenirMapVariable().contains(litteraleString.toUpper())) {
         //On évalue i
         opEval(i);
         //On sauvegarde l'item résultant de l'évaluation de i

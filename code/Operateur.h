@@ -31,8 +31,6 @@ private:
 
     static bool typeNumerique(Item &i);
 
-    static bool typeVariable(Item &i);
-
     static std::vector<double> recupererValeur(Item &i);
 
     static Item processVariable(Item &i);
