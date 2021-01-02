@@ -120,7 +120,17 @@ Class Persistance{
     -mapProgramme : QMap<QString, QString>
     -{static} instance : Persistance
     -Persistance()
-
+    +{static} obtenirPersistance() : Persistance&
+    +obtenirMapVariable() : QMap<QString, QString>
+    +obtenirMapProgramme() : QMap<QString, QString>
+    +obtenirTaileMapVariable() : unsigned int
+    +obtenirTaileMapProgramme() : unsigned int
+    +ajouterVariable(atome : QString, variable : QString)
+    +ajouterProgramme(atome : QString, variable : QString)
+    +supprimerVariable(atome : QString)
+    +supprimerProgramme(atome : QString)
+    .. signals : ..
+    +actualiserAffichage()
 }
 
 Class Interpreteur{
@@ -165,7 +175,6 @@ package "groupeAffichage" {
         -NbItemAAfficher : unsigned int 
 	    -barreEntree : QLineEdit *
 	    -pile : Pile *
-	    -controleur : Controleur *
         -vue_variable : vueVariable *
         -vue_programme : vueProgramme *
         -vue_parametre : vueParametre *
@@ -236,7 +245,11 @@ package "groupeAffichage" {
 }
 
 Class Sauvegarde {
-
+    -refPile : Pile&
+    -persistance : Persistance&
+    -refFenetrePrincipale : fenetrePrincipale&
+    +sauvegardeEtat()
+    +recupereEtat()
 }
 
 
@@ -254,16 +267,12 @@ Operateur <|-- OperateurPile
 Operateur <|-- OperateurConditionnel 
 
 ConstructeurLitterale *-- Litterale
-Interpreteur *-- Operateur
-Interpreteur *-- ConstructeurLitterale
+Interpreteur -- Operateur
+Interpreteur -- ConstructeurLitterale
 Item *-- Litterale
 Pile o-- Item
 Pile <--> Interpreteur
 fenetrePrincipale --> Persistance
-Controleur *--> Interpreteur
-Controleur *--> Pile
-Controleur <-- Persistance
-Controleur *--> fenetrePrincipale
 fenetrePrincipale --> vueVariable
 fenetrePrincipale --> vueProgramme
 fenetrePrincipale --> vueParametre

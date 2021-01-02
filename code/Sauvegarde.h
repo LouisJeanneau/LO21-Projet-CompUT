@@ -24,10 +24,6 @@ public:
     void sauvegardeEtat();
 
     void recupereEtat();
-
-public slots:
-
-    void commencerSauvegarde() { sauvegardeEtat(); }
 };
 
 #endif //PROJET_LO21_SAUVEGARDE_H
