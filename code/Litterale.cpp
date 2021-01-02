@@ -55,6 +55,7 @@ void Rationnel::setRationnel(int n, int d) {
 }
 
 Item ConstructeurLitterale::distinguerConstruire(QString s) {
+    try {
     int flag1=s.startsWith("[");//programme
     int flag2=s.startsWith("'");//expression
     int flag3=s.contains(".");//reel
@@ -79,66 +80,68 @@ Item ConstructeurLitterale::distinguerConstruire(QString s) {
         s="0"+s;
 
 
-    if(flag6||(s[0]<='9'&&s[0]>='0'))//numerique
-    {
-        if(flag3)//reel
+        if (flag6 || (s[0] <= '9' && s[0] >= '0'))//numerique
         {
-            Litterale* temp = new Reel(s.toDouble());
-            return Item(temp, "Reel");
-            // return re;
-        }
-        else if(flag4)//rationnel
-        {
-            QString n1=s.section("/",0,0);
-            QString d1=s.section("/",1,1);
-            int n=n1.toInt();
-            int d=d1.toInt();
+            if (flag3)//reel
+            {
+                Litterale *temp = new Reel(s.toDouble());
+                return Item(temp, "Reel");
+                // return re;
+            } else if (flag4)//rationnel
+            {
+                QString n1 = s.section("/", 0, 0);
+                QString d1 = s.section("/", 1, 1);
+                int n = n1.toInt();
+                int d = d1.toInt();
 
-            /* utilisation de l’algorithme d’Euclide pour trouver le Plus Grand Commun
-            Denominateur (PGCD) entre le numerateur et le denominateur */
-            int a=n, b=d;
-            // on ne travaille qu’avec des valeurs positives...
-            if (a<0) a=-a; if (b<0) b=-b;
-            while(a!=b){ if (a>b) a=a-b; else b=b-a; }
-            // on divise le numerateur et le denominateur par le PGCD=a
-            n/=a; d/=a;
-            // si le denominateur est négatif, on fait passer le signe - au denominateur
-            if (d<0) { d=-d; n=-n; }
+                /* utilisation de l’algorithme d’Euclide pour trouver le Plus Grand Commun
+                Denominateur (PGCD) entre le numerateur et le denominateur */
+                int a = n, b = d;
+                // on ne travaille qu’avec des valeurs positives...
+                if (a < 0) a = -a;
+                if (b < 0) b = -b;
+                while (a != b) { if (a > b) a = a - b; else b = b - a; }
+                // on divise le numerateur et le denominateur par le PGCD=a
+                n /= a;
+                d /= a;
+                // si le denominateur est négatif, on fait passer le signe - au denominateur
+                if (d < 0) {
+                    d = -d;
+                    n = -n;
+                }
 
-            if (d != 1) {
-                Litterale *temp = new Rationnel(n, d);
-                return Item(temp, "Rationnel");
-            }
-            else {
-                Litterale *temp = new Entier(n);
+                if (d != 1) {
+                    Litterale *temp = new Rationnel(n, d);
+                    return Item(temp, "Rationnel");
+                } else {
+                    Litterale *temp = new Entier(n);
+                    return Item(temp, "Entier");
+                }
+
+            } else //entier
+            {
+                Litterale *temp = new Entier(s.toInt());
                 return Item(temp, "Entier");
+
             }
-
-        }
-        else //entier
+        } else if (flag1) //programme
         {
-            Litterale* temp = new Entier(s.toInt());
-            return Item(temp, "Entier");
+            Litterale *temp = new Programme(s.mid(1, l - 2));
+            return Item(temp, "Programme");
+        } else if (flag2 && !flag1 && !flag3 && !flag4)//expression
+        {
+            Litterale *temp = new Expression(s);
+            return Item(temp, "Expression");
+        } else if (s[0] >= 'A' && s[0] <= 'Z' && !flag1 && !flag3 && !flag4)//Atome non lié
+        {
+            s.insert(0, QString("'"));
+            s.append("'");
+            Litterale *temp = new Expression(s);
+            return Item(temp, "Expression");
 
         }
-    }
-    else if (flag1) //programme
-    {
-        Litterale* temp = new Programme(s.mid(1,l-2));
-        return Item(temp, "Programme");
-    }
-    else if(flag2 && !flag1 && !flag3 && !flag4)//expression
-    {
-        Litterale* temp = new Expression(s);
-        return Item(temp, "Expression");
-    }
-    else if(s[0]>='A'&&s[0]<='Z' && !flag1 && !flag3 && !flag4)//Atome non lié
-    {
-        s.insert(0, QString("'"));
-        s.append("'");
-        Litterale* temp = new Expression(s);
-        return Item(temp, "Expression");
-
+    } catch (exception& e) {
+        throw ComputerException("Erreur : Ce n'est pas une littérale correcte");
     }
     throw ComputerException("Erreur : Aucun type d'item trouvé");
 }
