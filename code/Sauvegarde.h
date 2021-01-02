@@ -6,14 +6,16 @@
 #define PROJET_LO21_SAUVEGARDE_H
 
 #include "Computer.h"
-#include <QWidget>
 #include "Persistence.h"
+#include "fenetreprincipale.h"
+#include <QWidget>
 #include <QtXml>
 
 class Sauvegarde : public QWidget {
 Q_OBJECT
     Pile &refPile = Pile::obtenirPile();
     Persistence &persistence = Persistence::obtenirPersistence();
+    fenetrePrincipale &refFenetrePrincipale = fenetrePrincipale::getFenetrePrincipale();
 public:
     Sauvegarde() = default;
 

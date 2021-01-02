@@ -55,6 +55,13 @@ void Sauvegarde::sauvegardeEtat() {
         programme.setAttribute("value", persistence.obtenirMapProgramme().value(p));
     }
 
+    //Paramètres
+    QDomElement parametres = d.createElement("parametres");
+    calculatrice.appendChild(parametres);
+    QDomElement nbItem = d.createElement("nbItemAAfficherPile");
+    parametres.appendChild(nbItem);
+    nbItem.setAttribute("value", refFenetrePrincipale.getNombreItemAAfficher());
+
 
     QFile fichier("calculatrice.xml");
     if (!fichier.open(QIODevice::WriteOnly)) {
@@ -64,7 +71,6 @@ void Sauvegarde::sauvegardeEtat() {
     }
     QTextStream stream(&fichier);
     stream << d.toString();
-    //d.save(stream, 4);
 
     fichier.close();
     std::cout << "Fonction sauvegarde fin" << std::endl;
@@ -85,9 +91,10 @@ void Sauvegarde::recupereEtat() {
         return;
     }
 
-    //Pile
     QDomNode balise = d->firstChild();
     balise = balise.nextSibling();
+
+    //Pile
     balise = balise.firstChild();
     QDomElement element = balise.lastChildElement();
     while (!element.isNull()) {
@@ -118,6 +125,11 @@ void Sauvegarde::recupereEtat() {
         persistence.ajouterProgramme((QString) programme.attribute("id"), (QString) programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
+
+    //Paramètres
+    balise = balise.nextSibling();
+    QDomElement nbItem = balise.firstChildElement();
+    refFenetrePrincipale.setNombreItemAAfficher(nbItem.attribute("value"));
 
 
     calculatrice.close();
