@@ -7,8 +7,10 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     //Créer les différents Objet
 
+    nombreItemAAfficher = 5;
     //
     message = new QLineEdit;
+
     vuePile = new QTableWidget(getNombreItemAAfficher(), 1);
     commande = new QLineEdit;
     vueParametre = new class vueParametre();
@@ -18,7 +20,6 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     vueVariable->setFenetrePrincipale(this);
     vueProgramme->setFenetrePrincipale(this);
 
-    nombreItemAAfficher = 5;
     refIntp = new Interpreteur(Interpreteur::obtenirInterpreteur());
     sauvegarde = new class Sauvegarde();
     sauvegarde->setFenetrePrincipale(this);
