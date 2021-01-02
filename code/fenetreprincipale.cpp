@@ -378,3 +378,4 @@ void fenetrePrincipale::refreshTableVariableProgramme(){
 void fenetrePrincipale::fermetureDerniereFenetre(){
     sauvegarde->sauvegardeEtat();
 }
+
