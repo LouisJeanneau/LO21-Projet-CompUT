@@ -18,6 +18,7 @@
 #include <QMap>
 #include <QSignalMapper>
 #include <QComboBox>
+#include <QShortcut>
 #include "Pile.h"
 #include "Interpreteur.h"
 #include "Litterale.h"
@@ -164,31 +165,37 @@ public slots:
     void empile_PLUS() {
         commande->setText("+");
         getNextCommande();
+        commande->clear();
     };
 
     void empile_MOINS() {
         commande->setText("-");
         getNextCommande();
+        commande->clear();
     };
 
     void empile_FOIS() {
         commande->setText("*");
         getNextCommande();
+        commande->clear();
     };
 
     void empile_DIV() {
         commande->setText("/");
         getNextCommande();
+        commande->clear();
     };
 
     void empile_CLEAR() {
         commande->setText("CLEAR");
         getNextCommande();
+        commande->clear();
     };
 
     void empile_EVAL() {
         commande->setText("EVAL");
         getNextCommande();
+        commande->clear();
     }
 
     void empileProgramme(QString valeur) {

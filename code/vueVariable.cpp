@@ -53,6 +53,10 @@ vueVariable::vueVariable(QWidget * parent):
     setLayout(listeVariable);
     QObject::connect(validerCreation,SIGNAL(clicked()),this,SLOT(ajouterVariable()));
     QObject::connect(validerSuppression,SIGNAL(clicked()),this,SLOT(recupererKey()));
+
+    //Shortcut
+    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
+    QObject::connect(shortcut, SIGNAL(activated()),validerCreation, SLOT(click()));
 }
 
 void vueVariable::recupererKey(){
@@ -71,6 +75,7 @@ void vueVariable::ajouterVariable(){
     }
     entreeAtome->clear();
     entreeVariable->clear();
+    entreeAtome->setFocus();
     refreshVariable();
 }
 
