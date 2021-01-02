@@ -12,7 +12,7 @@ participant "p : Pile" as P
 Utilisateur -> C: commande(1 6 *)
 activate C
 
-C -> I: interprete(1 6 *)
+C -> I: interpreter(1 6 *)
 activate I
 
 I -> I: execute(1)
@@ -49,7 +49,7 @@ deactivate P
 deactivate E
 deactivate CL
 
-I -> I: execute(*)
+I -> I: executer(*)
 
 participant "o : Operateur" as O
 

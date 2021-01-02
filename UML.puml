@@ -147,8 +147,8 @@ Class Pile{
 Class Interpreteur{
     -pile : Pile&
     -{static} instance: Interpreteur
-    +interprete(commandeEntree : QString)
-    +execute(operande : QString)
+    +interpreter(commandeEntree : QString)
+    +executer(operande : QString)
     +{static} obtenirInterpreteur : Interpreteur&
 }
 

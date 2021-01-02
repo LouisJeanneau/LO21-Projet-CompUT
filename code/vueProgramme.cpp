@@ -12,7 +12,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     entreeProgramme = new QLineEdit;
     entreeProgramme->setPlaceholderText("ex: [ DUP 0 < [NEG] IFT ]");
     validerCreationPG = new QPushButton("Valider");
-    tableProgramme = new QTableWidget(persistence.getMapProgrammeSize(),2);
+    tableProgramme = new QTableWidget(persistence.obtenirTailleMapProgramme(), 2);
     listeProgramme = new QVBoxLayout;
     layoutSaisiePG = new QHBoxLayout;
     texteSuppressionPG = new QLabel("Choisir l'élément à supprimer :");
@@ -35,7 +35,7 @@ vueProgramme::vueProgramme(QWidget * parent):
     tableProgramme->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString,QString>::iterator it;
     int i = 0;
-    auto mapProgramme = persistence.getMapProgramme();
+    auto mapProgramme = persistence.obtenirMapProgramme();
     for(auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
@@ -79,9 +79,9 @@ void vueProgramme::ajouterProgramme() {
 
 void vueProgramme::refreshProgramme(){
     std::cout << "Salut moi c'est refreshProgramme" << std::endl;
-    tableProgramme->setRowCount(persistence.getMapProgrammeSize());
+    tableProgramme->setRowCount(persistence.obtenirTailleMapProgramme());
     int i = 0;
-    auto mapProgramme = persistence.getMapProgramme();
+    auto mapProgramme = persistence.obtenirMapProgramme();
     for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
         tableProgramme->setCellWidget(i,0,new QLabel(""));
         tableProgramme->setCellWidget(i,1,new QLabel(""));

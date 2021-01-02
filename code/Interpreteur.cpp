@@ -9,8 +9,8 @@
 
 using namespace std;
 
-//Le but d'interprete est de prendre l'entiereté de la chaine entrée par l'utilisateur et de la couper en opérandes à évaluer
-void Interpreteur::interprete(QString commandeEntree) {
+//Le but d'interpreter est de prendre l'entiereté de la chaine entrée par l'utilisateur et de la couper en opérandes à évaluer
+void Interpreteur::interpreter(QString commandeEntree) {
     QString unElement;
     int index = 0;
 
@@ -59,7 +59,7 @@ void Interpreteur::interprete(QString commandeEntree) {
 
         //On execute le traitement de l'opérande
         try {
-            execute(unElement);
+            executer(unElement);
             commandeEntree.remove(0, index);
         } catch (ComputerException &ce) {
             throw ComputerException(commandeEntree.toStdString());
@@ -68,8 +68,8 @@ void Interpreteur::interprete(QString commandeEntree) {
     pile.modifierEtat("Ligne d'opérandes interprétée !");
 }
 
-//Le but d'execute est de faire correspondre l'opérande à la bonne action à effectuer
-void Interpreteur::execute(QString operande) {
+//Le but d'executer est de faire correspondre l'opérande à la bonne action à effectuer
+void Interpreteur::executer(QString operande) {
     //Si l'opérande est dans l'inventaire d'opérateurs d'arité 1
     try {
         if (Operateur::inventaireOpArite1.contains(operande)) {
@@ -209,9 +209,9 @@ void Interpreteur::execute(QString operande) {
             QString identifiant = i.obtenirLitterale().versString();
             identifiant.chop(1);
             identifiant.remove(0, 1);
-            if(persistence.getMapVariable().contains(identifiant))
+            if(persistence.obtenirMapVariable().contains(identifiant))
                 persistence.supprimerVariable(identifiant);
-            else if(persistence.getMapProgramme().contains(identifiant))
+            else if(persistence.obtenirMapProgramme().contains(identifiant))
                 persistence.supprimerProgramme(identifiant);
             else{
                 throw ComputerException("Erreur : Cette expression n'est pas l'identificateur d'une variable / programme");
@@ -219,18 +219,18 @@ void Interpreteur::execute(QString operande) {
             pile.pop();
             i.supprimer();
         }
-        else if (persistence.getMapVariable().contains(operande)) {
+        else if (persistence.obtenirMapVariable().contains(operande)) {
 
-            QString temp = persistence.getMapVariable().operator[](operande);
+            QString temp = persistence.obtenirMapVariable().operator[](operande);
             Item resultat = ConstructeurLitterale::distinguerConstruire(temp);
             pile.push(resultat);
 
-        } else if (persistence.getMapProgramme().contains(operande)) {
+        } else if (persistence.obtenirMapProgramme().contains(operande)) {
 
-            QString temp = persistence.getMapProgramme().operator[](operande);
+            QString temp = persistence.obtenirMapProgramme().operator[](operande);
             temp.chop(1);
             temp.remove(0, 1);
-            interprete(temp);
+            interpreter(temp);
 
         } else {
 

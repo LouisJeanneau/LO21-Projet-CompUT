@@ -37,21 +37,21 @@ void Sauvegarde::sauvegardeEtat(){
     //Variables
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
-    for(auto v : persistence.getMapVariable().keys()){
+    for(auto v : persistence.obtenirMapVariable().keys()){
         QDomElement variable = d.createElement("variable");
         variables.appendChild(variable);
         variable.setAttribute("id", v);
-        variable.setAttribute("value", persistence.getMapVariable().value(v));
+        variable.setAttribute("value", persistence.obtenirMapVariable().value(v));
     }  
 
     //Programmes
     QDomElement programmes = d.createElement("programmes");
     calculatrice.appendChild(programmes);
-    for(auto p : persistence.getMapProgramme().keys()){
+    for(auto p : persistence.obtenirMapProgramme().keys()){
         QDomElement programme = d.createElement("programme");
         programmes.appendChild(programme);
         programme.setAttribute("id", p);
-        programme.setAttribute("value", persistence.getMapProgramme().value(p));
+        programme.setAttribute("value", persistence.obtenirMapProgramme().value(p));
     } 
 
 

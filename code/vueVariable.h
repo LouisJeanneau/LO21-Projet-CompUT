@@ -6,7 +6,7 @@ class fenetrePrincipale;
 
 class vueVariable : public QWidget {
 Q_OBJECT
-    Persistence &persistence = Persistence::getPersistence();
+    Persistence &persistence = Persistence::obtenirPersistence();
     QLineEdit *entreeAtome;
     QLineEdit *entreeVariable;
     QPushButton *validerCreation;

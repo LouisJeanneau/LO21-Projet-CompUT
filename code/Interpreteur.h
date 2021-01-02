@@ -14,13 +14,13 @@
 
 class Interpreteur{
     Pile& pile=Pile::obtenirPile();
-    Persistence& persistence=Persistence::getPersistence();
+    Persistence& persistence= Persistence::obtenirPersistence();
     static Interpreteur instance;
     Interpreteur() = default;
 
 public:
-    void interprete(QString commandeEntree);
-    void execute(QString operande);
+    void interpreter(QString commandeEntree);
+    void executer(QString operande);
     static Interpreteur& obtenirInterpreteur();
 };
 

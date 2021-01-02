@@ -4,8 +4,8 @@
 
 
 #include "Pile.h"
-
-Item::Item(Litterale *l, QString t) : litPointeur(l), typeItem(t){
+//ITEM
+Item::Item(Litterale *l, QString t) : litPointeur(l), typeItem(t) {
 }
 
 Item::Item(const Item &i) : litPointeur(i.litPointeur), typeItem(i.typeItem) {
@@ -17,17 +17,25 @@ Item &Item::operator=(const Item &i) {
     return *this;
 }
 
+void Item::supprimer() {
+    delete litPointeur;
+}
 
+bool Item::operator==(const Item &i) {
+    return this->litPointeur == i.litPointeur;
+}
+
+//PILE
 void Pile::pop() {
-    if(estVide())
+    if (estVide())
         throw ComputerException("Erreur du pop, Pile vide");
     listeItems.pop_back();
 }
 
 Item Pile::end(int n) {
-    if(estVide())
+    if (estVide())
         throw ComputerException("Erreur du end, Pile vide");
-    Item i=listeItems.at(listeItems.size()-n-1);
+    Item i = listeItems.at(listeItems.size() - n - 1);
     return i;
 }
 
@@ -36,7 +44,7 @@ void Pile::push(Item item) {
 }
 
 bool Pile::estVide() {
-    return taille()==0;
+    return taille() == 0;
 }
 
 unsigned int Pile::taille() {
@@ -48,15 +56,8 @@ Pile &Pile::obtenirPile() {
     return instance;
 }
 
-void Pile::debug() {
-    cout << "La pile actuellement :" << endl;
-    for(auto it=listeItems.begin(); it!=listeItems.end(); it++){
-        cout << it->obtenirLitterale().versString().toStdString() << endl;
-    }
-}
-
 void Pile::modifierEtat(QString e) {
-    etat=e;
+    etat = e;
 }
 
 QString Pile::obtenirEtat() {
@@ -69,7 +70,7 @@ std::vector<Item> Pile::copierListeItems() {
 
 void Pile::clear() {
     try {
-        for(auto it = listeItems.begin(); it != listeItems.end(); ++it)
+        for (auto it = listeItems.begin(); it != listeItems.end(); ++it)
             it->supprimer();
         listeItems.clear();
     } catch (ComputerException &ce) {
@@ -78,7 +79,7 @@ void Pile::clear() {
 }
 
 void Pile::swap() {
-    try{
+    try {
         Item itemTop = end();
         listeItems.pop_back();
         Item itemSecond = end();
@@ -91,8 +92,8 @@ void Pile::swap() {
 }
 
 void Pile::drop() {
-    try{
-        if(estVide()){
+    try {
+        if (estVide()) {
             throw ComputerException("Erreur lors du DROP");
         }
         listeItems.back().supprimer();
@@ -104,7 +105,7 @@ void Pile::drop() {
 }
 
 void Pile::dup() {
-    try{
+    try {
         QString stringTemp = end().obtenirLitterale().versString();
         Item itemTemp = ConstructeurLitterale::distinguerConstruire(stringTemp);
         listeItems.push_back(itemTemp);
@@ -113,7 +114,9 @@ void Pile::dup() {
     }
 }
 
-void Item::supprimer() {
-    delete litPointeur;
+void Pile::debug() {
+    cout << "La pile actuellement :" << endl;
+    for (auto it = listeItems.begin(); it != listeItems.end(); it++) {
+        cout << it->obtenirLitterale().versString().toStdString() << endl;
+    }
 }
-

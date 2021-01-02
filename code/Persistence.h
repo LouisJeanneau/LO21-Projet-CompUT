@@ -25,19 +25,19 @@ public:
 
     void supprimerVariable(QString atome);
 
-    QMap<QString, QString> getMapVariable() { return mapVariable; };
+    QMap<QString, QString> obtenirMapVariable() { return mapVariable; };
 
-    unsigned int getMapVariableSize() { return mapVariable.size(); };
+    unsigned int obtenirTailleMapVariable() { return mapVariable.size(); };
 
     void ajouterProgramme(QString saisieAtome, QString saisieProgramme);
 
     void supprimerProgramme(QString atome);
 
-    QMap<QString, QString> getMapProgramme() { return mapProgramme; };
+    QMap<QString, QString> obtenirMapProgramme() { return mapProgramme; };
 
-    unsigned int getMapProgrammeSize() { return mapProgramme.size(); };
+    unsigned int obtenirTailleMapProgramme() { return mapProgramme.size(); };
 
-    static Persistence &getPersistence();
+    static Persistence &obtenirPersistence();
 
 signals:
 

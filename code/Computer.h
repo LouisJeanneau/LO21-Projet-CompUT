@@ -18,7 +18,7 @@ class Controleur {
     QString message;
 public:
 	Controleur(Interpreteur& intp, Pile& p):refIntp(intp), refPile(p){}
-    //void commande(const QString& c){refIntp.interprete(c);}
+    //void commande(const QString& c){refIntp.interpreter(c);}
     //void setMessage(const QString& m) {message = m;}
     //QString getMessage() const { return message; }
 

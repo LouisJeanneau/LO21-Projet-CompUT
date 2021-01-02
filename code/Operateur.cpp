@@ -83,12 +83,12 @@ std::vector<double> Operateur::recupererValeur(Item &i) {
 bool Operateur::typeVariable(Item& i) {
 
     //On récupère une ref sur persistence
-    Persistence& persistence=Persistence::getPersistence();
+    Persistence& persistence= Persistence::obtenirPersistence();
 
     QString litteraleString = i.obtenirLitterale().versString().remove(0,1);
     litteraleString.chop(1);
 
-    if (persistence.getMapVariable().contains(litteraleString.toUpper()))
+    if (persistence.obtenirMapVariable().contains(litteraleString.toUpper()))
         return true;
     else
         return false;
@@ -1282,7 +1282,7 @@ void Operateur::opEval(Item& i) {
         litteraleString.remove(0, 1);
 
         //On envoie la chaîne de caractère à l'interpreteur
-        interpreteur.interprete(litteraleString);
+        interpreteur.interpreter(litteraleString);
     }
 }
 
