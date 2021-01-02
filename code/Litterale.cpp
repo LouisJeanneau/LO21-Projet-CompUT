@@ -26,42 +26,12 @@ Rationnel Rationnel::operator+(const Rationnel &r) const {
     return Rationnel(numerateur * r.denominateur + r.numerateur * denominateur, denominateur * r.denominateur);
 }
 
-void Rationnel::simplification() {
-    // si le numerateur est 0, le denominateur prend la valeur 1
-    if (numerateur == 0) {
-        denominateur = 1;
-        return;
-    }
-    /* un denominateur ne devrait pas être 0;
-    si c’est le cas, on sort de la méthode */
-    if (denominateur == 0) return;
-    /* utilisation de l’algorithme d’Euclide pour trouver le Plus Grand Commun
-    Denominateur (PGCD) entre le numerateur et le denominateur */
-    int a = numerateur, b = denominateur;
-    // on ne travaille qu’avec des valeurs positives...
-    if (a < 0) a = -a;
-    if (b < 0) b = -b;
-    while (a != b) { if (a > b) a = a - b; else b = b - a; }
-    // on divise le numerateur et le denominateur par le PGCD=a
-    numerateur /= a;
-    denominateur /= a;
-    // si le denominateur est négatif, on fait passer le signe - au denominateur
-    if (denominateur < 0) {
-        denominateur = -denominateur;
-        numerateur = -numerateur;
-    }
-}
-
-void Rationnel::setRationnel(int n, int d) {
-
+Rationnel::Rationnel(int n, int d) {
     numerateur = n;
     if (d == 0) {
         throw ComputerException("erreur : denominateur nul");
     }
-
     denominateur = d;
-
-    simplification();
 }
 
 Item ConstructeurLitterale::distinguerConstruire(QString s) {
