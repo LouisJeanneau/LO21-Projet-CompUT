@@ -201,6 +201,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     //ACTIVER LA SAUVEGARDE
     sauvegarde->recupereEtat();
+    refresh();
 }
 
 // FIN DU CONSTRUCTEUR QCOMPUTER
