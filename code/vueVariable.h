@@ -1,5 +1,6 @@
 #ifndef VUEVARIABLE_H
 #define VUEVARIABLE_H
+
 #include "fenetreprincipale.h"
 
 class fenetrePrincipale;
@@ -20,15 +21,24 @@ Q_OBJECT
     QComboBox *choixSuppression;
     QPushButton *validerSuppression;
 public:
-explicit vueVariable(QWidget *parent = 0);
-    ~vueVariable(){};
-    void setFenetrePrincipale(class fenetrePrincipale* fenetrePrincipaleCopie){fenetrePrincipale = fenetrePrincipaleCopie;}
-    class fenetrePrincipale *getFenetrePrincipale(){return fenetrePrincipale;}
+    explicit vueVariable(QWidget *parent = 0);
+
+    ~vueVariable() {};
+
+    void setFenetrePrincipale(
+            class fenetrePrincipale *fenetrePrincipaleCopie) { fenetrePrincipale = fenetrePrincipaleCopie; }
+
+    class fenetrePrincipale *getFenetrePrincipale() { return fenetrePrincipale; }
+
     void refreshVariable();
 
 public slots:
-void ajouterVariable();
-void recupererKey();
-void appelRefreshVariable();
+
+    void ajouterVariable();
+
+    void recupererKey();
+
+    void appelRefreshVariable();
 };
+
 #endif // VUEVARIABLE_H

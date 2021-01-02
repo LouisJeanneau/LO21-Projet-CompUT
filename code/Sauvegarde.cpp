@@ -13,11 +13,12 @@
 
 using namespace std;
 
-void Sauvegarde::sauvegardeEtat(){
-    
+void Sauvegarde::sauvegardeEtat() {
+
     QDomDocument d("Sauvegarde");
 
-    QDomProcessingInstruction instruction=d.createProcessingInstruction("xml","version=\"1.0\" encoding=\"ISO-8859-1\"");
+    QDomProcessingInstruction instruction = d.createProcessingInstruction("xml",
+                                                                          "version=\"1.0\" encoding=\"ISO-8859-1\"");
     d.appendChild(instruction);
     QDomElement calculatrice = d.createElement("calculatrice");
     d.appendChild(calculatrice);
@@ -25,7 +26,7 @@ void Sauvegarde::sauvegardeEtat(){
     //Pile
     QDomElement pile = d.createElement("pile");
     calculatrice.appendChild(pile);
-    while(!refPile.estVide()){
+    while (!refPile.estVide()) {
         QDomElement element = d.createElement("element");
         pile.appendChild(element);
         QString s = refPile.end().obtenirLitterale().versString();
@@ -37,29 +38,28 @@ void Sauvegarde::sauvegardeEtat(){
     //Variables
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
-    for(auto v : persistence.obtenirMapVariable().keys()){
+    for (auto v : persistence.obtenirMapVariable().keys()) {
         QDomElement variable = d.createElement("variable");
         variables.appendChild(variable);
         variable.setAttribute("id", v);
         variable.setAttribute("value", persistence.obtenirMapVariable().value(v));
-    }  
+    }
 
     //Programmes
     QDomElement programmes = d.createElement("programmes");
     calculatrice.appendChild(programmes);
-    for(auto p : persistence.obtenirMapProgramme().keys()){
+    for (auto p : persistence.obtenirMapProgramme().keys()) {
         QDomElement programme = d.createElement("programme");
         programmes.appendChild(programme);
         programme.setAttribute("id", p);
         programme.setAttribute("value", persistence.obtenirMapProgramme().value(p));
-    } 
+    }
 
 
     QFile fichier("calculatrice.xml");
-    if(!fichier.open(QIODevice::WriteOnly))
-    {
+    if (!fichier.open(QIODevice::WriteOnly)) {
         fichier.close();
-        QMessageBox::critical(this,"Erreur","Impossible d'écrire dans le document XML");
+        QMessageBox::critical(this, "Erreur", "Impossible d'écrire dans le document XML");
         exit(EXIT_FAILURE);
     }
     QTextStream stream(&fichier);
@@ -70,18 +70,18 @@ void Sauvegarde::sauvegardeEtat(){
     std::cout << "Fonction sauvegarde fin" << std::endl;
 }
 
-void Sauvegarde::recupereEtat(){
+void Sauvegarde::recupereEtat() {
     QDomDocument *d = new QDomDocument("calculatrice");
     QFile calculatrice("calculatrice.xml");
-    if(!calculatrice.open(QIODevice::ReadOnly))
-    {
-        QMessageBox::warning(this,"Erreur à l'ouverture du document XML","Le document XML n'a pas pu être ouvert. Si il était inexistant, il sera crée à la première sauvegarde.");
+    if (!calculatrice.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, "Erreur à l'ouverture du document XML",
+                             "Le document XML n'a pas pu être ouvert. Si il était inexistant, il sera crée à la première sauvegarde.");
         return;
     }
-    if (!d->setContent(&calculatrice))
-    {
+    if (!d->setContent(&calculatrice)) {
         calculatrice.close();
-        QMessageBox::warning(this, "Erreur à l'ouverture du document XML", "Le document XML n'a pas pu être attribué à l'objet QDomDocument.");
+        QMessageBox::warning(this, "Erreur à l'ouverture du document XML",
+                             "Le document XML n'a pas pu être attribué à l'objet QDomDocument.");
         return;
     }
 
@@ -90,7 +90,7 @@ void Sauvegarde::recupereEtat(){
     balise = balise.nextSibling();
     balise = balise.firstChild();
     QDomElement element = balise.lastChildElement();
-    while(!element.isNull()){
+    while (!element.isNull()) {
         //Construire une nouvelle litérale avec le texte récupéré
         Item res = ConstructeurLitterale::distinguerConstruire(element.text());
         refPile.push(res);
@@ -100,22 +100,22 @@ void Sauvegarde::recupereEtat(){
     //Variables
     balise = balise.nextSibling();
     QDomElement variable = balise.firstChildElement();
-    while(!variable.isNull()){
+    while (!variable.isNull()) {
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
-        persistence.ajouterVariable((QString)variable.attribute("id"),(QString)variable.attribute("value"));
+        persistence.ajouterVariable((QString) variable.attribute("id"), (QString) variable.attribute("value"));
         variable = variable.nextSiblingElement();
     }
 
     //Programmes
     balise = balise.nextSibling();
     QDomElement programme = balise.firstChildElement();
-    while(!programme.isNull()){
+    while (!programme.isNull()) {
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
-        persistence.ajouterProgramme((QString)programme.attribute("id"),(QString)programme.attribute("value"));
+        persistence.ajouterProgramme((QString) programme.attribute("id"), (QString) programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
 

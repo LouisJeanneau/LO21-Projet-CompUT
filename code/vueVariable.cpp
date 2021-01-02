@@ -1,8 +1,7 @@
 #include "vueVariable.h"
 
-vueVariable::vueVariable(QWidget * parent):
-    QWidget(parent)
-{
+vueVariable::vueVariable(QWidget *parent) :
+        QWidget(parent) {
     setWindowTitle("Modification des variables");
     setWindowModality(Qt::ApplicationModal);
     texteCreationVariable = new QLabel("Entrez votre nouvelle variable :");
@@ -33,15 +32,15 @@ vueVariable::vueVariable(QWidget * parent):
     tableVariable->verticalHeader()->setVisible(false);
     tableVariable->horizontalHeader()->setStretchLastSection(true);
     tableVariable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    QMap<QString,QString>::iterator it;
+    QMap<QString, QString>::iterator it;
     int i = 0;
     auto mapVariable = persistence.obtenirMapVariable();
-    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
-        tableVariable->setCellWidget(i,0,key);
-        tableVariable->setCellWidget(i,1,value);
-        choixSuppression->insertItem(i,it.key());
+        tableVariable->setCellWidget(i, 0, key);
+        tableVariable->setCellWidget(i, 1, value);
+        choixSuppression->insertItem(i, it.key());
         i++;
     }
     listeVariable->addWidget(tableVariable);
@@ -51,26 +50,26 @@ vueVariable::vueVariable(QWidget * parent):
     coucheSuppression->addWidget(validerSuppression);
     listeVariable->addLayout(coucheSuppression);
     setLayout(listeVariable);
-    QObject::connect(validerCreation,SIGNAL(clicked()),this,SLOT(ajouterVariable()));
-    QObject::connect(validerSuppression,SIGNAL(clicked()),this,SLOT(recupererKey()));
+    QObject::connect(validerCreation, SIGNAL(clicked()), this, SLOT(ajouterVariable()));
+    QObject::connect(validerSuppression, SIGNAL(clicked()), this, SLOT(recupererKey()));
 
     //Shortcut
-    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
-    QObject::connect(shortcut, SIGNAL(activated()),validerCreation, SLOT(click()));
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
+    QObject::connect(shortcut, SIGNAL(activated()), validerCreation, SLOT(click()));
 }
 
-void vueVariable::recupererKey(){
+void vueVariable::recupererKey() {
     persistence.supprimerVariable(choixSuppression->currentText());
 }
 
-void vueVariable::ajouterVariable(){
+void vueVariable::ajouterVariable() {
     QString saisieAtome = entreeAtome->text();
     saisieAtome = saisieAtome.toUpper();
     QString saisieVariable = entreeVariable->text();
     try {
         persistence.ajouterVariable(saisieAtome, saisieVariable);
     } catch (ComputerException &ce) {
-        QMessageBox::critical(this,"Erreur",ce.what());
+        QMessageBox::critical(this, "Erreur", ce.what());
     }
     entreeAtome->clear();
     entreeVariable->clear();
@@ -78,25 +77,25 @@ void vueVariable::ajouterVariable(){
     refreshVariable();
 }
 
-void vueVariable::refreshVariable(){
+void vueVariable::refreshVariable() {
     std::cout << "Salut moi c'est refreshVariable" << std::endl;
     tableVariable->setRowCount(persistence.obtenirTailleMapVariable());
     int i = 0;
     auto mapVariable = persistence.obtenirMapVariable();
-    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
-        tableVariable->setCellWidget(i,0,new QLabel(""));
-        tableVariable->setCellWidget(i,1,new QLabel(""));
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
+        tableVariable->setCellWidget(i, 0, new QLabel(""));
+        tableVariable->setCellWidget(i, 1, new QLabel(""));
         i++;
     }
     choixSuppression->clear();
     i = 0;
 
-    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++){
+    for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
-        tableVariable->setCellWidget(i,0,key);
-        tableVariable->setCellWidget(i,1,value);
-        choixSuppression->insertItem(i,it.key());
+        tableVariable->setCellWidget(i, 0, key);
+        tableVariable->setCellWidget(i, 1, value);
+        choixSuppression->insertItem(i, it.key());
         i++;
     }
     fenetrePrincipale->refreshTableVariableProgramme();

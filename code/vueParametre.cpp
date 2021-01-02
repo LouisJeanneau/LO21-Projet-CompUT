@@ -1,14 +1,13 @@
 #include "vueParametre.h"
 
-vueParametre::vueParametre(QWidget * parent):
-    QWidget(parent)
-{
+vueParametre::vueParametre(QWidget *parent) :
+        QWidget(parent) {
     setWindowTitle("Modification des Paramètres");
     setWindowModality(Qt::ApplicationModal);
     choixNb = new QSpinBox;
     messageParametre = new QLabel("Entrez le nombre d'étages de Pile à afficher :");
     layoutParametre = new QHBoxLayout;
-    choixNb->setRange(0,1000);
+    choixNb->setRange(0, 1000);
     choixNb->setSingleStep(1);
     choixNb->setValue(5);
 
@@ -16,10 +15,10 @@ vueParametre::vueParametre(QWidget * parent):
     layoutParametre->addWidget(choixNb);
     setLayout(layoutParametre);
 
-    QObject::connect(choixNb,SIGNAL(valueChanged(int)),this,SLOT(changerNbAfficherPile()));
+    QObject::connect(choixNb, SIGNAL(valueChanged(int)), this, SLOT(changerNbAfficherPile()));
 }
 
-void vueParametre::changerNbAfficherPile(){
+void vueParametre::changerNbAfficherPile() {
     //QComputer fenetre = getComputer();
     unsigned int Number = choixNb->text().toInt();
     QMessageBox msgBox;
@@ -30,5 +29,5 @@ void vueParametre::changerNbAfficherPile(){
 }
 
 
-vueParametre::~vueParametre(){
+vueParametre::~vueParametre() {
 }

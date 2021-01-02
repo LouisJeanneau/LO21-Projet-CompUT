@@ -70,8 +70,8 @@ void Interpreteur::interpreter(QString commandeEntree) {
 
 //Le but d'executer est de faire correspondre l'opérande à la bonne action à effectuer
 void Interpreteur::executer(QString operande) {
-    //Si l'opérande est dans l'inventaire d'opérateurs d'arité 1
     try {
+        //Si l'opérande est dans l'inventaire d'opérateurs d'arité 1
         if (Operateur::inventaireOpArite1.contains(operande)) {
             if (pile.estVide()) {
                 throw ComputerException("Il manque une opérande pour cette opération");
@@ -201,25 +201,24 @@ void Interpreteur::executer(QString operande) {
             pile.pop();
             i2.supprimer();
 
-        }
-        else if (operande == "FORGET"){
+        } else if (operande == "FORGET") {
             Item i = pile.end();
-            if(i.obtenirType() != "Expression")
+            if (i.obtenirType() != "Expression")
                 throw ComputerException("Erreur : il faut réaliser FORGET sur une expression");
             QString identifiant = i.obtenirLitterale().versString();
             identifiant.chop(1);
             identifiant.remove(0, 1);
-            if(persistence.obtenirMapVariable().contains(identifiant))
+            if (persistence.obtenirMapVariable().contains(identifiant))
                 persistence.supprimerVariable(identifiant);
-            else if(persistence.obtenirMapProgramme().contains(identifiant))
+            else if (persistence.obtenirMapProgramme().contains(identifiant))
                 persistence.supprimerProgramme(identifiant);
-            else{
-                throw ComputerException("Erreur : Cette expression n'est pas l'identificateur d'une variable / programme");
+            else {
+                throw ComputerException(
+                        "Erreur : Cette expression n'est pas l'identificateur d'une variable / programme");
             }
             pile.pop();
             i.supprimer();
-        }
-        else if (persistence.obtenirMapVariable().contains(operande)) {
+        } else if (persistence.obtenirMapVariable().contains(operande)) {
 
             QString temp = persistence.obtenirMapVariable().operator[](operande);
             Item resultat = ConstructeurLitterale::distinguerConstruire(temp);

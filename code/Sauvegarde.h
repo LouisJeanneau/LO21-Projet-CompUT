@@ -10,18 +10,22 @@
 #include "Persistence.h"
 #include <QtXml>
 
-class Sauvegarde : public QWidget
-{
-    Q_OBJECT
+class Sauvegarde : public QWidget {
+Q_OBJECT
     Pile &refPile = Pile::obtenirPile();
     Persistence &persistence = Persistence::obtenirPersistence();
 public:
     Sauvegarde() = default;
-	~Sauvegarde() = default;
+
+    ~Sauvegarde() = default;
+
     void sauvegardeEtat();
+
     void recupereEtat();
+
 public slots:
-    void commencerSauvegarde(){sauvegardeEtat();}
+
+    void commencerSauvegarde() { sauvegardeEtat(); }
 };
 
 #endif //PROJET_LO21_SAUVEGARDE_H

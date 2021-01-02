@@ -13,6 +13,6 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     fenetrePrincipale fenetre;
     fenetre.show();
-    a.connect(&a,SIGNAL(lastWindowClosed()),&fenetre,SLOT(fermetureDerniereFenetre()));
+    a.connect(&a, SIGNAL(lastWindowClosed()), &fenetre, SLOT(fermetureDerniereFenetre()));
     return a.exec();
 }

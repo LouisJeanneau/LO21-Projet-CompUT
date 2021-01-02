@@ -4,6 +4,7 @@
 
 
 #include "Pile.h"
+
 //ITEM
 Item::Item(Litterale *l, QString t) : litPointeur(l), typeItem(t) {
 }

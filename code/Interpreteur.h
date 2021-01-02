@@ -12,16 +12,19 @@
 #include "Operateur.h"
 #include "Persistence.h"
 
-class Interpreteur{
-    Pile& pile=Pile::obtenirPile();
-    Persistence& persistence= Persistence::obtenirPersistence();
+class Interpreteur {
+    Pile &pile = Pile::obtenirPile();
+    Persistence &persistence = Persistence::obtenirPersistence();
     static Interpreteur instance;
+
     Interpreteur() = default;
 
 public:
     void interpreter(QString commandeEntree);
+
     void executer(QString operande);
-    static Interpreteur& obtenirInterpreteur();
+
+    static Interpreteur &obtenirInterpreteur();
 };
 
 #endif //LO21_PROJET_INTERPRETER_H

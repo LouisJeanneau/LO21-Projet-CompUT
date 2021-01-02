@@ -1,8 +1,7 @@
 #include "vueProgramme.h"
 
-vueProgramme::vueProgramme(QWidget * parent):
-    QWidget(parent)
-{
+vueProgramme::vueProgramme(QWidget *parent) :
+        QWidget(parent) {
     setWindowTitle("Modification des Programmes");
     setWindowModality(Qt::ApplicationModal);
     texteCreationProgramme = new QLabel("Entrez votre nouveau programme :");
@@ -33,15 +32,15 @@ vueProgramme::vueProgramme(QWidget * parent):
     tableProgramme->verticalHeader()->setVisible(false);
     tableProgramme->horizontalHeader()->setStretchLastSection(true);
     tableProgramme->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    QMap<QString,QString>::iterator it;
+    QMap<QString, QString>::iterator it;
     int i = 0;
     auto mapProgramme = persistence.obtenirMapProgramme();
-    for(auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++) {
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
-        tableProgramme->setCellWidget(i,0,key);
-        tableProgramme->setCellWidget(i,1,value);
-        choixSuppressionPG->insertItem(i,it.key());
+        tableProgramme->setCellWidget(i, 0, key);
+        tableProgramme->setCellWidget(i, 1, value);
+        choixSuppressionPG->insertItem(i, it.key());
         i++;
     }
     listeProgramme->addWidget(tableProgramme);
@@ -51,14 +50,14 @@ vueProgramme::vueProgramme(QWidget * parent):
     coucheSuppression->addWidget(validerSuppresionPG);
     listeProgramme->addLayout(coucheSuppression);
     setLayout(listeProgramme);
-    QObject::connect(validerCreationPG,SIGNAL(clicked()),this,SLOT(ajouterProgramme()));
-    QObject::connect(validerSuppresionPG,SIGNAL(clicked()),this,SLOT(recupererKey()));
+    QObject::connect(validerCreationPG, SIGNAL(clicked()), this, SLOT(ajouterProgramme()));
+    QObject::connect(validerSuppresionPG, SIGNAL(clicked()), this, SLOT(recupererKey()));
     //Shortcut
-    QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
-    QObject::connect(shortcut, SIGNAL(activated()),validerCreationPG, SLOT(click()));
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
+    QObject::connect(shortcut, SIGNAL(activated()), validerCreationPG, SLOT(click()));
 }
 
-void vueProgramme::recupererKey(){
+void vueProgramme::recupererKey() {
     persistence.supprimerProgramme(choixSuppressionPG->currentText());
 }
 
@@ -69,7 +68,7 @@ void vueProgramme::ajouterProgramme() {
     try {
         persistence.ajouterProgramme(saisieAtomePG, saisieProgramme);
     } catch (ComputerException &ce) {
-        QMessageBox::critical(this,"Erreur",ce.what());
+        QMessageBox::critical(this, "Erreur", ce.what());
     }
     entreeAtomePG->clear();
     entreeProgramme->clear();
@@ -77,24 +76,24 @@ void vueProgramme::ajouterProgramme() {
     refreshProgramme();
 }
 
-void vueProgramme::refreshProgramme(){
+void vueProgramme::refreshProgramme() {
     std::cout << "Salut moi c'est refreshProgramme" << std::endl;
     tableProgramme->setRowCount(persistence.obtenirTailleMapProgramme());
     int i = 0;
     auto mapProgramme = persistence.obtenirMapProgramme();
-    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
-        tableProgramme->setCellWidget(i,0,new QLabel(""));
-        tableProgramme->setCellWidget(i,1,new QLabel(""));
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++) {
+        tableProgramme->setCellWidget(i, 0, new QLabel(""));
+        tableProgramme->setCellWidget(i, 1, new QLabel(""));
         i++;
     }
     choixSuppressionPG->clear();
     i = 0;
-    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++){
+    for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++) {
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
-        tableProgramme->setCellWidget(i,0,key);
-        tableProgramme->setCellWidget(i,1,value);
-        choixSuppressionPG->insertItem(i,it.key());
+        tableProgramme->setCellWidget(i, 0, key);
+        tableProgramme->setCellWidget(i, 1, value);
+        choixSuppressionPG->insertItem(i, it.key());
         i++;
     }
     fenetrePrincipale->refreshTableVariableProgramme();
