@@ -127,6 +127,9 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     // Focus automatique sur la commande
     commande->setFocus();
+    QRegularExpression rx("([A-Z1-9a-z !.=<>+\\-/*'\\[\\]])*");
+    QValidator *validator = new QRegularExpressionValidator(rx,this);
+    commande->setValidator(validator);
 
     // Bonne apparence vuePile + non modifiable
     vuePile->setStyleSheet("background-color :#d0e8f2; color : #456268");

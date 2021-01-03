@@ -19,6 +19,8 @@
 #include <QSignalMapper>
 #include <QComboBox>
 #include <QShortcut>
+#include <QValidator>
+#include <QRegularExpression>
 #include "Pile.h"
 #include "Interpreteur.h"
 #include "Litterale.h"
