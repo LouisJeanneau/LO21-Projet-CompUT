@@ -1,5 +1,7 @@
 #include "vueVariable.h"
 
+
+// =======================================   CONSTRUCTEUR   ======================================= //
 vueVariable::vueVariable(QWidget *parent) :
         QWidget(parent) {
     setWindowTitle("Variables");
@@ -11,12 +13,20 @@ vueVariable::vueVariable(QWidget *parent) :
     entreeVariable = new QLineEdit;
     entreeVariable->setPlaceholderText("ex: 3.1415");
     validerCreation = new QPushButton("Valider");
-    tableVariable = new QTableWidget(persistance.obtenirTailleMapVariable(), 2);
+    tableVariable = new QTableWidget(persistence.obtenirTailleMapVariable(), 2);
     listeVariable = new QVBoxLayout;
     layoutSaisie = new QHBoxLayout;
     texteSuppression = new QLabel("Choisir l'élément à supprimer :");
     choixSuppression = new QComboBox;
     validerSuppression = new QPushButton("Supprimer");
+
+    QRegularExpression rxVar("([A-Z1-9a-z !.=<>+\\-/*'\\[\\]])*");
+    QValidator *validatorVar = new QRegularExpressionValidator(rxVar,this);
+    entreeVariable->setValidator(validatorVar);
+
+    QRegularExpression rx("([A-Z1-9a-z])*");
+    QValidator *validator = new QRegularExpressionValidator(rx,this);
+    entreeAtome->setValidator(validator);
 
     layoutSaisie->addWidget(entreeAtome);
     layoutSaisie->addWidget(entreeVariable);
@@ -34,7 +44,7 @@ vueVariable::vueVariable(QWidget *parent) :
     tableVariable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString, QString>::iterator it;
     int i = 0;
-    auto mapVariable = persistance.obtenirMapVariable();
+    auto mapVariable = persistence.obtenirMapVariable();
     for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
@@ -53,35 +63,21 @@ vueVariable::vueVariable(QWidget *parent) :
     QObject::connect(validerCreation, SIGNAL(clicked()), this, SLOT(ajouterVariable()));
     QObject::connect(validerSuppression, SIGNAL(clicked()), this, SLOT(recupererKey()));
 
-    //Shortcut
+    //Shortcut pour valider la création avec entrée
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
     QObject::connect(shortcut, SIGNAL(activated()), validerCreation, SLOT(click()));
 }
+// =======================================   FIN DU CONSTRUCTEUR   ======================================= //
 
-void vueVariable::recupererKey() {
-    persistance.supprimerVariable(choixSuppression->currentText());
-}
 
-void vueVariable::ajouterVariable() {
-    QString saisieAtome = entreeAtome->text();
-    saisieAtome = saisieAtome.toUpper();
-    QString saisieVariable = entreeVariable->text();
-    try {
-        persistance.ajouterVariable(saisieAtome, saisieVariable);
-    } catch (ComputerException &ce) {
-        QMessageBox::critical(this, "Erreur", ce.what());
-    }
-    entreeAtome->clear();
-    entreeVariable->clear();
-    entreeAtome->setFocus();
-    refreshVariable();
-}
+
+// =======================================   METHODES    ======================================= //
 
 void vueVariable::refreshVariable() {
     std::cout << "Salut moi c'est refreshVariable" << std::endl;
-    tableVariable->setRowCount(persistance.obtenirTailleMapVariable());
+    tableVariable->setRowCount(persistence.obtenirTailleMapVariable());
     int i = 0;
-    auto mapVariable = persistance.obtenirMapVariable();
+    auto mapVariable = persistence.obtenirMapVariable();
     for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
         tableVariable->setCellWidget(i, 0, new QLabel(""));
         tableVariable->setCellWidget(i, 1, new QLabel(""));
@@ -101,6 +97,32 @@ void vueVariable::refreshVariable() {
     fenetrePrincipale->refreshTableVariableProgramme();
 };
 
+// =======================================   FIN METHODES    ======================================= //
+
+
+
+// =======================================   SLOTS    ======================================= //
+
+void vueVariable::recupererKey() {
+    persistence.supprimerVariable(choixSuppression->currentText());
+}
+
+void vueVariable::ajouterVariable() {
+    QString saisieAtome = entreeAtome->text();
+    saisieAtome = saisieAtome.toUpper();
+    QString saisieVariable = entreeVariable->text();
+    try {
+        persistence.ajouterVariable(saisieAtome, saisieVariable);
+    } catch (ComputerException &ce) {
+        QMessageBox::critical(this, "Erreur", ce.what());
+    }
+    entreeAtome->clear();
+    entreeVariable->clear();
+    entreeAtome->setFocus();
+    refreshVariable();
+}
+
 void vueVariable::appelRefreshVariable() {
     refreshVariable();
 }
+// =======================================   FIN DES SLOTS    ======================================= //

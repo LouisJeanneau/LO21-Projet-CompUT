@@ -28,10 +28,6 @@ public:
     void setFenetrePrincipale(class fenetrePrincipale *fenetrePrincipaleCopie) { refFenetrePrincipale = fenetrePrincipaleCopie; }
 
     class fenetrePrincipale *getFenetrePrincipale() { return refFenetrePrincipale; }
-
-public slots:
-
-    void commencerSauvegarde() { sauvegardeEtat(); }
 };
 
 #endif //PROJET_LO21_SAUVEGARDE_H

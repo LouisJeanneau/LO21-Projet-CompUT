@@ -1,5 +1,7 @@
 #include "vueProgramme.h"
 
+
+// =======================================   CONSTRUCTEUR   ======================================= //
 vueProgramme::vueProgramme(QWidget *parent) :
         QWidget(parent) {
     setWindowTitle("Programmes");
@@ -11,12 +13,21 @@ vueProgramme::vueProgramme(QWidget *parent) :
     entreeProgramme = new QLineEdit;
     entreeProgramme->setPlaceholderText("ex: [ DUP 0 < [NEG] IFT ]");
     validerCreationPG = new QPushButton("Valider");
-    tableProgramme = new QTableWidget(persistance.obtenirTailleMapProgramme(), 2);
+    tableProgramme = new QTableWidget(persistence.obtenirTailleMapProgramme(), 2);
     listeProgramme = new QVBoxLayout;
     layoutSaisiePG = new QHBoxLayout;
     texteSuppressionPG = new QLabel("Choisir l'élément à supprimer :");
     choixSuppressionPG = new QComboBox;
     validerSuppresionPG = new QPushButton("Supprimer");
+
+    QRegularExpression rxProg("([A-Z1-9a-z !.=<>+\\-/*'\\[\\]])*");
+    QValidator *validatorProg = new QRegularExpressionValidator(rxProg,this);
+    entreeProgramme->setValidator(validatorProg);
+
+    QRegularExpression rx("([A-Z1-9a-z])*");
+    QValidator *validator = new QRegularExpressionValidator(rx,this);
+    entreeAtomePG->setValidator(validator);
+
 
     layoutSaisiePG->addWidget(entreeAtomePG);
     layoutSaisiePG->addWidget(entreeProgramme);
@@ -34,7 +45,7 @@ vueProgramme::vueProgramme(QWidget *parent) :
     tableProgramme->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString, QString>::iterator it;
     int i = 0;
-    auto mapProgramme = persistance.obtenirMapProgramme();
+    auto mapProgramme = persistence.obtenirMapProgramme();
     for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++) {
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
@@ -56,31 +67,17 @@ vueProgramme::vueProgramme(QWidget *parent) :
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return), this);
     QObject::connect(shortcut, SIGNAL(activated()), validerCreationPG, SLOT(click()));
 }
+// =======================================   FIN DU CONSTRUCTEUR    ======================================= //
 
-void vueProgramme::recupererKey() {
-    persistance.supprimerProgramme(choixSuppressionPG->currentText());
-}
 
-void vueProgramme::ajouterProgramme() {
-    QString saisieAtomePG = entreeAtomePG->text();
-    saisieAtomePG = saisieAtomePG.toUpper();
-    QString saisieProgramme = entreeProgramme->text();
-    try {
-        persistance.ajouterProgramme(saisieAtomePG, saisieProgramme);
-    } catch (ComputerException &ce) {
-        QMessageBox::critical(this, "Erreur", ce.what());
-    }
-    entreeAtomePG->clear();
-    entreeProgramme->clear();
-    entreeAtomePG->setFocus();
-    refreshProgramme();
-}
+
+// =======================================   METHODE    ======================================= //
 
 void vueProgramme::refreshProgramme() {
     std::cout << "Salut moi c'est refreshProgramme" << std::endl;
-    tableProgramme->setRowCount(persistance.obtenirTailleMapProgramme());
+    tableProgramme->setRowCount(persistence.obtenirTailleMapProgramme());
     int i = 0;
-    auto mapProgramme = persistance.obtenirMapProgramme();
+    auto mapProgramme = persistence.obtenirMapProgramme();
     for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++) {
         tableProgramme->setCellWidget(i, 0, new QLabel(""));
         tableProgramme->setCellWidget(i, 1, new QLabel(""));
@@ -98,10 +95,34 @@ void vueProgramme::refreshProgramme() {
     }
     fenetrePrincipale->refreshTableVariableProgramme();
 }
+// =======================================   FIN DES METHODES   ======================================= //
+
+
+
+// =======================================   SLOTS    ======================================= //
+
+void vueProgramme::recupererKey() {
+    persistence.supprimerProgramme(choixSuppressionPG->currentText());
+}
+
+void vueProgramme::ajouterProgramme() {
+    QString saisieAtomePG = entreeAtomePG->text();
+    saisieAtomePG = saisieAtomePG.toUpper();
+    QString saisieProgramme = entreeProgramme->text();
+    try {
+        persistence.ajouterProgramme(saisieAtomePG, saisieProgramme);
+    } catch (ComputerException &ce) {
+        QMessageBox::critical(this, "Erreur", ce.what());
+    }
+    entreeAtomePG->clear();
+    entreeProgramme->clear();
+    entreeAtomePG->setFocus();
+    refreshProgramme();
+}
 
 void vueProgramme::appelRefreshProgramme() {
     refreshProgramme();
 };
-
+// =======================================   FIN DES SLOTS    ======================================= //
 
 
