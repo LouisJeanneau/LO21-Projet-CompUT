@@ -14,7 +14,7 @@
 class Sauvegarde : public QWidget {
 Q_OBJECT
     Pile &refPile = Pile::obtenirPile();
-    Persistance &persistence = Persistance::obtenirPersistence();
+    Persistance &persistance = Persistance::obtenirPersistance();
     fenetrePrincipale *refFenetrePrincipale;
 public:
     Sauvegarde() = default;

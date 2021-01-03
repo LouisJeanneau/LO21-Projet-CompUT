@@ -7,7 +7,7 @@ class fenetrePrincipale;
 
 class vueProgramme : public QWidget {
 Q_OBJECT
-    Persistance &persistence = Persistance::obtenirPersistence();
+    Persistance &persistance = Persistance::obtenirPersistance();
     QLineEdit *entreeAtomePG;
     QLineEdit *entreeProgramme;
     QPushButton *validerCreationPG;

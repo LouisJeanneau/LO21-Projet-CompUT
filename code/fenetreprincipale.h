@@ -45,7 +45,7 @@ Q_OBJECT
     int nombreItemAAfficher;
     QLineEdit *commande;
     Pile &pile = Pile::obtenirPile();
-    Persistance &persistence = Persistance::obtenirPersistence();
+    Persistance &persistance = Persistance::obtenirPersistance();
     //Controleur *controleur;
     Sauvegarde *sauvegarde;
 

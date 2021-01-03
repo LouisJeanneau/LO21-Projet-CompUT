@@ -37,21 +37,21 @@ void Sauvegarde::sauvegardeEtat() {
     //Variables
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
-    for (auto v : persistence.obtenirMapVariable().keys()) {
+    for (auto v : persistance.obtenirMapVariable().keys()) {
         QDomElement variable = d.createElement("variable");
         variables.appendChild(variable);
         variable.setAttribute("id", v);
-        variable.setAttribute("value", persistence.obtenirMapVariable().value(v));
+        variable.setAttribute("value", persistance.obtenirMapVariable().value(v));
     }
 
     //Programmes
     QDomElement programmes = d.createElement("programmes");
     calculatrice.appendChild(programmes);
-    for (auto p : persistence.obtenirMapProgramme().keys()) {
+    for (auto p : persistance.obtenirMapProgramme().keys()) {
         QDomElement programme = d.createElement("programme");
         programmes.appendChild(programme);
         programme.setAttribute("id", p);
-        programme.setAttribute("value", persistence.obtenirMapProgramme().value(p));
+        programme.setAttribute("value", persistance.obtenirMapProgramme().value(p));
     }
 
     //Paramètres
@@ -110,7 +110,7 @@ void Sauvegarde::recupereEtat() {
         //Ajoute dans la QMap variable de persistance
         //variable.attribute("id") : nom de la variable
         //variable.attribute("value") : valeur de la variable
-        persistence.ajouterVariable((QString) variable.attribute("id"), (QString) variable.attribute("value"));
+        persistance.ajouterVariable((QString) variable.attribute("id"), (QString) variable.attribute("value"));
         variable = variable.nextSiblingElement();
     }
 
@@ -121,7 +121,7 @@ void Sauvegarde::recupereEtat() {
         //Ajoute dans la QMap programme de persistance
         //programme.attribute("id") : nom du programme
         //programme.attribute("value") : valeur du programme
-        persistence.ajouterProgramme((QString) programme.attribute("id"), (QString) programme.attribute("value"));
+        persistance.ajouterProgramme((QString) programme.attribute("id"), (QString) programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
     //Paramètres

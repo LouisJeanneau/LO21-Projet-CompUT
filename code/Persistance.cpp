@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Persistance &Persistance::obtenirPersistence() {
+Persistance &Persistance::obtenirPersistance() {
     static Persistance instance;
     return instance;
 }

@@ -54,10 +54,10 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     boutonFOIS = new QPushButton("*");
     boutonDIVISER = new QPushButton("/");
 
-    if (persistence.obtenirTailleMapVariable() > persistence.obtenirTailleMapProgramme()) {
-        tableBoutonVariableProgramme = new QTableWidget(persistence.obtenirTailleMapVariable(), 2);
+    if (persistance.obtenirTailleMapVariable() > persistance.obtenirTailleMapProgramme()) {
+        tableBoutonVariableProgramme = new QTableWidget(persistance.obtenirTailleMapVariable(), 2);
     } else {
-        tableBoutonVariableProgramme = new QTableWidget(persistence.obtenirTailleMapProgramme(), 2);
+        tableBoutonVariableProgramme = new QTableWidget(persistance.obtenirTailleMapProgramme(), 2);
     }
 
     //CREATION LAYOUT DE L'APPLICATION + DES CLAVIERS
@@ -157,13 +157,13 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     QMap<QString, QString>::iterator it;
     int i = 0;
-    auto mapVariable = persistence.obtenirMapVariable();
+    auto mapVariable = persistance.obtenirMapVariable();
     for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
         creerNouveauBoutonVariable(i, it.key(), it.value());
         i++;
     }
     i = 0;
-    auto mapProgramme = persistence.obtenirMapProgramme();
+    auto mapProgramme = persistance.obtenirMapProgramme();
     for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++) {
         creerNouveauBoutonProgramme(i, it.key(), it.value());
         i++;
@@ -171,9 +171,9 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
 
     //=========================6 : Connecter signaux/slots===============
-    QObject::connect(&Persistance::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueVariable,
+    QObject::connect(&Persistance::obtenirPersistance(), SIGNAL(actualiserAffichage()), vueVariable,
                      SLOT(appelRefreshVariable()));
-    QObject::connect(&Persistance::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueProgramme,
+    QObject::connect(&Persistance::obtenirPersistance(), SIGNAL(actualiserAffichage()), vueProgramme,
                      SLOT(appelRefreshProgramme()));
     connect(commande, SIGNAL(returnPressed()), this, SLOT(getNextCommande()));
 
@@ -365,20 +365,20 @@ void fenetrePrincipale::creerNouveauBoutonProgramme(int i, QString key, QString 
 void fenetrePrincipale::refreshTableVariableProgramme() {
     std::cout << "Salut moi c'est refreshTableVariableProgramme" << std::endl;
     tableBoutonVariableProgramme->clearContents();
-    if (persistence.obtenirTailleMapVariable() > persistence.obtenirTailleMapProgramme()) {
-        tableBoutonVariableProgramme->setRowCount(persistence.obtenirTailleMapVariable());
+    if (persistance.obtenirTailleMapVariable() > persistance.obtenirTailleMapProgramme()) {
+        tableBoutonVariableProgramme->setRowCount(persistance.obtenirTailleMapVariable());
     } else {
-        tableBoutonVariableProgramme->setRowCount(persistence.obtenirTailleMapProgramme());
+        tableBoutonVariableProgramme->setRowCount(persistance.obtenirTailleMapProgramme());
     };
     QMap<QString, QString>::iterator it;
     int j = 0;
-    auto mapVariable = persistence.obtenirMapVariable();
+    auto mapVariable = persistance.obtenirMapVariable();
     for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
         creerNouveauBoutonVariable(j, it.key(), it.value());
         j++;
     }
     j = 0;
-    auto mapProgramme = persistence.obtenirMapProgramme();
+    auto mapProgramme = persistance.obtenirMapProgramme();
     for (auto it = mapProgramme.begin(); it != mapProgramme.end(); it++) {
         creerNouveauBoutonProgramme(j, it.key(), it.value());
         j++;

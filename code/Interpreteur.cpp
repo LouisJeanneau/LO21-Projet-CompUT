@@ -193,9 +193,9 @@ void Interpreteur::executer(QString operande) {
             atome.chop(1);
             atome.remove(0, 1);
             if (i2.obtenirType() == "Programme")
-                persistence.ajouterProgramme(atome, i2.obtenirLitterale().versString());
+                persistance.ajouterProgramme(atome, i2.obtenirLitterale().versString());
             else
-                persistence.ajouterVariable(atome, i2.obtenirLitterale().versString());
+                persistance.ajouterVariable(atome, i2.obtenirLitterale().versString());
             pile.pop();
             i1.supprimer();
             pile.pop();
@@ -208,25 +208,25 @@ void Interpreteur::executer(QString operande) {
             QString identifiant = i.obtenirLitterale().versString();
             identifiant.chop(1);
             identifiant.remove(0, 1);
-            if (persistence.obtenirMapVariable().contains(identifiant))
-                persistence.supprimerVariable(identifiant);
-            else if (persistence.obtenirMapProgramme().contains(identifiant))
-                persistence.supprimerProgramme(identifiant);
+            if (persistance.obtenirMapVariable().contains(identifiant))
+                persistance.supprimerVariable(identifiant);
+            else if (persistance.obtenirMapProgramme().contains(identifiant))
+                persistance.supprimerProgramme(identifiant);
             else {
                 throw ComputerException(
                         "Erreur : Cette expression n'est pas l'identificateur d'une variable / programme");
             }
             pile.pop();
             i.supprimer();
-        } else if (persistence.obtenirMapVariable().contains(operande)) {
+        } else if (persistance.obtenirMapVariable().contains(operande)) {
 
-            QString temp = persistence.obtenirMapVariable().operator[](operande);
+            QString temp = persistance.obtenirMapVariable().operator[](operande);
             Item resultat = ConstructeurLitterale::distinguerConstruire(temp);
             pile.push(resultat);
 
-        } else if (persistence.obtenirMapProgramme().contains(operande)) {
+        } else if (persistance.obtenirMapProgramme().contains(operande)) {
 
-            QString temp = persistence.obtenirMapProgramme().operator[](operande);
+            QString temp = persistance.obtenirMapProgramme().operator[](operande);
             temp.chop(1);
             temp.remove(0, 1);
             interpreter(temp);

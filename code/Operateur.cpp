@@ -80,8 +80,8 @@ Item Operateur::processVariable(Item &i) {
     //On récupère une ref sur la pile
     Pile &pile = Pile::obtenirPile();
 
-    //On récupère une ref sur persistence
-    Persistance &persistence = Persistance::obtenirPersistence();
+    //On récupère une ref sur persistance
+    Persistance &persistence = Persistance::obtenirPersistance();
 
     QString litteraleString = i.obtenirLitterale().versString().remove(0, 1);
     litteraleString.chop(1);

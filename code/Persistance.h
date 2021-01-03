@@ -37,7 +37,7 @@ public:
 
     unsigned int obtenirTailleMapProgramme() { return mapProgramme.size(); };
 
-    static Persistance &obtenirPersistence();
+    static Persistance &obtenirPersistance();
 
 signals:
 

@@ -14,7 +14,7 @@
 
 class Interpreteur {
     Pile &pile = Pile::obtenirPile();
-    Persistance &persistence = Persistance::obtenirPersistence();
+    Persistance &persistance = Persistance::obtenirPersistance();
     static Interpreteur instance;
 
     Interpreteur() = default;
