@@ -195,7 +195,7 @@ Interpreteur <--> Operateur
 Interpreteur --> Persistance
 Interpreteur --> Pile
 fenetrePrincipale --> Pile
-fenetrePrincipale --> Persistance
+
 Interpreteur --> ConstructeurLitterale
 
 Item "1" *-- "1" Litterale
@@ -206,7 +206,8 @@ fenetrePrincipale "1" *-- "1" vueProgramme
 fenetrePrincipale "1" *-- "1" vueParametre
 
 Operateur --> ConstructeurLitterale
-Interpreteur <-- fenetrePrincipale
+fenetrePrincipale --> Interpreteur
+Persistance <-- fenetrePrincipale
 
 fenetrePrincipale <--> Sauvegarde
 ConstructeurLitterale -- Litterale
