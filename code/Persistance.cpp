@@ -1,14 +1,14 @@
-#include "Persistence.h"
+#include "Persistance.h"
 #include "Exception.h"
 
 using namespace std;
 
-Persistence &Persistence::obtenirPersistence() {
-    static Persistence instance;
+Persistance &Persistance::obtenirPersistence() {
+    static Persistance instance;
     return instance;
 }
 
-void Persistence::ajouterVariable(QString saisieAtome, QString saisieVariable) {
+void Persistance::ajouterVariable(QString saisieAtome, QString saisieVariable) {
     if (saisieAtome != NULL && saisieVariable != NULL) {
         if (saisieAtome == '0' || saisieAtome == '1' || saisieAtome == '2' || saisieAtome == '3' ||
             saisieAtome == '4' ||
@@ -34,12 +34,12 @@ void Persistence::ajouterVariable(QString saisieAtome, QString saisieVariable) {
     }
 }
 
-void Persistence::supprimerVariable(QString atome) {
+void Persistance::supprimerVariable(QString atome) {
     mapVariable.remove(atome);
     emit actualiserAffichage();
 }
 
-void Persistence::ajouterProgramme(QString saisieAtome, QString saisieProgramme) {
+void Persistance::ajouterProgramme(QString saisieAtome, QString saisieProgramme) {
     if (saisieAtome != NULL && saisieProgramme != NULL) {
         if (saisieAtome == '0' || saisieAtome == '1' || saisieAtome == '2' || saisieAtome == '3' ||
             saisieAtome == '4' ||
@@ -62,7 +62,7 @@ void Persistence::ajouterProgramme(QString saisieAtome, QString saisieProgramme)
     }
 }
 
-void Persistence::supprimerProgramme(QString atome) {
+void Persistance::supprimerProgramme(QString atome) {
     mapProgramme.remove(atome);
     emit actualiserAffichage();
 }

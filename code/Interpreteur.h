@@ -10,11 +10,11 @@
 #include "Pile.h"
 #include "Exception.h"
 #include "Operateur.h"
-#include "Persistence.h"
+#include "Persistance.h"
 
 class Interpreteur {
     Pile &pile = Pile::obtenirPile();
-    Persistence &persistence = Persistence::obtenirPersistence();
+    Persistance &persistence = Persistance::obtenirPersistence();
     static Interpreteur instance;
 
     Interpreteur() = default;

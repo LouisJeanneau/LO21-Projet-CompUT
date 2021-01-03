@@ -2,8 +2,8 @@
 // Created by Ismail Kadiri on 29/12/2020.
 //
 
-#ifndef PROJET_LO21_PERSISTENCE_H
-#define PROJET_LO21_PERSISTENCE_H
+#ifndef PROJET_LO21_PERSISTANCE_H
+#define PROJET_LO21_PERSISTANCE_H
 
 #ifndef PERSISTENCE_H
 #define PERSISTENCE_H
@@ -11,11 +11,11 @@
 #include <QMap>
 #include <QWidget>
 
-class Persistence : public QObject {
+class Persistance : public QObject {
 Q_OBJECT
-    static Persistence instance;
+    static Persistance instance;
 
-    Persistence() = default;
+    Persistance() = default;
 
     QMap<QString, QString> mapVariable;
     QMap<QString, QString> mapProgramme;
@@ -37,7 +37,7 @@ public:
 
     unsigned int obtenirTailleMapProgramme() { return mapProgramme.size(); };
 
-    static Persistence &obtenirPersistence();
+    static Persistance &obtenirPersistence();
 
 signals:
 
@@ -47,4 +47,4 @@ signals:
 #endif // PERSISTENCE_H
 
 
-#endif //PROJET_LO21_PERSISTENCE_H
+#endif //PROJET_LO21_PERSISTANCE_H

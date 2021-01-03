@@ -14,7 +14,7 @@
 #include "Pile.h"
 #include "Exception.h"
 #include "Interpreteur.h"
-#include "Persistence.h"
+#include "Persistance.h"
 #include <cmath>
 
 class Operateur {

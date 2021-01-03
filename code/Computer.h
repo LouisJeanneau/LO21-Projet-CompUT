@@ -8,7 +8,7 @@
 #include <QString>
 #include "Interpreteur.h"
 #include "Pile.h"
-#include "Persistence.h"
+#include "Persistance.h"
 #include "Exception.h"
 
 using namespace std;

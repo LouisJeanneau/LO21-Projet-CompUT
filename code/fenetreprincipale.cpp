@@ -171,9 +171,9 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
 
     //=========================6 : Connecter signaux/slots===============
-    QObject::connect(&Persistence::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueVariable,
+    QObject::connect(&Persistance::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueVariable,
                      SLOT(appelRefreshVariable()));
-    QObject::connect(&Persistence::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueProgramme,
+    QObject::connect(&Persistance::obtenirPersistence(), SIGNAL(actualiserAffichage()), vueProgramme,
                      SLOT(appelRefreshProgramme()));
     connect(commande, SIGNAL(returnPressed()), this, SLOT(getNextCommande()));
 

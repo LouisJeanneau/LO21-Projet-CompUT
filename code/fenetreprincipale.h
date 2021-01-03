@@ -24,7 +24,7 @@
 #include "Litterale.h"
 #include "Computer.h"
 #include "Exception.h"
-#include "Persistence.h"
+#include "Persistance.h"
 #include "vueVariable.h"
 #include "vueProgramme.h"
 #include "vueParametre.h"
@@ -45,7 +45,7 @@ Q_OBJECT
     int nombreItemAAfficher;
     QLineEdit *commande;
     Pile &pile = Pile::obtenirPile();
-    Persistence &persistence = Persistence::obtenirPersistence();
+    Persistance &persistence = Persistance::obtenirPersistence();
     //Controleur *controleur;
     Sauvegarde *sauvegarde;
 
