@@ -17,6 +17,7 @@ class Interpreteur {
     Persistance &persistance = Persistance::obtenirPersistance();
     static Interpreteur instance;
 
+
     Interpreteur() = default;
 
 public:

@@ -118,6 +118,10 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
     message->setReadOnly(true);
     commande->setMouseTracking(false);
     commande->setFocus();
+    QRegularExpression rx("([A-Z1-9a-z !.=<>+\\-/*'\\[\\]])*");
+    QValidator *validator = new QRegularExpressionValidator(rx, this);
+    commande->setValidator(validator);
+
     // REGLAGES POUR LA LIGNE DE COMMANDE :
     //5 : Bonne apparence vuePile + non modifiable
     vuePile->setStyleSheet("background-color :#d0e8f2; color : #456268");
