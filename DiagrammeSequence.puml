@@ -103,12 +103,13 @@ deactivate O
 
 I -> P : pop()
 activate P
-deactivate E1
 deactivate P
 
 I -> I1 : i1.supprimer()
 deactivate E1
+destroy E1
 deactivate I1
+destroy I1
 
 I -> P : pop()
 activate P
@@ -116,7 +117,9 @@ deactivate P
 
 I -> I2 : i2.supprimer()
 deactivate E2
+destroy E2
 deactivate I2
+destroy I2
 
 I -> P : push(i3)
 activate P
@@ -124,6 +127,7 @@ deactivate P
 
 deactivate I
 deactivate E3
+deactivate I3
 deactivate FP
 
 @enduml
