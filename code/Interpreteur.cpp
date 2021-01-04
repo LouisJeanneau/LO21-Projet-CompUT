@@ -39,12 +39,26 @@ void Interpreteur::interpreter(QString commandeEntree) {
 
         }
             //Le début de la chaine est un crochet, on est face à un programme
-        else if (commandeEntree.at(0) == "[") {
+        else if (commandeEntree.at(0) == '[') {
             //Si le programme n'est pas fermé, on lance une erreur
-            index = commandeEntree.lastIndexOf("]") + 1;
+            /*index = commandeEntree.lastIndexOf(']') + 1;
             if (index == 0) {
                 pile.modifierEtat("Erreur : Programme non finie");
                 throw ComputerException(commandeEntree.toStdString());
+            }
+             */
+            int nombreOuverture = 0;
+            int i = 0;
+            for (auto c : commandeEntree){
+                if(c == '[')
+                    nombreOuverture++;
+                if(c == ']')
+                    nombreOuverture--;
+                if(!nombreOuverture){
+                    index=i+1;
+                    break;
+                }
+                i++;
             }
             unElement = commandeEntree.left(index);
         }

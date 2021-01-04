@@ -7,9 +7,13 @@ participant "fp : fenetreprincipale" as FP
 participant "i : Interpreteur" as I
 participant "cl : ConsructeurLitterale" as CL
 participant "e1 : Entier" as E1
+participant "i1 : Item" as I1
 participant "e2 : Entier" as E2
+participant "i2 : Item" as I2
 participant "e3 : Entier" as E3
+participant "i3 : Item" as I3
 participant "p : Pile" as P
+participant "o : Operateur" as O
 
 
 Utilisateur -> FP : getNextCommande()
@@ -26,9 +30,12 @@ activate CL
 CL -> E1 : Entier("3")
 activate E1
 
-E1 -> I : lit
+CL -> I1 : Item(e1, "Entier")
+activate I1
 
-I -> P : push(lit)
+CL -> I : i1
+
+I -> P : push(i1)
 activate P
 
 deactivate P
@@ -42,9 +49,12 @@ activate CL
 CL -> E2 : Entier("6")
 activate E2
 
-E2 -> I : lit
+CL -> I2 : Item(e2, "Entier")
+activate I2
 
-I -> P : push(lit)
+CL -> I : i2
+
+I -> P : push(i2)
 activate P
 
 deactivate P
@@ -52,7 +62,7 @@ deactivate CL
 
 I -> I: executer("*")
 
-participant "o : Operateur" as O
+
 
 I -> O : inventaireOpArite2.contains("*")
 activate O
@@ -63,48 +73,52 @@ deactivate O
 I -> P : end()
 activate P
 
-P -> I : i1
+P -> I : i2
 
 I -> P : end(1)
 
-P -> I : i2
+P -> I : i1
 deactivate P
 
-I -> O : inventaireOpArite2[*](i2, i1)
+I -> O : inventaireOpArite2[*](i1, i2)
 activate O
 
-O -> O : OpMul(i2, i1)
+O -> O : OpMul(i1, i2)
 
 O -> CL : distinguerConstruire("18")
-deactivate O
+
 activate CL
 
 CL -> E3 : Entier("18")
 activate E3
 
-E3 -> I : resultat
+CL -> I3 : Item(e3, "Entier")
+activate I3
+
+CL -> O : i3
 deactivate CL
+
+O -> I : i3
+deactivate O
 
 I -> P : pop()
 activate P
 deactivate E1
 deactivate P
-participant "it : Item" as IT
 
-I -> IT : i1.supprimer()
-activate IT
-deactivate IT
+I -> I1 : i1.supprimer()
+deactivate E1
+deactivate I1
 
 I -> P : pop()
 activate P
-deactivate E2
 deactivate P
 
-I -> IT : i2.supprimer()
-activate IT
-deactivate IT
+I -> I2 : i2.supprimer()
+deactivate E2
+deactivate I2
 
-I -> P : push(resultat)
+I -> P : push(i3)
 activate P
 deactivate P
 

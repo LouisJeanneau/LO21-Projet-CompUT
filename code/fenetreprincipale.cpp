@@ -381,7 +381,6 @@ void fenetrePrincipale::ouvertureVueParametre() {
 }
 
 void fenetrePrincipale::refreshTableVariableProgramme() {
-    std::cout << "Salut moi c'est refreshTableVariableProgramme" << std::endl;
     tableBoutonVariableProgramme->clearContents();
     if (persistance.obtenirTailleMapVariable() > persistance.obtenirTailleMapProgramme()) {
         tableBoutonVariableProgramme->setRowCount(persistance.obtenirTailleMapVariable());
