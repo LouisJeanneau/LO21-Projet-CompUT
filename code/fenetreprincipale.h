@@ -21,10 +21,10 @@
 #include <QShortcut>
 #include <QValidator>
 #include <QRegularExpression>
+#include <QIcon>
 #include "Pile.h"
 #include "Interpreteur.h"
 #include "Litterale.h"
-#include "Computer.h"
 #include "Exception.h"
 #include "Persistance.h"
 #include "vueVariable.h"

@@ -5,7 +5,6 @@
 #ifndef PROJET_LO21_SAUVEGARDE_H
 #define PROJET_LO21_SAUVEGARDE_H
 
-#include "Computer.h"
 #include "Persistance.h"
 #include "fenetreprincipale.h"
 #include <QWidget>
