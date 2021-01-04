@@ -17,7 +17,7 @@ SOURCES += \
     Interpreteur.cpp \
     Litterale.cpp \
     Operateur.cpp \
-    Persistence.cpp \
+    Persistance.cpp \
     Pile.cpp \
     Sauvegarde.cpp \
     main.cpp \
@@ -33,7 +33,7 @@ HEADERS += \
     Interpreteur.h \
     Litterale.h \
     Operateur.h \
-    Persistence.h \
+    Persistance.h \
     Pile.h \
     Sauvegarde.h \
     fenetreprincipale.h \
