@@ -1,0 +1,223 @@
+@startuml
+
+Class Sauvegarde {
+    -refPile : Pile&
+    -persistance : Persistance&
+    -refFenetrePrincipale : fenetrePrincipale&
+    +sauvegardeEtat()
+    +recupereEtat()
+}
+
+package "GroupeLitterale" {
+
+
+    Class ConstructeurLitterale{
+    {static} distinguerConstruire(s : QString) : Item
+    }
+
+    Class Litterale {
+         +virtual ~Litterale()
+        +virtual versString() : QString
+    }
+
+
+
+    Class Entier{
+        -entier : int
+        +Entier(i : int)
+        +obtenirEntier() const : int
+        +versString() const : QString
+    }
+
+    Class Reel{
+        -reel : double
+        +Reel(d: double)
+        +obtenirReel() const : double
+        +versString() const : QString
+        }
+
+    Class Rationel{
+        -numerateur : int
+        -denominateur : int
+        +Rationnel(n : int, d : int)
+        +obtenirNumerateur() const : int
+        +obtenirDenominateur() const : int
+        +versString() const : QString
+        }
+
+    Class Expression{
+        -expression : QString
+        +Expression(e : QString)
+        +versString() const : QString
+    }
+
+    Class Numerique{
+
+        }
+
+    Class Programme{
+        -programme : QString
+        +Programme(s : QString)
+        +versString() const : QString
+    }
+
+}
+
+Class Item{
+    -litPointeur : Litterale*
+    -typeItem : QString
+    +Item(l : Litteral*, t : QString)
+    +supprimer()
+    +obtenirLitterale() : Litterale&
+    +obtenirType() : QString
+    +operator==(i : const Item &) : bool
+}
+
+
+
+
+
+Class Operateur{
+    -Operateur()
+    -~Operateur()
+    -Operateur(const Operateur &) = delete
+    -operator=(const Operateur &) = delete
+    -{static} typeNumerique(i : Item&) : bool
+    -{static} recupererValeur(i : Item&) : vector<double>
+    -{static} processVariable(i : Item&) : Item
+    +{static} inventaireOpArite2: QMap<QString, std::function<Item(Item &, Item &)>>
+    +{static} inventaireOpArite1: QMap<QString, std::function<Item(Item &)>>
+    +{static} inventaireOpArite0: QMap<QString, std::function<Item()>>
+    +{static}opEVAL(Item & i): void
+    +{static}opPLUS(Item& i1, Item& i2) : Item
+    +{static}opMOINS(Item& i1, Item& i2) : Item
+    .. etc ..
+    +{static}opEGAL(Item& i1, Item& i2) : Item
+    +{static}opDIFFERENT(Item& i1, Item& i2) : Item
+    .. etc ..
+    +{static}opIFT(Item &i1, Item &i2) : void
+}
+
+
+Class Persistance{
+    -mapVariable : QMap<QString, QString>
+    -mapProgramme : QMap<QString, QString>
+    -{static} instance : Persistance
+    -Persistance()
+    +{static} obtenirPersistance() : Persistance&
+    +obtenirMapVariable() : QMap<QString, QString>
+    +obtenirMapProgramme() : QMap<QString, QString>
+    +obtenirTaileMapVariable() : unsigned int
+    +obtenirTaileMapProgramme() : unsigned int
+    +ajouterVariable(atome : QString, variable : QString)
+    +ajouterProgramme(atome : QString, variable : QString)
+    +supprimerVariable(atome : QString)
+    +supprimerProgramme(atome : QString)
+    .. signals : ..
+    +actualiserAffichage()
+}
+
+Class Interpreteur{
+    -pile : Pile&
+    -{static} instance: Interpreteur
+    +interpreter(commandeEntree : QString)
+    +executer(operande : QString)
+    +{static} obtenirInterpreteur : Interpreteur&
+}
+
+
+Class Pile{
+    -etat : QString
+    -listeItems : vector<Item>
+    -{static} instance : Pile
+    __
+    -Pile();
+    +{static} obtenirPile() : Pile&
+    +pop() : void
+    +end(n : int) : Item
+    +push(item : Item) : void
+    +estVide() : bool
+    +taille() : unsigned int
+    +obtenirEtat() : QString
+    +modifierEtat(e : QString)
+    +copierListeItems() : vector<Item>
+    .. Opérateur ..
+    +swap()
+    +clear()
+    +drop()
+    +dup()
+}
+
+
+
+
+package "groupeAffichage" {
+
+    Class fenetrePrincipale{
+        -NbItemAAfficher : unsigned int
+	    -pile : Pile&
+        -vue_variable : vueVariable *
+        -vue_programme : vueProgramme *
+        -vue_parametre : vueParametre *
+        -persistance : Persistance&
+        +getNombreItemAAfficher() : unsigned int
+        +setNombreItemAAfficher(i : unsigned int) : void
+        +rafraichirMethode() : void
+        +refresh() : void
+	    +getNextCommande() : void
+        +empile_bouton() : void
+        +ouverture_vue_variable() : void
+        +ouverture_vue_programme() : void
+        +ouverture_vue_parametre() : void
+    }
+
+    Class vueVariable{
+        +rafraichirVariable() : void
+        +ajouterVariable(): void
+    }
+    Class vueProgramme{
+        +ajouterProgramme(): void
+    }
+    Class vueParametre{
+        +vueParametre(QWidget * parent = 0)
+        +~vueParametre
+        +changerNbAfficherPile() : void
+
+    }
+
+}
+
+
+
+
+
+Interpreteur <--> Operateur
+Interpreteur --> Persistance
+Interpreteur --> Pile
+fenetrePrincipale --> Pile
+
+Interpreteur --> ConstructeurLitterale
+
+Item "1" *-- "1" Litterale
+Pile "1" o-- "*" Item
+
+fenetrePrincipale "1" *-- "1" vueVariable
+fenetrePrincipale "1" *-- "1" vueProgramme
+fenetrePrincipale "1" *-- "1" vueParametre
+
+Operateur --> ConstructeurLitterale
+fenetrePrincipale --> Interpreteur
+Persistance <-- fenetrePrincipale
+
+fenetrePrincipale <--> Sauvegarde
+ConstructeurLitterale -- Litterale
+
+
+Litterale <|-- Numerique
+Numerique <|-- Reel
+Numerique <|-- Rationel
+Numerique <|-- Entier
+Litterale <|-- Expression
+Litterale <|-- Programme
+
+@enduml
