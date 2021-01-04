@@ -12,9 +12,7 @@ class Item;
 
 class Litterale {
 public:
-    virtual ~Litterale() {
-        cout << "Litterale detruite" << endl;
-    }
+    virtual ~Litterale() {    }
 
     virtual QString versString() const = 0;
 
@@ -38,7 +36,6 @@ public:
     QString versString() const;
 
     ~Reel() {
-        cout << "Reel detruite" << endl;
     }
 };
 
@@ -55,7 +52,6 @@ public:
     QString versString() const;
 
     ~Rationnel() {
-        cout << "Rationnel detruite" << endl;
     }
 
     Rationnel operator+(const Rationnel &r) const;
@@ -71,7 +67,6 @@ public:
     QString versString() const;
 
     ~Entier() {
-        cout << "Entier detruit" << endl;
     }
 };
 

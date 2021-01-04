@@ -2,9 +2,7 @@
 // Created by Louis on 06/12/2020.
 //
 
-#include <iostream>
 #include <QApplication>
-#include "Interpreteur.h"
 #include "fenetreprincipale.h"
 
 using namespace std;

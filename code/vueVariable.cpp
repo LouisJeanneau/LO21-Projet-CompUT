@@ -20,11 +20,11 @@ vueVariable::vueVariable(QWidget *parent) :
     choixSuppression = new QComboBox;
     validerSuppression = new QPushButton("Supprimer");
 
-    QRegularExpression rxVar("([A-Z1-9a-z !.=<>+\\-/*'\\[\\]])*");
+    QRegularExpression rxVar("([A-Z0-9a-z !.=<>+\\-/*'\\[\\]])*");
     QValidator *validatorVar = new QRegularExpressionValidator(rxVar,this);
     entreeVariable->setValidator(validatorVar);
 
-    QRegularExpression rx("([A-Z1-9a-z])*");
+    QRegularExpression rx("([A-Z0-9a-z])*");
     QValidator *validator = new QRegularExpressionValidator(rx,this);
     entreeAtome->setValidator(validator);
 
@@ -74,7 +74,6 @@ vueVariable::vueVariable(QWidget *parent) :
 // =======================================   METHODES    ======================================= //
 
 void vueVariable::refreshVariable() {
-    std::cout << "Salut moi c'est refreshVariable" << std::endl;
     tableVariable->setRowCount(persistance.obtenirTailleMapVariable());
     int i = 0;
     auto mapVariable = persistance.obtenirMapVariable();

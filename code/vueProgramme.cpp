@@ -20,11 +20,11 @@ vueProgramme::vueProgramme(QWidget *parent) :
     choixSuppressionPG = new QComboBox;
     validerSuppresionPG = new QPushButton("Supprimer");
 
-    QRegularExpression rxProg("\\[([A-Z1-9a-z !.=<>+\\-/*'\\[\\]])*\\]");
+    QRegularExpression rxProg("\\[([A-Z0-9a-z !.=<>+\\-/*'\\[\\]])*\\]");
     QValidator *validatorProg = new QRegularExpressionValidator(rxProg,this);
     entreeProgramme->setValidator(validatorProg);
 
-    QRegularExpression rx("([A-Z1-9a-z])*");
+    QRegularExpression rx("([A-Z0-9a-z])*");
     QValidator *validator = new QRegularExpressionValidator(rx,this);
     entreeAtomePG->setValidator(validator);
 
@@ -74,7 +74,6 @@ vueProgramme::vueProgramme(QWidget *parent) :
 // =======================================   METHODE    ======================================= //
 
 void vueProgramme::refreshProgramme() {
-    std::cout << "Salut moi c'est refreshProgramme" << std::endl;
     tableProgramme->setRowCount(persistance.obtenirTailleMapProgramme());
     int i = 0;
     auto mapProgramme = persistance.obtenirMapProgramme();

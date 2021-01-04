@@ -121,3 +121,8 @@ void Pile::debug() {
         cout << it->obtenirLitterale().versString().toStdString() << endl;
     }
 }
+
+
+
+
+

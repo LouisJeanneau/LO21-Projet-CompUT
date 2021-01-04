@@ -121,6 +121,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     // Mettre un titre à la fenêtre
     setWindowTitle("Comp'UT");
+    setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "calculator.ico"));
 
     // Couleur à la barre + empêcher l'édition
     message->setStyleSheet("background-color :#456268; color : #fcf8ec");
@@ -128,7 +129,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     // Focus automatique sur la commande
     commande->setFocus();
-    QRegularExpression rx("([A-Z1-9a-z !.=<>+\\-/*'\\[\\]])*");
+    QRegularExpression rx("([A-Z0-9a-z !.=<>+\\-/*'\\[\\]])*");
     QValidator *validator = new QRegularExpressionValidator(rx,this);
     commande->setValidator(validator);
 
@@ -380,7 +381,6 @@ void fenetrePrincipale::ouvertureVueParametre() {
 }
 
 void fenetrePrincipale::refreshTableVariableProgramme() {
-    std::cout << "Salut moi c'est refreshTableVariableProgramme" << std::endl;
     tableBoutonVariableProgramme->clearContents();
     if (persistance.obtenirTailleMapVariable() > persistance.obtenirTailleMapProgramme()) {
         tableBoutonVariableProgramme->setRowCount(persistance.obtenirTailleMapVariable());
