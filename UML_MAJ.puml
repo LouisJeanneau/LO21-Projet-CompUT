@@ -23,7 +23,7 @@ package "GroupeLitterale" {
 
 
     Class Entier{
-        +entier : int
+        -entier : int
         +Entier(i : int)
         +obtenirEntier() const : int
         +versString() const : QString

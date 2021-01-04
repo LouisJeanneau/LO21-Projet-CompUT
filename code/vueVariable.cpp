@@ -13,7 +13,7 @@ vueVariable::vueVariable(QWidget *parent) :
     entreeVariable = new QLineEdit;
     entreeVariable->setPlaceholderText("ex: 3.1415");
     validerCreation = new QPushButton("Valider");
-    tableVariable = new QTableWidget(persistence.obtenirTailleMapVariable(), 2);
+    tableVariable = new QTableWidget(persistance.obtenirTailleMapVariable(), 2);
     listeVariable = new QVBoxLayout;
     layoutSaisie = new QHBoxLayout;
     texteSuppression = new QLabel("Choisir l'élément à supprimer :");
@@ -44,7 +44,7 @@ vueVariable::vueVariable(QWidget *parent) :
     tableVariable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     QMap<QString, QString>::iterator it;
     int i = 0;
-    auto mapVariable = persistence.obtenirMapVariable();
+    auto mapVariable = persistance.obtenirMapVariable();
     for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
         QLabel *key = new QLabel(it.key());
         QLabel *value = new QLabel(it.value());
@@ -75,9 +75,9 @@ vueVariable::vueVariable(QWidget *parent) :
 
 void vueVariable::refreshVariable() {
     std::cout << "Salut moi c'est refreshVariable" << std::endl;
-    tableVariable->setRowCount(persistence.obtenirTailleMapVariable());
+    tableVariable->setRowCount(persistance.obtenirTailleMapVariable());
     int i = 0;
-    auto mapVariable = persistence.obtenirMapVariable();
+    auto mapVariable = persistance.obtenirMapVariable();
     for (auto it = mapVariable.begin(); it != mapVariable.end(); it++) {
         tableVariable->setCellWidget(i, 0, new QLabel(""));
         tableVariable->setCellWidget(i, 1, new QLabel(""));
@@ -104,7 +104,7 @@ void vueVariable::refreshVariable() {
 // =======================================   SLOTS    ======================================= //
 
 void vueVariable::recupererKey() {
-    persistence.supprimerVariable(choixSuppression->currentText());
+    persistance.supprimerVariable(choixSuppression->currentText());
 }
 
 void vueVariable::ajouterVariable() {
@@ -112,7 +112,7 @@ void vueVariable::ajouterVariable() {
     saisieAtome = saisieAtome.toUpper();
     QString saisieVariable = entreeVariable->text();
     try {
-        persistence.ajouterVariable(saisieAtome, saisieVariable);
+        persistance.ajouterVariable(saisieAtome, saisieVariable);
     } catch (ComputerException &ce) {
         QMessageBox::critical(this, "Erreur", ce.what());
     }
