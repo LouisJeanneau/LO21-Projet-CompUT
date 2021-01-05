@@ -13,6 +13,7 @@
 
 using namespace std;
 
+//Méthode d'enregistrement de l'état de la calculatrice dans le fichier XML
 void Sauvegarde::sauvegardeEtat() {
 
     QDomDocument d("Sauvegarde");
@@ -26,6 +27,7 @@ void Sauvegarde::sauvegardeEtat() {
     QDomElement pile = d.createElement("pile");
     calculatrice.appendChild(pile);
     while (!refPile.estVide()) {
+        //Récupère l'élément le plus haut de la pile et l'insère entre balises
         QDomElement element = d.createElement("element");
         pile.appendChild(element);
         QString s = refPile.end().obtenirLitterale().versString();
@@ -38,9 +40,12 @@ void Sauvegarde::sauvegardeEtat() {
     QDomElement variables = d.createElement("variables");
     calculatrice.appendChild(variables);
     for (auto v : persistance.obtenirMapVariable().keys()) {
+        //Récupère un élément de la QMap
         QDomElement variable = d.createElement("variable");
         variables.appendChild(variable);
+        //Met en attribut "id" de la balise l'identificateur la variable
         variable.setAttribute("id", v);
+        //Met en attribut "value" de la balise la valeur de la variable
         variable.setAttribute("value", persistance.obtenirMapVariable().value(v));
     }
 
@@ -48,9 +53,12 @@ void Sauvegarde::sauvegardeEtat() {
     QDomElement programmes = d.createElement("programmes");
     calculatrice.appendChild(programmes);
     for (auto p : persistance.obtenirMapProgramme().keys()) {
+        //Récupère un élément de la QMap
         QDomElement programme = d.createElement("programme");
         programmes.appendChild(programme);
+        //Met en attribut "id" de la balise l'identificateur du programme
         programme.setAttribute("id", p);
+        //Met en attribut "value" de la balise la valeur du programme
         programme.setAttribute("value", persistance.obtenirMapProgramme().value(p));
     }
 
@@ -59,6 +67,7 @@ void Sauvegarde::sauvegardeEtat() {
     calculatrice.appendChild(parametres);
     QDomElement nbItem = d.createElement("nbItemAAfficherPile");
     parametres.appendChild(nbItem);
+    //Met en attribut "value" de la balise le nombre d'items à afficher dans la pile
     nbItem.setAttribute("value", refFenetrePrincipale->getNombreItemAAfficher());
 
 
@@ -68,13 +77,14 @@ void Sauvegarde::sauvegardeEtat() {
         QMessageBox::critical(this, "Erreur", "Impossible d'écrire dans le document XML");
         exit(EXIT_FAILURE);
     }
+
     QTextStream stream(&fichier);
     stream << d.toString();
 
     fichier.close();
-    std::cout << "Fonction sauvegarde fin" << std::endl;
 }
 
+//Méthode de récupération de la sauvegarde dans le fichier XML
 void Sauvegarde::recupereEtat() {
     QDomDocument *d = new QDomDocument("calculatrice");
     QFile calculatrice("calculatrice.xml");
@@ -97,7 +107,7 @@ void Sauvegarde::recupereEtat() {
     balise = balise.firstChild();
     QDomElement element = balise.lastChildElement();
     while (!element.isNull()) {
-        //Construire une nouvelle litérale avec le texte récupéré
+        //Construire une nouvelle littérale avec le texte récupéré et l'ajouter à la pile
         Item res = ConstructeurLitterale::distinguerConstruire(element.text());
         refPile.push(res);
         element = element.previousSiblingElement();
@@ -124,9 +134,11 @@ void Sauvegarde::recupereEtat() {
         persistance.ajouterProgramme((QString) programme.attribute("id"), (QString) programme.attribute("value"));
         programme = programme.nextSiblingElement();
     }
+
     //Paramètres
     balise = balise.nextSibling();
     QDomElement nbItem = balise.firstChildElement();
+    //Définir le bon nombre d'items à afficher dans la pile
     refFenetrePrincipale->setNombreItemAAfficher(nbItem.attribute("value").toInt());
 
     calculatrice.close();
