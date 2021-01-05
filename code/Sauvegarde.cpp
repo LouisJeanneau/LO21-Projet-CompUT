@@ -13,7 +13,7 @@
 
 using namespace std;
 
-//Méthode d'enregistrement de la sauvegarde dans le fichier XML
+//Méthode d'enregistrement de l'état de la calculatrice dans le fichier XML
 void Sauvegarde::sauvegardeEtat() {
 
     QDomDocument d("Sauvegarde");
@@ -43,7 +43,7 @@ void Sauvegarde::sauvegardeEtat() {
         //Récupère un élément de la QMap
         QDomElement variable = d.createElement("variable");
         variables.appendChild(variable);
-        //Met en attribut "id" de la balise l'atome représentant la variable
+        //Met en attribut "id" de la balise l'identificateur la variable
         variable.setAttribute("id", v);
         //Met en attribut "value" de la balise la valeur de la variable
         variable.setAttribute("value", persistance.obtenirMapVariable().value(v));
@@ -56,7 +56,7 @@ void Sauvegarde::sauvegardeEtat() {
         //Récupère un élément de la QMap
         QDomElement programme = d.createElement("programme");
         programmes.appendChild(programme);
-        //Met en attribut "id" de la balise l'atome représentant le programme
+        //Met en attribut "id" de la balise l'identificateur du programme
         programme.setAttribute("id", p);
         //Met en attribut "value" de la balise la valeur du programme
         programme.setAttribute("value", persistance.obtenirMapProgramme().value(p));
@@ -67,7 +67,7 @@ void Sauvegarde::sauvegardeEtat() {
     calculatrice.appendChild(parametres);
     QDomElement nbItem = d.createElement("nbItemAAfficherPile");
     parametres.appendChild(nbItem);
-    //Met en attribut de la balise le nombre d'items à afficher dans la pile
+    //Met en attribut "value" de la balise le nombre d'items à afficher dans la pile
     nbItem.setAttribute("value", refFenetrePrincipale->getNombreItemAAfficher());
 
 
