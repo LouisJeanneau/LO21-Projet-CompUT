@@ -1,53 +1,25 @@
-Command line instructions
-You can also upload existing files from your computer using the instructions below.
+# Comp'UT
+**Projet de calculatrice en RPN [(Reverse Polish Notation)](https://en.wikipedia.org/wiki/Reverse_Polish_notation) codée en C++.**
 
---------------------------------------------------------------
-Git global setup :
+## Pourquoi ?
+Il s'agissait de notre projet du semestre A20 pour le cours LO21 de l'UTC dont l'objectif est : l'étude et mise en oeuvre des différents concepts et outils liés à la programmation et à la conception orientées objet.
 
-git config --global user.name "Prénom Nom"
+## Avec qui ?
+Ce projet était en groupe de 5. 
 
-git config --global user.email "prenom.nom@etu.utc.fr"
+Je remercie Billy TEA, Huiling LI, Ismail KADIRI et Lorenzo ZITOLI d'avoir participer à cette aventure.
 
+Merci spécial à Ismail pour ces soirées tardives à s'arracher les cheveux à deux.
 
---------------------------------------------------------------
-Create a new repository :
+## Mots-clés
 
-git clone git@gitlab.utc.fr:ljeannea/lo21-projet-comput.git
-
-cd lo21-projet-comput
-
-touch README.md
-
-git add README.md
-
-git commit -m "add README"
-
-git push -u origin master
-
---------------------------------------------------------------
-Push an existing folder :
-
-cd existing_folder
-
-git init
-
-git remote add origin git@gitlab.utc.fr:ljeannea/lo21-projet-comput.git
-
-git add .
-
-git commit -m "Initial commit"
-
-git push -u origin master
-
---------------------------------------------------------------
-Push an existing Git repository :
-
-cd existing_repo
-
-git remote rename origin old-origin
-
-git remote add origin git@gitlab.utc.fr:ljeannea/lo21-projet-comput.git
-
-git push -u origin --all
-
-git push -u origin --tags
+* héritage
+* patrons
+* encapsulation
+* UML
+* design patterns
+* C++
+* classes
+* Qt
+* Clion
+* CMake
