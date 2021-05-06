@@ -121,7 +121,7 @@ fenetrePrincipale::fenetrePrincipale(QWidget *parent)
 
     // Mettre un titre à la fenêtre
     setWindowTitle("Comp'UT");
-    setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "calculator.ico"));
+    setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "\\calculator.ico"));
 
     // Couleur à la barre + empêcher l'édition
     message->setStyleSheet("background-color :#456268; color : #fcf8ec");
