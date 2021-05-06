@@ -74,7 +74,6 @@ vueProgramme::vueProgramme(QWidget *parent) :
 // =======================================   METHODE    ======================================= //
 
 void vueProgramme::refreshProgramme() {
-    std::cout << "Salut moi c'est refreshProgramme" << std::endl;
     tableProgramme->setRowCount(persistance.obtenirTailleMapProgramme());
     int i = 0;
     auto mapProgramme = persistance.obtenirMapProgramme();

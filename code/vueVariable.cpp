@@ -74,7 +74,6 @@ vueVariable::vueVariable(QWidget *parent) :
 // =======================================   METHODES    ======================================= //
 
 void vueVariable::refreshVariable() {
-    std::cout << "Salut moi c'est refreshVariable" << std::endl;
     tableVariable->setRowCount(persistance.obtenirTailleMapVariable());
     int i = 0;
     auto mapVariable = persistance.obtenirMapVariable();
